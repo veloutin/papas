@@ -86,7 +86,7 @@ class CommandParameter ( models.Model ):
 
 class CommandExec ( models.Model ):
     SCP_COMMAND="scp -Bq %(filename)s %(ip_addr)s:%(path)s"
-    EXEC_COMMAND="ssh -o BatchMode=true %(ip_addr)s bash /tmp/_remote_script_wrapper.sh "
+    EXEC_COMMAND="ssh -o BatchMode=true %(ip_addr)s . /tmp/_remote_script_wrapper.sh "
     command = models.ForeignKey(Command)
     accesspoint = models.ForeignKey(AccessPoint)
     result = models.IntegerField(null=True)
@@ -125,7 +125,7 @@ class CommandExec ( models.Model ):
         #Make params file
         (fd, name) = mkstemp()        
         fdo = os.fdopen(fd,'w')
-        fdo.write("#!/bin/bash\n")
+        fdo.write("#!/bin/sh\n")
         fdo.writelines([p.to_bash() for p in self.usedparameter_set.all()])
         fdo.write(". /tmp/_remote_script.sh \n")
         fdo.flush()

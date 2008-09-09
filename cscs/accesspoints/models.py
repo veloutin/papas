@@ -45,20 +45,28 @@ class AccessPoint ( models.Model ):
         file(os.path.join(settings.AP_REFRESH_WATCH_DIR,str(self.id)),'w').close()
         
     def refresh_clients(self):
-        (ret, out) = commands.getstatusoutput(r'ssh %(ip)s cat /proc/net/arp | sed -e "1d;s/ \{1,\}/ /g" | cut -d" " -f 1,4' % {'ip':self.ipv4Address} )
+        (ret, out) = commands.getstatusoutput(r'ssh %(ip)s wl assoclist 2>/dev/null | cut -d" " -f 2' % {'ip':self.ipv4Address} )
         if DEBUG:
             print out, ret
         if ret == 0:
+            #Attempt to get all IP for MAC in arp tables
+            (ret, out2) = commands.getstatusoutput(r'ssh %(ip)s cat /proc/net/arp 2>/dev/null | sed -e "1d;s/ \{1,\}/ /g" | cut -d" " -f 1,4' % {'ip':self.ipv4Address} )
+            ipmap = {}
+            if ret == 0:
+                for line in out2.splitlines():
+                    print line
+                    ip,mac = line.split()
+                    ipmap.update({mac:ip})
+                
             #Delete all connected clients
             for c in self.apclient_set.all():
                 c.delete()
 
             #Recreate all clients
-            for line in out.splitlines():
-                ip,mac = line.split()
-                print "client ip: %s for mac %s" % (ip, mac)
+            for mac in out.splitlines():
+                print "client ip for mac %s is %s" % (mac, ipmap.get(mac))
                 c = APClient()
-                c.ipv4Address = ip
+                c.ipv4Address = ipmap.get(mac)
                 c.macAddress = mac
                 c.connected_to = self
                 c.save()
@@ -97,7 +105,7 @@ class APClient ( models.Model ):
     """
         Client connected to an Access Point
     """
-    ipv4Address = models.IPAddressField( core=True,
+    ipv4Address = models.IPAddressField( core=False, null=True,
         help_text="IP address of the client" )
     macAddress = models.CharField( maxlength=17, core=True, 
         help_text="Client MAC address" )

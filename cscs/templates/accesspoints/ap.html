@@ -13,7 +13,7 @@
 <tr><th>MAC</th><td>{{ ap.macAddress }}</td></tr>
 <tr><th>Description</th><td>{{ ap.description }}</td></tr>
 </table>
-<hr /><br />
+<br /><hr /><br />
 <h3>Clients</h3>
 <table>
 <thead><tr><th>MAC</th><th>IP</th></tr></thead>
@@ -28,5 +28,12 @@
         <input type="submit" value="Refresh!"/>
     </form>
 
+<br />
+<hr />
+{% include "accesspoints/ap/links.html" %}
+{% include "accesspoints/groups/links.html" %}
+{% include "accesspoints/commands/links.html" %}
 {% endblock %}
+
+
 {% block body_public %}{% endblock %}
