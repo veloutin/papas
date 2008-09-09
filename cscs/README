@@ -1,0 +1,10 @@
+deps:
+
+python-pyinotify version 0.7
+
+
+to_run:
+
+    configure django
+
+    have the cmdexecutor.py running

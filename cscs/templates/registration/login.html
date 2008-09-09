@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block feuillestyle %}
+    {{ super.block }}
+    <script language="javascript">
+        document.getElementById("id_username").focus();
+    </script>
+{% endblock %}
+
+{% block body_public %}
+
+<br/><br/><br/>
+
+{% if form.has_errors %}
+<p>Your username and/or password didn't match. Please try again.</p>
+{% endif %}
+
+
+<form class="form" method="post" action=".">
+<table>
+    <tr><td><label for="id_username">Usager :</label></td><td>{{ form.username }}</td></tr>
+    <tr><td><label for="id_password">Mot de passe :</label></td><td>{{ form.password }}</td></tr>
+    <tr><td></td><td align="right"><input type="submit" value="Login"><input type="hidden" name="next" value="{{ next }}"></td></tr>
+</table>
+</form>
+
+{% endblock %}
+

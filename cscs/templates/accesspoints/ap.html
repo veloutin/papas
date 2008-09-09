@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% comment %}{% block feuillestyle %}
+{% endblock %}{% endcomment %}
+{% block head %} {% endblock %}
+{% block bodytags %}{% endblock %}
+{% block menu %}
+{% endblock %}
+{% block body %}
+<h2>{{ ap.name }}</h2>
+<table>
+<tr><th>IP</th><td>{{ ap.ipv4Address }}</td></tr>
+<tr><th>MAC</th><td>{{ ap.macAddress }}</td></tr>
+<tr><th>Description</th><td>{{ ap.description }}</td></tr>
+</table>
+<hr /><br />
+<h3>Clients</h3>
+<table>
+<thead><tr><th>MAC</th><th>IP</th></tr></thead>
+{% if ap.apclient_set.all %}
+<tbody>
+{% for c in ap.apclient_set.all %}
+<tr><td>{{ c.macAddress }}</td><td>{{ c.ipv4Address }}</td></tr>
+{% endfor %}</tbody>{% endif %}
+</table>
+<br />
+    <form method="POST">
+        <input type="submit" value="Refresh!"/>
+    </form>
+
+{% endblock %}
+{% block body_public %}{% endblock %}
