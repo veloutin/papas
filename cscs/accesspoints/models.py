@@ -45,12 +45,12 @@ class AccessPoint ( models.Model ):
         file(os.path.join(settings.AP_REFRESH_WATCH_DIR,str(self.id)),'w').close()
         
     def refresh_clients(self):
-        (ret, out) = commands.getstatusoutput(r'ssh %(ip)s wl assoclist 2>/dev/null | cut -d" " -f 2' % {'ip':self.ipv4Address} )
+        (ret, out) = commands.getstatusoutput(r'ssh -o BatchMode=yes %(ip)s wl assoclist 2>/dev/null | cut -d" " -f 2' % {'ip':self.ipv4Address} )
         if DEBUG:
             print out, ret
         if ret == 0:
             #Attempt to get all IP for MAC in arp tables
-            (ret, out2) = commands.getstatusoutput(r'ssh %(ip)s cat /proc/net/arp 2>/dev/null | sed -e "1d;s/ \{1,\}/ /g" | cut -d" " -f 1,4' % {'ip':self.ipv4Address} )
+            (ret, out2) = commands.getstatusoutput(r'ssh -o BatchMode=yes %(ip)s cat /proc/net/arp 2>/dev/null | sed -e "1d;s/ \{1,\}/ /g" | cut -d" " -f 1,4' % {'ip':self.ipv4Address} )
             ipmap = {}
             if ret == 0:
                 for line in out2.splitlines():
