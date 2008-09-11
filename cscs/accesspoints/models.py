@@ -12,7 +12,7 @@ class AccessPoint ( models.Model ):
         Represents an Access Point, with name, IP, MAC and description.
     """
     name = models.CharField( maxlength=100, core=True,
-        help_text="Name of the access point" )
+        help_text="Host Name" )
     ipv4Address = models.IPAddressField( core=True, unique=True,
         help_text="IP address of the access point" )
     macAddress = models.CharField( maxlength=17, core=True, unique=True,
@@ -45,12 +45,12 @@ class AccessPoint ( models.Model ):
         file(os.path.join(settings.AP_REFRESH_WATCH_DIR,str(self.id)),'w').close()
         
     def refresh_clients(self):
-        (ret, out) = commands.getstatusoutput(r'ssh -o BatchMode=yes %(ip)s wl assoclist 2>/dev/null | cut -d" " -f 2' % {'ip':self.ipv4Address} )
+        (ret, out) = commands.getstatusoutput(r'ssh -o BatchMode=yes -o StrictHostKeyChecking=no %(ip)s wl assoclist 2>/dev/null | cut -d" " -f 2' % {'ip':self.ipv4Address} )
         if DEBUG:
             print out, ret
         if ret == 0:
             #Attempt to get all IP for MAC in arp tables
-            (ret, out2) = commands.getstatusoutput(r'ssh -o BatchMode=yes %(ip)s cat /proc/net/arp 2>/dev/null | sed -e "1d;s/ \{1,\}/ /g" | cut -d" " -f 1,4' % {'ip':self.ipv4Address} )
+            (ret, out2) = commands.getstatusoutput(r'ssh -o BatchMode=yes %(ip)s -o StrictHostKeyChecking=no cat /proc/net/arp 2>/dev/null | sed -e "1d;s/ \{1,\}/ /g" | cut -d" " -f 1,4' % {'ip':self.ipv4Address} )
             ipmap = {}
             if ret == 0:
                 for line in out2.splitlines():

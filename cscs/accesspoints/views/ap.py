@@ -1,7 +1,7 @@
 from cscs.accesspoints.models import *
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
-
+from django.http import HttpResponse
 @login_required
 def view_ap_list(request):
     """
@@ -26,6 +26,16 @@ def view_ap(request, ap_id):
 
     return render_to_response('accesspoints/ap.html',
         {'ap':ap,})
+
+def view_ap_nagios_config(request, ap_id):
+    """
+        Attempts to display the access point with the id ap_id
+    """
+    ap = get_object_or_404(AccessPoint, pk=ap_id)
+    
+    return HttpResponse("%(name)s;%(ip)s;;ap;" % {'name':ap.name,'ip':ap.ipv4Address}, mimetype="text/plain")
+
+
 
 @login_required
 def view_client_list(request):

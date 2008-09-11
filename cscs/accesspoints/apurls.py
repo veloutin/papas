@@ -8,6 +8,6 @@ urlpatterns = patterns ('cscs.accesspoints',
     
     (r'^(?P<ap_id>\d+)/$', 'views.ap.view_ap' ),
 
-
+    (r'^(?P<ap_id>\d+)/nagios/$', 'views.ap.view_ap_nagios_config'),
 
 )
