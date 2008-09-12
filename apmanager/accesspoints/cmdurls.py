@@ -1,7 +1,7 @@
 
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns ('cscs.accesspoints',
+urlpatterns = patterns ('apmanager.accesspoints',
 
 
     (r'new/$', 'views.apcommands.create_new_command' ),

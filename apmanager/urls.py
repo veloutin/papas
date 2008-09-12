@@ -10,17 +10,17 @@ urlpatterns = patterns('',
 
     
     # Access points
-      (r'^accesspoints/', include('cscs.accesspoints.apurls')),
+      (r'^accesspoints/', include('apmanager.accesspoints.apurls')),
     # DSH Groups
-      (r'^groups/', include('cscs.accesspoints.groupurls')),
+      (r'^groups/', include('apmanager.accesspoints.groupurls')),
 
     # Commands
-      (r'^commands/', include('cscs.accesspoints.cmdurls')),
+      (r'^commands/', include('apmanager.accesspoints.cmdurls')),
 
     # Uncomment this for admin:
      (r'^admin/', include('django.contrib.admin.urls')),
 
-    (r'^$', include('cscs.accesspoints.apurls')),
+    (r'^$', include('apmanager.accesspoints.apurls')),
 )
 # This is used to server static content (images and CSS) during development.
 # For production, Apache must be configured.

@@ -1,7 +1,7 @@
 from django.db import models
 
 # Import Command 
-from accesspoints.apcommands import *
+from apmanager.accesspoints.apcommands import *
 import commands
 from settings import DEBUG
 # Create your models here.

@@ -13,7 +13,7 @@
 <tr><th>MAC</th><td>{{ ap.macAddress }}</td></tr>
 <tr><th>Description</th><td>{{ ap.description }}</td></tr>
 </table>
-<a href='{% url cscs.accesspoints.views.ap.view_ap_nagios_config ap.id %}'>Nagios Config</a>
+<a href='{% url apmanager.accesspoints.views.ap.view_ap_nagios_config ap.id %}'>Nagios Config</a>
 <br /><hr /><br />
 <h3>Clients</h3>
 <table>

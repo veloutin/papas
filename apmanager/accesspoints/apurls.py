@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns ('cscs.accesspoints',
+urlpatterns = patterns ('apmanager.accesspoints',
 
     (r'^$', 'views.ap.view_ap_list' ),
 
