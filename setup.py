@@ -39,6 +39,8 @@ def append_to_data_files(data_files_list, regexp, data_path, destination):
 
 append_to_data_files(data_files_list, re.compile(r".*"), 'apmanager/templates', '/usr/share/apmanager/')
 append_to_data_files(data_files_list, re.compile(r".*"), 'var/apmanager', '/var/lib/apmanager/')
+append_to_data_files(data_files_list, re.compile(r".*"), 'etc', '/etc')
+
 
 # print '!!!', data_files_list
 
@@ -66,7 +68,7 @@ setup(#cmdclass={'build_py': VsmanageBuildPy},
       license="Proprietary",
       platforms=["Linux"],
       long_description="""Django Application To manage a group of Wifi Hotspots""",
-      scripts=['bin/cmdexecutor.py'],
+      scripts=['sbin/apmanager-cmdexecutor'],
       packages=[
 		"apmanager",
         "apmanager.accesspoints",
