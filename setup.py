@@ -14,8 +14,7 @@ from distutils.command import build_py
 
 
 #init_dir = '/etc/init.d'
-#share_dir = '/usr/share/vsmanage'
-etc_dir = '/etc/ap-manager' 
+etc_dir = '/etc/apmanager' 
 #lib_dir = '/var/lib'
 
 data_files_list = [] 
@@ -38,8 +37,8 @@ def append_to_data_files(data_files_list, regexp, data_path, destination):
             # Associate this directory in the data_files_list
             data_files_list.append((root, file_list))
 
-append_to_data_files(data_files_list, re.compile(r".*"), 'cscs/templates', '/usr/share/ap-manager/')
-append_to_data_files(data_files_list, re.compile(r".*"), 'var/apmanager', '/var/apmanager/')
+append_to_data_files(data_files_list, re.compile(r".*"), 'apmanager/templates', '/usr/share/apmanager/')
+append_to_data_files(data_files_list, re.compile(r".*"), 'var/apmanager', '/var/lib/apmanager/')
 
 # print '!!!', data_files_list
 
@@ -69,9 +68,9 @@ setup(#cmdclass={'build_py': VsmanageBuildPy},
       long_description="""Django Application To manage a group of Wifi Hotspots""",
       scripts=['bin/cmdexecutor.py'],
       packages=[
-		"cscs",
-        "cscs.accesspoints",
-        "cscs.accesspoints.views",
+		"apmanager",
+        "apmanager.accesspoints",
+        "apmanager.accesspoints.views",
 	],
       #package_data=
       data_files = data_files_list,

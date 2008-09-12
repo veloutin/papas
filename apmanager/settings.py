@@ -89,6 +89,6 @@ INSTALLED_APPS = (
 
 
 
-WATCH_DIR='/var/apmanager/watch/'
+WATCH_DIR='/var/lib/apmanager/watch/'
 COMMAND_WATCH_DIR=      WATCH_DIR + 'commands/'
 AP_REFRESH_WATCH_DIR=   WATCH_DIR + 'refresh_ap/'

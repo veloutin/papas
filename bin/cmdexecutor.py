@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 import os, sys
-os.environ["DJANGO_SETTINGS_MODULE"] = "cscs.settings"
-import settings
+os.environ["DJANGO_SETTINGS_MODULE"] = "apmanager.settings"
+from apmanager import settings
 
 from pyinotify import WatchManager, Notifier, ProcessEvent, EventsCodes
-from accesspoints.apcommands import CommandExec
-from accesspoints.models import AccessPoint
+from apmanager.accesspoints.apcommands import CommandExec
+from apmanager.accesspoints.models import AccessPoint
+from apmanager import utils
 
 def Monitor(path):
     class PCreate(ProcessEvent):
@@ -62,10 +63,8 @@ def Monitor(path):
 
 
 if __name__ == '__main__':
-    try:
-        path = sys.argv[1]
-    except IndexError:
-        print "using default path, ", settings.WATCH_DIR
-        Monitor(settings.WATCH_DIR)
-    else:
-        Monitor(path)
+    if "--daemon" in sys.argv[1:]:
+        utils.daemonize()
+
+	print "using default path, ", settings.WATCH_DIR
+	Monitor(settings.WATCH_DIR)
