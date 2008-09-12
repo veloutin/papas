@@ -46,7 +46,7 @@ def create_new_command(request):
                 )
         else:
             #Redisplay invalid form with data and errors
-            f = CommandchoiceForm(request.POST)
+            f = CommandChoiceForm(request.POST)
             return render_to_response('accesspoints/commands/create.html',{'f':f})
 
     #Otherwise, Display blank form

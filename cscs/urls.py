@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import *
-from settings import DEBUG
+from settings import DEBUG, MEDIA_ROOT
 
 urlpatterns = patterns('',
     # Example:
@@ -26,6 +26,7 @@ urlpatterns = patterns('',
 # For production, Apache must be configured.
 if DEBUG:
     urlpatterns += patterns('',
-        (r'^cscs/site-media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'templates/site-media/'}),
+        #(r'^site-media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'templates/site-media/'}),
+        (r'^site-media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT}),
     )
 

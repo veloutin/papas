@@ -35,11 +35,11 @@ SITE_ID = 1
 USE_I18N = True
 
 
-UPLOAD_ROOT = '/var/django/cscs/uploads/'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = '/usr/share/ap-manager/site-media/'
+UPLOAD_ROOT = MEDIA_ROOT + 'uploads/'
 
 # URL that handles the media served from MEDIA_ROOT.
 # Example: "http://media.lawrence.com"
@@ -74,6 +74,8 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     "templates",
+	"/usr/share/ap-manager/",
+
 )
 
 INSTALLED_APPS = (
@@ -87,6 +89,6 @@ INSTALLED_APPS = (
 
 
 
-WATCH_DIR='/var/django/cscs/watch/'
+WATCH_DIR='/var/apmanager/watch/'
 COMMAND_WATCH_DIR=      WATCH_DIR + 'commands/'
 AP_REFRESH_WATCH_DIR=   WATCH_DIR + 'refresh_ap/'
