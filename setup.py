@@ -68,7 +68,7 @@ setup(#cmdclass={'build_py': VsmanageBuildPy},
       license="Proprietary",
       platforms=["Linux"],
       long_description="""Django Application To manage a group of Wifi Hotspots""",
-      scripts=['sbin/apmanager-cmdexecutor'],
+      scripts=['bin/apmanager-cmdexecutor'],
       packages=[
 		"apmanager",
         "apmanager.accesspoints",
