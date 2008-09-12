@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import os, sys
-os.environ["DJANGO_SETTINGS_MODULE"] = "settings"
+os.environ["DJANGO_SETTINGS_MODULE"] = "cscs.settings"
 import settings
 
 from pyinotify import WatchManager, Notifier, ProcessEvent, EventsCodes
