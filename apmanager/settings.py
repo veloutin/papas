@@ -35,7 +35,7 @@ SITE_ID = 1
 USE_I18N = True
 
 
-UPLOAD_ROOT = '/var/django/apmanager/uploads/'
+UPLOAD_ROOT = '/var/lib/apmanager/uploads/'
 
 #Site prefix to add to relative urls, such as apmanager/ for a site on example.com/apmanager/
 # Leave blank if installed on web root
@@ -92,6 +92,6 @@ INSTALLED_APPS = (
 
 
 
-WATCH_DIR='/var/django/apmanager/watch/'
+WATCH_DIR='/var/lib/apmanager/watch/'
 COMMAND_WATCH_DIR=      WATCH_DIR + 'commands/'
 AP_REFRESH_WATCH_DIR=   WATCH_DIR + 'refresh_ap/'
