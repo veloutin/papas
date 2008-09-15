@@ -85,7 +85,7 @@ class CommandParameter ( models.Model ):
 
 
 class CommandExec ( models.Model ):
-    SCP_COMMAND="scp -Bq %(filename)s StrictHostKeyChecking=no %(ip_addr)s:%(path)s"
+    SCP_COMMAND="scp -Bq StrictHostKeyChecking=no %(filename)s %(ip_addr)s:%(path)s"
     EXEC_COMMAND="ssh -o BatchMode=yes -o StrictHostKeyChecking=no %(ip_addr)s . /tmp/_remote_script_wrapper.sh "
     command = models.ForeignKey(Command)
     accesspoint = models.ForeignKey(AccessPoint)
