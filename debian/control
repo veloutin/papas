@@ -11,5 +11,7 @@ Architecture: any
 Depends: python-django (>= 0.96 ), python-django (<< 1.0), python-pyinotify (>= 0.7), python-pyinotify (<< 0.8),  ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
+Recommends: apache2, libapache2-mod-python
 Description: Django application to manage wifi hotspots
- Django application to manage wifi hotspots. Uses django to provide a nice admin interface, complemented with a lightweight public interface.
+ Django application to manage wifi hotspots. Uses django to provide a nice admin interface,
+ complemented with a lightweight public interface.

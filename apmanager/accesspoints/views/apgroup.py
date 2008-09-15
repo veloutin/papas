@@ -4,7 +4,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import LOGIN_URL
 
-login_required = user_passes_test(lambda u: u.is_authenticated(), (SITE_PREFIX_URL+LOGIN_URL).replace("//","/"))
+login_required = user_passes_test(lambda u: u.is_authenticated(), ("/"+SITE_PREFIX_URL+LOGIN_URL).replace("//","/"))
 
 @login_required
 def view_group_list(request):

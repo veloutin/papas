@@ -1,9 +1,8 @@
 from django.db import models
 
 # Import Command 
-from accesspoints.apcommands import *
 import commands
-from settings import DEBUG
+from apmanager.settings import DEBUG
 # Create your models here.
 
 
@@ -122,4 +121,9 @@ class APClient ( models.Model ):
         return "".join(["<td>%s</td>" % i for i in (
             '<a href="/accesspoints/%d/">%s</a>' % (int(self.connected_to.id),self.connected_to.name),
             self.ipv4Address,self.macAddress)])
+
+
+
+#Import other models
+from apmanager.accesspoints.apcommands import *
 

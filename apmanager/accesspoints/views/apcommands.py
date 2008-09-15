@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import LOGIN_URL
 from apmanager.settings import SITE_PREFIX_URL
 
-login_required = user_passes_test(lambda u: u.is_authenticated(), (SITE_PREFIX_URL+LOGIN_URL).replace("//","/"))
+login_required = user_passes_test(lambda u: u.is_authenticated(), ("/"+SITE_PREFIX_URL+LOGIN_URL).replace("//","/"))
 
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
