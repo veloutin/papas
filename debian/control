@@ -8,7 +8,7 @@ Standards-Version: 3.7.2
 
 Package: apmanager
 Architecture: any
-Depends: python-django (>= 0.96 ), python-django (<< 1.0), python-pyinotify (>= 0.7), python-pyinotify (<< 0.8),  ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
+Depends: python-django (>= 0.96 ), python-django (<< 1.0), python-pyinotify (>= 0.7), python-pyinotify (<< 0.8), python-mysqldb,  ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
 Recommends: apache2, libapache2-mod-python
