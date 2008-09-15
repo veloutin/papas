@@ -1,32 +1,36 @@
 from django.conf.urls.defaults import *
-from settings import DEBUG, MEDIA_ROOT
+from settings import DEBUG,SITE_PREFIX_URL
+
+def prefix(url,prefix):
+    if prefix:
+        return url.replace("^","^"+prefix)
+    return url
 
 urlpatterns = patterns('',
     # Example:
 
-    (r'^accounts/login/', 'django.contrib.auth.views.login' ),
-    (r'^accounts/logout/', 'django.contrib.auth.views.logout' ),
+    (prefix(r'^accounts/login/',SITE_PREFIX_URL),           'django.contrib.auth.views.login' ),
+    (prefix(r'^accounts/logout/',SITE_PREFIX_URL),          'django.contrib.auth.views.logout' ),
 
 
     
     # Access points
-      (r'^accesspoints/', include('apmanager.accesspoints.apurls')),
+      (prefix(r'^accesspoints/',SITE_PREFIX_URL),           include('apmanager.accesspoints.apurls')),
     # DSH Groups
-      (r'^groups/', include('apmanager.accesspoints.groupurls')),
+      (prefix(r'^groups/',SITE_PREFIX_URL),                 include('apmanager.accesspoints.groupurls')),
 
     # Commands
-      (r'^commands/', include('apmanager.accesspoints.cmdurls')),
+      (prefix(r'^commands/',SITE_PREFIX_URL),               include('apmanager.accesspoints.cmdurls')),
 
     # Uncomment this for admin:
-     (r'^admin/', include('django.contrib.admin.urls')),
+     (prefix(r'^admin/',SITE_PREFIX_URL),                   include('django.contrib.admin.urls')),
 
-    (r'^$', include('apmanager.accesspoints.apurls')),
+    (prefix(r'^$',SITE_PREFIX_URL),                         include('apmanager.accesspoints.apurls')),
 )
 # This is used to server static content (images and CSS) during development.
 # For production, Apache must be configured.
 if DEBUG:
     urlpatterns += patterns('',
-        #(r'^site-media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'templates/site-media/'}),
-        (r'^site-media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT}),
+        (prefix(r'^site-media/(?P<path>.*)$',SITE_PREFIX_URL), 'django.views.static.serve', {'document_root': 'templates/site-media/'}),
     )
 

@@ -1,4 +1,4 @@
-# Django settings for cscs project.
+# Django settings for apmanager project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -35,11 +35,13 @@ SITE_ID = 1
 USE_I18N = True
 
 
+UPLOAD_ROOT = '/var/django/apmanager/uploads/'
+
+SITE_PREFIX_URL='apmanager/'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = '/usr/share/ap-manager/site-media/'
-UPLOAD_ROOT = MEDIA_ROOT + 'uploads/'
+MEDIA_ROOT = ''
 
 # URL that handles the media served from MEDIA_ROOT.
 # Example: "http://media.lawrence.com"
@@ -74,8 +76,6 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     "templates",
-	"/usr/share/ap-manager/",
-
 )
 
 INSTALLED_APPS = (
@@ -89,6 +89,6 @@ INSTALLED_APPS = (
 
 
 
-WATCH_DIR='/var/lib/apmanager/watch/'
+WATCH_DIR='/var/django/apmanager/watch/'
 COMMAND_WATCH_DIR=      WATCH_DIR + 'commands/'
 AP_REFRESH_WATCH_DIR=   WATCH_DIR + 'refresh_ap/'

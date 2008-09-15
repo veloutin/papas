@@ -1,7 +1,7 @@
 from django.db import models
-from apmanager.accesspoints.models import AccessPoint, APGroup
+from accesspoints.models import AccessPoint, APGroup
 from datetime import datetime
-from apmanager import settings
+import settings
 from tempfile import mkstemp
 import commands
 import os,sys
