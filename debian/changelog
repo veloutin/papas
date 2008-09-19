@@ -1,6 +1,12 @@
+apmanager (1.0.2) hardy; urgency=low
+
+  * Make the daemon multithreaded for concurrent task execution
+
+ -- Vincent Vinet <vvinet@revolutionlinux.com>  Fri, 19 Sep 2008 11:30:51 -0400
+
 apmanager (1.0.1) hardy; urgency=low
 
-  [ Vincent vinet ]
+  [ Vincent vinet ] 
   * Fix default apache2 config
   * Fix init.d script
   * Fix SCP command used to run remote commands

@@ -7,6 +7,7 @@ from pyinotify import WatchManager, Notifier, ProcessEvent, EventsCodes
 from apmanager.accesspoints.apcommands import CommandExec
 from apmanager.accesspoints.models import AccessPoint
 from apmanager import utils
+from threading import Thread
 
 def Monitor(path):
     class PCreate(ProcessEvent):
@@ -43,10 +44,22 @@ def Monitor(path):
                 print e
             
         def process_IN_CREATE(self, event):
-            return self.dispatch_process('IN_CREATE',event)
+            pid = os.fork()
+            if not pid:
+                self.dispatch_process('IN_CREATE',event)
+                sys.exit(0)
+            t = Thread(target=os.waitpid,args=(pid,0))
+            t.start()
+            return 
 
         def process_IN_CLOSE(self,event):
-            return self.dispatch_process('IN_CLOSE',event)
+            pid = os.fork()
+            if not pid:
+                self.dispatch_process('IN_CLOSE',event)
+                sys.exit(0)
+            t = Thread(target=os.waitpid,args=(pid,0))
+            t.start()
+            return 
 
     wm = WatchManager()
     notifier = Notifier(wm, PCreate())
@@ -65,6 +78,6 @@ def Monitor(path):
 if __name__ == '__main__':
     if "--daemon" in sys.argv[1:]:
         utils.daemonize()
-
-	print "using default path, ", settings.WATCH_DIR
-	Monitor(settings.WATCH_DIR)
+    
+    print "using default path, ", settings.WATCH_DIR
+    Monitor(settings.WATCH_DIR)
