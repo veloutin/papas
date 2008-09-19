@@ -13,7 +13,7 @@
 <tr><th>MAC</th><td>{{ ap.macAddress }}</td></tr>
 <tr><th>Description</th><td>{{ ap.description }}</td></tr>
 </table>
-<a href='{% url apmanager.accesspoints.views.ap.view_ap_nagios_config ap.id %}'>Nagios Config</a>
+<a href='{% url apmanager.accesspoints.views.ap.view_ap_nagios_config ap.id %}'>Configuration Nagios</a>
 <br /><hr /><br />
 <h3>Clients</h3>
 <table>
@@ -26,7 +26,7 @@
 </table>
 <br />
     <form method="POST">
-        <input type="submit" value="Refresh!"/>
+        <input type="submit" value="Actualiser"/>
     </form>
 
 <br />

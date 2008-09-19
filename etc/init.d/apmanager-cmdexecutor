@@ -18,7 +18,7 @@
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 DESC="apmanager command execution service"
 NAME=apmanager-cmdexecutor
-DAEMON=/usr/sbin/$NAME
+DAEMON=/usr/bin/$NAME
 DAEMON_ARGS="--daemon"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME

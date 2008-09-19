@@ -11,11 +11,23 @@
 
 <form method="post">
 <table>
-{{ f }}
+		<tr><th><label for="ap_id">Point d'acc&egrave;s</label></th><td><select name="ap_id">
+		{% for ap in ap_list %}
+		<option value="{{ap.id}}" {% ifequal ap.id data.ap_id  %}selected="true"{% endifequal %}>{{ap.name}}</option>
+		{% endfor %}
+		</select></td></tr>
+<tr><th><label for="command_id">Commande</label></th><td><select name="command_id">
+		{% for cmd in cmd_list %}
+		<option value="{{cmd.id}}" {% ifequal cmd.id cmd.ap_id %}selected="true"{% endifequal %}>{{cmd.name}}</option>
+		{% endfor %}
+		</select></td></tr>
 </table>
 <input type="submit" />
 </form>
 
+{% include "accesspoints/ap/links.html" %}
+{% include "accesspoints/groups/links.html" %}
+{% include "accesspoints/commands/links.html" %}
 {% endblock %}
 {% block body_public %}{% endblock %}
 

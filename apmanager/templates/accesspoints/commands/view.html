@@ -8,34 +8,34 @@
 {% block body %}
 <h2>{{ cmd.command.name }}</h2>
 <table>
-<tr><th>Parameter</th><th>Value</th></tr>
-<tr><td>Target:</td><td>{{ cmd.accesspoint.name }}</td></tr>
+<tr><th>Param&egrave;tre</th><th>Valeur</th></tr>
+<tr><td>Cible:</td><td>{{ cmd.accesspoint.name }}</td></tr>
 {% for up in cmd.usedparameter_set.iterator %}
     <tr><td>{{ up.parameter.name }}:</td><td>{{ up.value }}</td></tr>
 {% endfor %}
 </table>
-    <p> Created at : {{ cmd.created }}</p>
+    <p> Date de cr&eacute;ation&nbsp;: {{ cmd.created }}</p>
 {% if cmd.started %}
-    <p> Started at: {{ cmd.started }}</p>
+    <p> Lanc&eacute;&nbsp;: {{ cmd.started }}</p>
     {% if cmd.ended %}
         <ul>
-            <li><b>Result:&nbsp;</b>{{ cmd.result }}</li>
-            <li><b>Ended:&nbsp;</b>{{ cmd.ended }}</li>
+            <li><b>Resultat&nbsp;:&nbsp;</b>{{ cmd.result }}</li>
+            <li><b>Termin&eacute;&nbsp;:&nbsp;</b>{{ cmd.ended }}</li>
         </ul>
-        <p> Output: </p>
+        <p> Sortie&nbsp;: </p>
         <pre>{{ cmd.output }}</pre>
         <form method="POST">
-            <input type="submit" value="Restart!"/>
+            <input type="submit" value="Relancer!"/>
         </form>
     {% else %}
     <form method="GET">
-        <input type="submit" value="Refresh!"/>
+        <input type="submit" value="Actualiser!"/>
     </form>
     {% endif %}
     
 {% else %}
     <form method="POST">
-        <input type="submit" value="Start!"/>
+        <input type="submit" value="Lancer!"/>
     </form>
 {% endif %}
 {% include "accesspoints/ap/links.html" %}

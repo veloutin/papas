@@ -9,40 +9,40 @@ login_required = user_passes_test(lambda u: u.is_authenticated(), ("/"+SITE_PREF
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
-import django.newforms as forms #To be changed in a next version
-
-class CommandChoiceForm(forms.Form):
-    ap_id = forms.ChoiceField(choices=[(ap.id, ap.name) for ap in AccessPoint.objects.all()],
-    )
-    command_id = forms.ChoiceField(choices=[(c.id,c.name) for c in Command.objects.all()],
-    )
-    
-class CommandInstanceForm(forms.Form):
-    pass
-
 
 @login_required
 def view_home(request):
     """
-        Welcome page for command management
+    Welcome page for command management
     """
-    return render_to_response('accesspoints/commands/home.html', {})
+    if request.GET.has_key("all"):
+        cexec_list = CommandExec.objects.order_by('-created')
+        caption = "Liste de toutes les ex&eacute;cutions de commandes"
+    else:
+        cexec_list = CommandExec.objects.order_by('-created')[:20]
+        caption = "Liste d'ex&eacute;cutions r&eacute;centes (<a href='?all'>Toutes</a>)"
+    return render_to_response('accesspoints/list.html',
+        {'object_list':cexec_list,
+         'caption':caption,
+         'table_header':CommandExec.table_view_header(),
+         'table_footer':CommandExec.table_view_footer(),})
 
 @login_required
 def create_new_command(request):
     """
         Allows the creation of a new command
     """
+    ap_id=request.POST.get('ap_id',None)
+    cmd_id=request.POST.get('command_id',None)
     if request.method == "POST":
         #On post, Create form with request data, then validate
-        f = CommandChoiceForm(request.POST)
-        if f.is_valid():
-            #
-            cmd = get_object_or_404(Command,pk=f.clean_data['command_id'])
-            ap = get_object_or_404(AccessPoint,pk=f.clean_data['ap_id'])
+        if ap_id and cmd_id:
+            #Attempt to get both objects
+            cmd = get_object_or_404(Command,pk=cmd_id)
+            ap = get_object_or_404(AccessPoint,pk=ap_id)
             if cmd.has_params():
                 return HttpResponseRedirect(
-                    reverse(edit_new_command,kwargs=f.clean_data)
+                        reverse(edit_new_command,kwargs={'ap_id':ap_id,'command_id':cmd_id})
                 )
             else:
                 instance = cmd.create_instance(ap)
@@ -51,12 +51,14 @@ def create_new_command(request):
                 )
         else:
             #Redisplay invalid form with data and errors
-            f = CommandChoiceForm(request.POST)
-            return render_to_response('accesspoints/commands/create.html',{'f':f})
+            return render_to_response('accesspoints/commands/create.html',{'data':request.POST,
+                        'cmd_list':Command.objects.all(),
+                        'ap_list':AccessPoint.objects.all()})
 
     #Otherwise, Display blank form
-    f = CommandChoiceForm()
-    return render_to_response('accesspoints/commands/create.html',{'f':f})
+    return render_to_response('accesspoints/commands/create.html',{'data':{},
+                        'cmd_list':Command.objects.all(),
+                        'ap_list':AccessPoint.objects.all()})
 
 @login_required
 def edit_new_command(request, ap_id, command_id):

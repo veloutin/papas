@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block meta %}
+<meta http-equiv="Refresh" content="{{time}}; url={{url}}">
+{% endblock %}
+
+
+{% block body %}
+
+<br>
+
+<span align="center">Vous serez redirig&eacute;s dans {{time}} secondes vers <a href="{{url}}">ici</a></span>
+
+<br /><br /><hr />
+
+{% endblock %}
+

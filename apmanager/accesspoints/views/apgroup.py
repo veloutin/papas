@@ -9,12 +9,12 @@ login_required = user_passes_test(lambda u: u.is_authenticated(), ("/"+SITE_PREF
 @login_required
 def view_group_list(request):
     """
-        Displays the list of all access points 
+        Displays the list of all groups 
     """
     group_list=APGroup.objects.all().order_by('name')
     return render_to_response('accesspoints/list.html',
         {'object_list':group_list,
-         'caption':'List of AP Groups',
+         'caption':"Liste des groupes",
          'table_header':APGroup.table_view_header(),
          'table_footer':APGroup.table_view_footer(),})
 

@@ -7,6 +7,8 @@ from apmanager.settings import SITE_PREFIX_URL
 login_required = user_passes_test(lambda u: u.is_authenticated(), ("/"+SITE_PREFIX_URL+LOGIN_URL).replace("//","/"))
 
 from django.http import HttpResponse
+from django.core.urlresolvers import reverse
+
 @login_required
 def view_ap_list(request):
     """
@@ -15,7 +17,7 @@ def view_ap_list(request):
     ap_list=AccessPoint.objects.all().order_by('name')
     return render_to_response('accesspoints/list.html',
         {'object_list':ap_list,
-         'caption':'List of Access Points',
+         'caption':"Liste des points d'acc&egrave;s",
          'table_header':AccessPoint.table_view_header(),
          'table_footer':AccessPoint.table_view_footer(),})
 
@@ -27,10 +29,13 @@ def view_ap(request, ap_id):
     """
     ap = get_object_or_404(AccessPoint, pk=ap_id)
     if request.method=='POST':
-        ap.refresh_clients()
-
+        ap.schedule_refresh()
+        return render_to_response('redirect.html',
+            {'url':reverse(view_ap,kwargs={'ap_id':ap.id}),
+             'time':10
+            })
     return render_to_response('accesspoints/ap.html',
-        {'ap':ap,})
+        {'ap':ap},)
 
 def view_ap_nagios_config(request, ap_id):
     """
@@ -48,11 +53,19 @@ def view_client_list(request):
         Lists all connected clients
     """
     client_list=APClient.objects.all().order_by('connected_to')
+    if request.method=='POST':
+        for ap in AccessPoint.objects.all():
+            ap.schedule_refresh()
+        return render_to_response('redirect.html',
+            {'url':reverse(view_client_list),
+             'time':30
+            })
     return render_to_response('accesspoints/list.html',
         {'object_list':client_list,
          'caption':'List of Clients',
          'table_header':APClient.table_view_header(),
-         'table_footer':APClient.table_view_footer(),})
+         'table_footer':APClient.table_view_footer(),
+         'add_refresh_button':True,})
     
 @login_required
 def create_ap(request):

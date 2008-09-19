@@ -85,7 +85,7 @@ class CommandParameter ( models.Model ):
 
 
 class CommandExec ( models.Model ):
-    SCP_COMMAND="scp -Bq StrictHostKeyChecking=no %(filename)s %(ip_addr)s:%(path)s"
+    SCP_COMMAND="scp -Bq -o StrictHostKeyChecking=no %(filename)s %(ip_addr)s:%(path)s"
     EXEC_COMMAND="ssh -o BatchMode=yes -o StrictHostKeyChecking=no %(ip_addr)s . /tmp/_remote_script_wrapper.sh "
     command = models.ForeignKey(Command)
     accesspoint = models.ForeignKey(AccessPoint)
@@ -106,7 +106,7 @@ class CommandExec ( models.Model ):
     table_view_footer = staticmethod(table_view_footer)
     def to_table_row(self):
         return "".join(["<td>%s</td>" % i for i in (
-            '<a href="/commands/%d/">%s</a>' % (int(self.command.id),self.command.name),
+            '<a href="/commands/view/%d/">%s</a>' % (int(self.id),self.command.name),
             '<a href="/accesspoints/%d/">%s</a>' % (int(self.accesspoint.id),self.accesspoint.name),
             self.result == 0,self.created, self.started, self.ended,
         )])

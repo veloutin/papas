@@ -1,3 +1,13 @@
+apmanager (1.0.1) hardy; urgency=low
+
+  [ Vincent vinet ]
+  * Fix default apache2 config
+  * Fix init.d script
+  * Fix SCP command used to run remote commands
+  * Add Refreshing pages, and fix AP refresh fail
+
+ -- Vincent Vinet <vvinet@revolutionlinux.com>  Thu, 18 Sep 2008 16:22:11 -0400
+
 apmanager (1.0.0) hardy; urgency=low
 
   *  Release Initial

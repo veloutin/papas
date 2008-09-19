@@ -16,6 +16,11 @@
     </tr>
 {% endfor %}</tbody>{% endif %}
 </table>
+{% if add_refresh_button %}
+    <br><form method="POST">
+        <input type="submit" value="Actualiser"/>
+    </form>
+{% endif %}
 <br /><hr /><br />
 <span>Liens utiles</span><br />
 {% include "accesspoints/ap/links.html" %}
