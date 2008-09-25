@@ -2,7 +2,8 @@ from apmanager.accesspoints.models import *
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import LOGIN_URL
-from apmanager.settings import SITE_PREFIX_URL
+from django.conf import settings 
+SITE_PREFIX_URL = settings.SITE_PREFIX_URL
 
 login_required = user_passes_test(lambda u: u.is_authenticated(), ("/"+SITE_PREFIX_URL+LOGIN_URL).replace("//","/"))
 

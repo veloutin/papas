@@ -13,7 +13,7 @@ def get_report_param_choices():
 
 class MultiReport(models.Model):
     name = models.CharField(maxlength = 255)
-    report_parameter = models.ForeignKey(ReportParameter,choices=get_report_param_choices())
+    report_parameter = models.ForeignKey(ReportParameter)
     param_values = models.TextField(help_text="A SQL Query to run on the report's database for which the first column will be used as a series of parameters for the multireport")
 
     def __str__(self):

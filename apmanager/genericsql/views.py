@@ -1,11 +1,17 @@
 # -*- coding: UTF-8 -*-
 from django.shortcuts import render_to_response, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import get_mod_func
 from django.db.models import Q
 from apmanager.genericsql.models import Report, ColumnName, ReportFooter
 from MySQLdb import ProgrammingError
 import re
+
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth import LOGIN_URL
+from django.conf import settings 
+SITE_PREFIX_URL = settings.SITE_PREFIX_URL
+
+login_required = user_passes_test(lambda u: u.is_authenticated(), ("/"+SITE_PREFIX_URL+LOGIN_URL).replace("//","/"))
 
 class GenericDbProxy:
     def __init__(self, data_source):

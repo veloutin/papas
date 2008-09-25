@@ -1,11 +1,18 @@
 # -*- coding: UTF-8 -*-
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.loader import render_to_string
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
 from apmanager.multireport.models import MultiReport
 from apmanager.genericsql.models import Report, ColumnName, ReportFooter
 from apmanager.genericsql.views import *
 from apmanager.genericsql.views import _convert_data,_get_footer_or_none,_do_sort,_get_column_iter
+
+from django.contrib.auth import LOGIN_URL
+from django.conf import settings 
+SITE_PREFIX_URL = settings.SITE_PREFIX_URL
+
+login_required = user_passes_test(lambda u: u.is_authenticated(), ("/"+SITE_PREFIX_URL+LOGIN_URL).replace("//","/"))
+
 
 @login_required
 def display_multireport(request,multireport_id):

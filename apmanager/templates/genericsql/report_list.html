@@ -17,5 +17,7 @@
     {% endfor %}
     </ul>
 {% endif %}
+{% endblock %}
+{% block admin %}
 <a href="{% url django.contrib.admin.views.main.index %}genericsql/report/">Gestion des rapports</a>
 {% endblock %}
