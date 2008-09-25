@@ -6,11 +6,14 @@ from tempfile import mkstemp
 import commands
 import os,sys
 
+from django.core import validators
+
 def sleep_and_exit( exit=0, len='5s' ):
     os.system('sleep '+ len)
     return HttpResponseNotModified()
     sys.exit(exit)
 
+validate_file_or_text = validators.RequiredIfOtherFieldNotGiven("script","Vous devez fournir soit un fichier ou du texte comme script")
 
 class Command ( models.Model ):
     """
@@ -18,13 +21,20 @@ class Command ( models.Model ):
     """
     name = models.CharField( maxlength=255, core=True,
         help_text="Display Name", unique=True )
-    script = models.FileField ( upload_to=settings.UPLOAD_ROOT, core=False )
+    script = models.FileField ( upload_to=settings.UPLOAD_ROOT, core=False, blank=True )
+    script_text = models.TextField( blank=True, validator_list=(validate_file_or_text,))
 
+    def save(self):
+        if self.script_text:
+           self.script = ""
+        models.Model.save(self)
+
+   
     def __str__(self):
         return "Script: %s" % self.name
 
     def __repr__(self):
-        return "Script: %s [%s]" % (self.name, self.script)
+        return "Script: %s [%s]" % (self.name, self.script or self.script_text[0:30])
 
     class Admin:
         pass
@@ -127,7 +137,12 @@ class CommandExec ( models.Model ):
         fdo = os.fdopen(fd,'w')
         fdo.write("#!/bin/sh\n")
         fdo.writelines([p.to_bash() for p in self.usedparameter_set.all()])
-        fdo.write(". /tmp/_remote_script.sh \n")
+        fdo.write("\n")
+        if not self.command.script:
+            fdo.write(self.command.script_text)
+        else:
+            fdo.write(". /tmp/_remote_script.sh \n")
+
         fdo.flush()
         fdo.close()
 
@@ -146,20 +161,21 @@ class CommandExec ( models.Model ):
             self.save()
             return
  
-        #scp script to ap
-        scp = self.SCP_COMMAND % {
-            "filename":self.command.script,
-            "ip_addr":self.accesspoint.ipv4Address,
-            "path":"/tmp/_remote_script.sh",
-        }
-        (ret, output) = commands.getstatusoutput(scp)
+        if self.command.script:
+            #scp script to ap
+            scp = self.SCP_COMMAND % {
+                "filename":self.command.script,
+                "ip_addr":self.accesspoint.ipv4Address,
+                "path":"/tmp/_remote_script.sh",
+            }
+            (ret, output) = commands.getstatusoutput(scp)
 
-        if ret!= 0:
-            self.output = output or "SCP Failed"
-            self.ended = datetime.now()
-            self.result = ret
-            self.save()
-            return
+            if ret!= 0:
+                self.output = output or "SCP Failed"
+                self.ended = datetime.now()
+                self.result = ret
+                self.save()
+                return
       
         #exec script on ap 
         exec_cmd = self.EXEC_COMMAND % {
