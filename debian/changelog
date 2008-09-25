@@ -2,6 +2,7 @@ apmanager (1.0.3) hardy; urgency=low
 
   * Include a reporting interface
   * Add Nagios Export All
+  * Allow script text instead of only file
   * Fix multireport syncdb bug
 
  -- Vincent Vinet <vvinet@revolutionlinux.com>  Thu, 25 Sep 2008 10:21:32 -0400
