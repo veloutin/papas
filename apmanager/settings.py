@@ -88,6 +88,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'apmanager.accesspoints',
+	'apmanager.genericsql',
+	'apmanager.multireport',
 )
 
 

@@ -1,3 +1,9 @@
+apmanager (1.0.3) hardy; urgency=low
+
+  * Include a reporting interface
+
+ -- Vincent Vinet <vvinet@revolutionlinux.com>  Thu, 25 Sep 2008 10:21:32 -0400
+
 apmanager (1.0.2) hardy; urgency=low
 
   * Make the daemon multithreaded for concurrent task execution

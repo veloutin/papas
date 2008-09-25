@@ -1,0 +1,24 @@
+<!--
+{{ report.sql }}
+-->
+{% if result %}
+<tr>
+{% for column in column_list %}
+    <th>{{ column }}</th>
+{% endfor %}
+</tr>
+{% for row in result %}
+<tr class="{% cycle odd,even %}">
+    {% for data in row %}
+    <td>{{ data }}</td>
+    {% endfor %}
+</tr>
+{% endfor %}
+{% if report_footer %}
+<tr>
+    {% for foot in report_footer %}<td class="ticket">{{foot}}</td>{% endfor %}
+</tr>
+{% endif %}
+{% else %}
+<tr><td>Aucun r&eacute;sultat &agrave; afficher.</td></tr>
+{% endif %}

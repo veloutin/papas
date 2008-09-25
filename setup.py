@@ -59,8 +59,8 @@ append_to_data_files(data_files_list, re.compile(r".*"), 'etc', '/etc')
 
 
 setup(#cmdclass={'build_py': VsmanageBuildPy},
-      name="ap-manager",
-      version="0.0.1",
+      name="apmanager",
+      version="1.0.3",
       description="simple django app to manage wifi hotspots",
       author="Revolution Linux",
       author_email="info@revolutionlinux.com",
@@ -73,6 +73,8 @@ setup(#cmdclass={'build_py': VsmanageBuildPy},
 		"apmanager",
         "apmanager.accesspoints",
         "apmanager.accesspoints.views",
+		"apmanager.genericsql",
+		"apmanager.multireport",
 	],
       #package_data=
       data_files = data_files_list,

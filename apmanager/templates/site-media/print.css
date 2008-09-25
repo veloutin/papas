@@ -1,0 +1,9 @@
+@page {
+    size :8.5in 11in;
+    margin: 0,7in 0,7in;
+}
+body,a,p,.h,td,tr { font-family: arial, sans-serif; font-size:10pt; }
+table {border-spacing: 3px; border-collapse: collapse ;page-break-after:always}
+th {background-color:rgb(95, 92, 75); color:FFFFFF; padding:3px;}
+.noprint {display: none}
+

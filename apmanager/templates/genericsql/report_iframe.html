@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block bodytags %}
+{% if allow_sort  %}
+    onload='javascript:initSort("refreshtable","sortdiv");{% if panel %} initPanel("refreshtable","paneldiv",options);{% endif %}'
+{% else %}
+    {% if panel %}
+    onload='javascript:initPanel("refreshtable","paneldiv",options);'
+    {% endif %}
+{% endif %}
+{% endblock %}
+
+{% block head %}
+    {% if panel or allow_sort %}
+    <script type="text/javascript" src = "/site-media/jsutils.js"></script>
+    {% endif %}
+    
+    {% if allow_sort %}
+    <script type="text/javascript" src = "/site-media/TableSort.js"></script>
+    {% endif %}
+    
+    {% if panel %}
+    <script type="text/javascript" src = "/site-media/Panel.js"></script>
+    <script type="text/javascript">var options = {{panel}};</script>
+    {% endif %}
+{% endblock %}
+
+{% block feuillestyle %}
+    <link rel="StyleSheet" href="/site-media/rapportsrt_iframe.css" type="text/css" media="screen">
+{% endblock %}
+
+{% block menu %}
+    {% if panel %}
+    <div id='paneldiv' class="displaynone"></div>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+{% if panel %}<a href="#" onclick="panel.toggle(); return false;">Avanc&eacute;</a>&nbsp;{% endif %}
+{% if allow_sort %}<div id="sortdiv" class=" sortbar"></div>{% endif %}
+{% include "genericsql/report_data.inc.html" %}
+{% endblock %}
+
+{% block body_public %}{% endblock %}

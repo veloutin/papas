@@ -1,0 +1,23 @@
+@page {
+    size :8.5in 11in;
+    margin: 0,7in 0,7in;
+}
+body,a,p,.h,td,tr { font-family: arial, sans-serif; font-size:10pt; }
+table {border-spacing: 3px; border-collapse: collapse ;}
+
+th {padding:3px;}
+/* td {padding:3px;} */
+/* td.ticket {background-color:rgb(230, 230, 230); padding:3px;} */
+/* tr {page-break-inside: auto;}  */
+/* tr.odd {background-color:rgb(221, 221, 221);} */
+/* tr.odd:hover {background-color:rgb(106, 106, 106);}  */
+/* tr.even {background-color:rgb(106, 106, 106);} */
+/* tr.even {background-color:rgb(221, 221, 221);} */
+/* tr.even:hover {background-color:rgb(221, 221, 221) ;} */
+
+CAPTION {font-size:14pt; font-weight:bold; caption-side:top; text-align:left; margin-bottom:0.7em;}
+
+a {color:black; text-decoration:none; }
+a:visited {color:black; text-decoration:none;}
+a.odd:hover {color:rgb(106, 106, 106);}
+a.even:hover {color:rgb(221, 221, 221);}

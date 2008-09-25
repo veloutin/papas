@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block bodytags %}
+{% if printable %}
+  onload="window.print();"
+{% else %}
+    {% if allow_sort  %}
+        onload='initSort("refreshtable","sortdiv");{% if panel %} initPanel("refreshtable","paneldiv",options);{% endif %}'
+    {% else %}
+        {% if panel %}
+        onload='initPanel("refreshtable","paneldiv",options);'
+        {% endif %}
+    {% endif %}
+{% endif %}
+{% endblock %}
+
+{% block head %}
+    {% if panel or allow_sort %}
+    <script type="text/javascript" src = "/site-media/jsutils.js"></script>
+    {% endif %}
+    
+    {% if allow_sort %}
+    <script type="text/javascript" src = "/site-media/TableSort.js"></script>
+    {% endif %}
+    
+    {% if panel %}
+    <script type="text/javascript" src = "/site-media/Panel.js"></script>
+    <script type="text/javascript">var options = {{panel}};</script>
+    {% endif %}
+{% endblock %}
+{% block feuillestyle %}
+{% if printable %}
+    <link rel="StyleSheet" href="/site-media/rapportsrt_toprint.css" type="text/css" media="screen">
+    <link rel="StyleSheet" href="/site-media/print.css" type="text/css" media="print">    
+{% else %}
+    <link rel="StyleSheet" href="/site-media/rapportsrt.css" type="text/css" media="screen">
+{% endif %}
+{% endblock %}
+{% block menu %}
+    {% if panel %}
+    <div id='paneldiv' class="displaynone"></div>
+    {% endif %}
+{% endblock %}
+{% block body %}
+<h2>{{ report.title }}</h2>
+{% if printable %}
+<p>Imprim&eacute; le {% now "Y-m-d \à H\hi" %}.</p>
+{% else %}
+    <p>
+    {% if allow_sort or panel %}
+    <a href="?imprimer" onclick="window.open(addAllParameters(document.location.href.addParameter('imprimer','',true))); return false;">Imprimer</a>&nbsp;<a href="?csv" onclick="window.open(addAllParameters(document.location.href.addParameter('csv','',true))); return false;" >Exporter en .csv</a>
+    {% else %}
+    <p><a href="?imprimer" onclick="window.open('?imprimer'); return false;">Imprimer</a>&nbsp;<a href="?csv" >Exporter en .csv</a>
+    {% endif %}
+    {% if panel %}&nbsp;<a href="#" onclick="panel.toggle(); return false;">Avanc&eacute;</a>{% endif %}
+    </p>
+{% endif %}
+{% if allow_sort %}<div id="sortdiv" class=" sortbar"></div>{% endif %}
+{% include "genericsql/report_data.inc.html" %}
+{% endblock %}
+{% block admin %}
+{% if not printable %}
+{% if report.owner %}
+<p>Pour toutes questions sur ce rapport, consultez {{ report.owner }}.</p>
+{% endif %}
+<p><a href="{% url django.contrib.admin.views.main.index %}genericsql/report/{{ report.id }}/">Modifier ce rapport</a></p>
+{% endif %}
+{% endblock %}

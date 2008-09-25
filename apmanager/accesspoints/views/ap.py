@@ -39,12 +39,19 @@ def view_ap(request, ap_id):
 
 def view_ap_nagios_config(request, ap_id):
     """
-        Attempts to display the access point with the id ap_id
+       Display the access point with the id ap_id's nagios config
     """
     ap = get_object_or_404(AccessPoint, pk=ap_id)
     
-    return HttpResponse("%(name)s;%(ip)s;;ap;" % {'name':ap.name,'ip':ap.ipv4Address}, mimetype="text/plain")
+    return HttpResponse("%(name)s;%(ip)s;;ap;\n" % {'name':ap.name,'ip':ap.ipv4Address}, mimetype="text/plain")
 
+def view_nagios_config(request):
+    """
+        Display the nagios config for all access points
+    """
+    return HttpResponse("".join(
+                    ["%(name)s;%(ip)s;;ap;\n" % {'name':ap.name,'ip':ap.ipv4Address} for ap in AccessPoint.objects.all() ]
+                ),mimetype="text/plain")
 
 
 @login_required

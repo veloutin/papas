@@ -1,9 +1,13 @@
 from django.conf.urls.defaults import *
-from settings import DEBUG,SITE_PREFIX_URL
+from django.conf import settings 
+
+DEBUG = settings.DEBUG
+SITE_PREFIX_URL = settings.SITE_PREFIX_URL
 
 def prefix(url,prefix):
-    if prefix:
-        return url.replace("^","^"+prefix)
+    if prefix and len(url)>0:
+        s = url[0]    
+        return url.replace(s,s+prefix)
     return url
 
 urlpatterns = patterns('',
@@ -15,12 +19,18 @@ urlpatterns = patterns('',
 
     
     # Access points
-      (prefix(r'^accesspoints/',SITE_PREFIX_URL),           include('apmanager.accesspoints.apurls')),
+    (prefix(r'^accesspoints/',SITE_PREFIX_URL),               include('apmanager.accesspoints.apurls')),
     # DSH Groups
-      (prefix(r'^groups/',SITE_PREFIX_URL),                 include('apmanager.accesspoints.groupurls')),
+    (prefix(r'^groups/',SITE_PREFIX_URL),                     include('apmanager.accesspoints.groupurls')),
 
     # Commands
-      (prefix(r'^commands/',SITE_PREFIX_URL),               include('apmanager.accesspoints.cmdurls')),
+    (prefix(r'^commands/',SITE_PREFIX_URL),                   include('apmanager.accesspoints.cmdurls')),
+
+    # Application de rapports generiques
+    (prefix(r'^rapports/',SITE_PREFIX_URL),                 include('apmanager.genericsql.urls')),
+   
+    # Multireports
+    (prefix(r'^multireport/',SITE_PREFIX_URL),                 include('apmanager.multireport.urls')),
 
     # Uncomment this for admin:
      (prefix(r'^admin/',SITE_PREFIX_URL),                   include('django.contrib.admin.urls')),

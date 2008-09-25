@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block bodytags %}
+{% if printable %}
+  onload="window.print();"
+{% endif %}
+{% endblock %}
+
+{% block head %}
+    <script type="text/javascript" src = "/site-media/jsutils.js"></script>
+{% endblock %}
+{% block feuillestyle %}
+{% if printable %}
+    <link rel="StyleSheet" href="/site-media/rapportsrt_toprint.css" type="text/css" media="screen">
+    <link rel="StyleSheet" href="/site-media/print.css" type="text/css" media="print">    
+{% else %}
+    <link rel="StyleSheet" href="/site-media/rapportsrt.css" type="text/css" media="screen">
+{% endif %}
+{% endblock %}
+{% block menu %}
+{% endblock %}
+{% block body %}
+{% for sreport in report_list %}
+<h2 {% if not forloop.first %}{% endif %}>{{ sreport.title }}</h2>
+{% if printable %}
+<p>Imprim&eacute; le {% now "Y-m-d \à H\hi" %}.</p>
+{% else %}
+<p><a href="?imprimer" onclick="window.open(addAllParameters(document.location.href.addParameter('imprimer','',true))); return false;">Imprimer</a></p>
+{% endif %}
+{{ sreport.html }}
+
+{% endfor %}
+
+{% if not printable %}
+{% if report.owner %}
+<p>Pour toutes questions sur ce rapport, consultez {{ report.owner }}.</p>
+{% endif %}
+<p><a href="{% url django.contrib.admin.views.main.index %}genericsql/report/{{ report.id }}/">Modifier ce rapport</a></p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,4 @@
+{% for row in result %}{% for data in row %}{{text_delimiter}}{{ data }}{{text_delimiter}}{% if not forloop.last %}{{column_separator}}{%endif%}{% endfor %}{% if not forloop.last %}{{row_separator}}{%endif%}
+{% endfor %}{% comment %}
+
+The row separator seems superfluous... to be verified!{% endcomment %}

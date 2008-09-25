@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block body %}
+{% if object_list %}
+    Rapports disponibles :
+    <ul>
+    {% for report in object_list %}
+        <li><a href="{{ report.get_absolute_url }}">{{ report.title }}</a>
+        {% if report.get_multireports and report.get_multireports|length %}
+        <ul>
+            {% for mr in report.get_multireports %}
+                <li><a href="{{ mr.get_absolute_url }}">{{ mr.name }}</a></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% endif %}
+<a href="{% url django.contrib.admin.views.main.index %}genericsql/report/">Gestion des rapports</a>
+{% endblock %}
