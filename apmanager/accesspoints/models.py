@@ -113,7 +113,7 @@ class APClient ( models.Model ):
         
 
     def table_view_header():
-        return "".join(["<th>%s</th>" % i for i in ('AP','MAC','IP')])
+        return "".join(["<th>%s</th>" % i for i in ('AP','IP','MAC')])
     table_view_header = staticmethod(table_view_header)
     def table_view_footer():
         return None
