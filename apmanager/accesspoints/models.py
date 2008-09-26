@@ -28,7 +28,7 @@ class AccessPoint ( models.Model ):
     def __repr__(self):
         return "AP: %s ( %s -- %s )" % (self.name, self.ipv4Address, self.macAddress)
     def __str__(self):
-		return "AP: %s"
+		return "AP: %s" % (self.name)
 
     def table_view_header():
         return "".join(["<th>%s</th>" % i for i in ('Nom','IP','MAC','Description')])
