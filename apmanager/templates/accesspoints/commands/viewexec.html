@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% comment %}{% block feuillestyle %}
+{% endblock %}{% endcomment %}
+{% block head %} {% endblock %}
+{% block bodytags %}{% endblock %}
+{% block menu %}
+{% endblock %}
+{% block body %}
+<h2><a href="{% url apmanager.accesspoints.views.apcommands.view_command cmd.commandexec.id %}">{{ cmd.commandexec.command.name }}</a></h2>
+<table>
+<tr><th>Param&egrave;tre</th><th>Valeur</th></tr>
+<tr><td>Cible:</td><td>{{ cmd.accesspoint.name }}</td></tr>
+{% for up in cmd.commandexec.command.usedparameter_set.iterator %}
+    <tr><td>{{ up.parameter.name }}:</td><td>{{ up.value }}</td></tr>
+{% endfor %}
+</table>
+    <p> Date de cr&eacute;ation&nbsp;: {{ cmd.created }}</p>
+{% if cmd.started %}
+    <p> Lanc&eacute;&nbsp;: {{ cmd.started }}</p>
+    {% if cmd.ended %}
+        <ul>
+            <li><b>Resultat&nbsp;:&nbsp;</b>{{ cmd.result }}</li>
+            <li><b>Termin&eacute;&nbsp;:&nbsp;</b>{{ cmd.ended }}</li>
+        </ul>
+        <p> Sortie&nbsp;: </p>
+        <pre>{{ cmd.output }}</pre>
+        <form method="POST">
+            <input type="submit" value="Relancer!"/>
+        </form>
+    {% else %}
+    <form method="GET">
+        <input type="submit" value="Actualiser!"/>
+    </form>
+    {% endif %}
+    
+{% else %}
+    <form method="POST">
+        <input type="submit" value="Lancer!"/>
+    </form>
+{% endif %}
+{% include "accesspoints/ap/links.html" %}
+{% include "accesspoints/groups/links.html" %}
+{% include "accesspoints/commands/links.html" %}
+{% endblock body %}
+{% block body_public %}{% endblock %}

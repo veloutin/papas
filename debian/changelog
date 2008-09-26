@@ -1,3 +1,9 @@
+apmanager (1.0.4) hardy; urgency=low
+
+  * Execution de commandes sur des groupes
+
+ -- Vincent Vinet <vvinet@revolutionlinux.com>  Fri, 26 Sep 2008 15:00:17 -0400
+
 apmanager (1.0.3) hardy; urgency=low
 
   * Include a reporting interface

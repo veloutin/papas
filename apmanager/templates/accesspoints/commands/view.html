@@ -9,35 +9,26 @@
 <h2>{{ cmd.command.name }}</h2>
 <table>
 <tr><th>Param&egrave;tre</th><th>Valeur</th></tr>
-<tr><td>Cible:</td><td>{{ cmd.accesspoint.name }}</td></tr>
+<tr><td>Cible:</td><td>{{ cmd.target }}</td></tr>
 {% for up in cmd.usedparameter_set.iterator %}
     <tr><td>{{ up.parameter.name }}:</td><td>{{ up.value }}</td></tr>
 {% endfor %}
 </table>
-    <p> Date de cr&eacute;ation&nbsp;: {{ cmd.created }}</p>
-{% if cmd.started %}
-    <p> Lanc&eacute;&nbsp;: {{ cmd.started }}</p>
-    {% if cmd.ended %}
-        <ul>
-            <li><b>Resultat&nbsp;:&nbsp;</b>{{ cmd.result }}</li>
-            <li><b>Termin&eacute;&nbsp;:&nbsp;</b>{{ cmd.ended }}</li>
-        </ul>
-        <p> Sortie&nbsp;: </p>
-        <pre>{{ cmd.output }}</pre>
-        <form method="POST">
-            <input type="submit" value="Relancer!"/>
-        </form>
-    {% else %}
+
+<h3>Resultats</h3>
+<table>
+{% if result_header %}<tr>{{result_header}}</tr>{% endif %}
+{% for c in cmd.commandexecresult_set.iterator %}
+	<tr>{{ c.to_table_row }}</tr>
+{% endfor %}
+{% if result_footer %}<tr>{{result_footer}}</tr>{% endif %}
+</table>
     <form method="GET">
         <input type="submit" value="Actualiser!"/>
     </form>
-    {% endif %}
-    
-{% else %}
-    <form method="POST">
-        <input type="submit" value="Lancer!"/>
-    </form>
-{% endif %}
+        <form method="POST">
+            <input type="submit" value="Lancer!"/>
+        </form>
 {% include "accesspoints/ap/links.html" %}
 {% include "accesspoints/groups/links.html" %}
 {% include "accesspoints/commands/links.html" %}

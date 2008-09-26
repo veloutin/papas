@@ -44,14 +44,14 @@ class Command ( models.Model ):
 
     def create_instance(self,target) :
         if isinstance( target, AccessPoint ):
-            return self.__create_instance(target)
+            return self.__create_instance(accesspoint=target)
         elif isinstance( target, APGroup ):
-            return [self.__create_instance(ap) for ap in target.accessPoints]
+            return self.__create_instance(group=target)
         else:
             raise NotImplementedError("command creation not implemented on objects of type %s" % type(target))
 
-    def __create_instance ( self, ap ):
-        cmd = CommandExec(accesspoint=ap, command=self, created=datetime.now())
+    def __create_instance ( self, **kwargs ):
+        cmd = CommandExec(command=self, **kwargs )
         cmd.save()
        
         #Created Elsewhere 
@@ -93,11 +93,56 @@ class CommandParameter ( models.Model ):
                 return t[2]()
         return forms.Field() 
 
+validate_ap_or_group = validators.RequiredIfOtherFieldNotGiven("group","Besoin du groupe ou du AP")
 
 class CommandExec ( models.Model ):
+    command = models.ForeignKey(Command)
+    accesspoint = models.ForeignKey(AccessPoint,null=True,validator_list=(validate_ap_or_group,))
+    group = models.ForeignKey(APGroup,null=True)
+    last_run = models.DateTimeField(null=True)
+
+    def target(self):
+        return self.group or self.accesspoint
+    def target_list(self):
+        if self.group:
+            return self.group.accessPoints.all()
+        else:
+            return [self.accesspoint,]
+    def __target_table_row(self):
+        if self.group:
+            return '<a href="/groups/%d/">%s</a>' % (int(self.group.id),self.group.name)
+        else:
+            return '<a href="/accesspoints/%d/">%s</a>' % (int(self.accesspoint.id),self.accesspoint.name) 
+
+    def table_view_header():
+        return "".join(["<th>%s</th>" % i for i in (
+            'Commande','Cible','Dernier lancement',#'R&eacute;ussi','Cr&eacute;&eacute;',
+           # 'D&eacute;but&eacute;', 'Termin&eacute;',
+        )])
+    table_view_header = staticmethod(table_view_header)
+    def table_view_footer():
+        return None
+    table_view_footer = staticmethod(table_view_footer)
+    def to_table_row(self):
+        return "".join(["<td>%s</td>" % i for i in (
+            '<a href="/commands/view/%d/">%s</a>' % (int(self.id),self.command.name),
+            self.__target_table_row(),
+			self.last_run,
+           # self.result == 0,self.created, self.started, self.ended,
+        )])
+
+    def schedule(self):
+        for target in self.target_list():
+            cer, created = CommandExecResult.objects.get_or_create(commandexec=self,accesspoint=target, defaults={'created':datetime.now()})
+            cer.schedule()
+        self.last_run = datetime.now()
+        self.save()
+
+
+class CommandExecResult ( models.Model ):
     SCP_COMMAND="scp -Bq -o StrictHostKeyChecking=no %(filename)s %(ip_addr)s:%(path)s"
     EXEC_COMMAND="ssh -o BatchMode=yes -o StrictHostKeyChecking=no %(ip_addr)s . /tmp/_remote_script_wrapper.sh "
-    command = models.ForeignKey(Command)
+    commandexec = models.ForeignKey(CommandExec)
     accesspoint = models.ForeignKey(AccessPoint)
     result = models.IntegerField(null=True)
     output = models.TextField(null=True)
@@ -107,8 +152,8 @@ class CommandExec ( models.Model ):
 
     def table_view_header():
         return "".join(["<th>%s</th>" % i for i in (
-            'Commande','AP','R&eacute;ussi','Cr&eacute;&eacute;',
-            'D&eacute;but&eacute;', 'Termin&eacute;',
+            'AP','R&eacute;ussi','Cr&eacute;&eacute;',
+            'D&eacute;but&eacute;', 'Termin&eacute;', '',
         )])
     table_view_header = staticmethod(table_view_header)
     def table_view_footer():
@@ -116,9 +161,9 @@ class CommandExec ( models.Model ):
     table_view_footer = staticmethod(table_view_footer)
     def to_table_row(self):
         return "".join(["<td>%s</td>" % i for i in (
-            '<a href="/commands/view/%d/">%s</a>' % (int(self.id),self.command.name),
             '<a href="/accesspoints/%d/">%s</a>' % (int(self.accesspoint.id),self.accesspoint.name),
             self.result == 0,self.created, self.started, self.ended,
+            '<a href="/commands/viewexec/%d/">%s</a>' % (int(self.id),'D&eacute;tails'),
         )])
 
     def schedule(self):
@@ -136,10 +181,10 @@ class CommandExec ( models.Model ):
         (fd, name) = mkstemp()        
         fdo = os.fdopen(fd,'w')
         fdo.write("#!/bin/sh\n")
-        fdo.writelines([p.to_bash() for p in self.usedparameter_set.all()])
+        fdo.writelines([p.to_bash() for p in self.commandexec.usedparameter_set.all()])
         fdo.write("\n")
-        if not self.command.script:
-            fdo.write(self.command.script_text)
+        if not self.commandexec.command.script:
+            fdo.write(self.commandexec.command.script_text)
         else:
             fdo.write(". /tmp/_remote_script.sh \n")
 
@@ -161,10 +206,10 @@ class CommandExec ( models.Model ):
             self.save()
             return
  
-        if self.command.script:
+        if self.commandexec.command.script:
             #scp script to ap
             scp = self.SCP_COMMAND % {
-                "filename":self.command.script,
+                "filename":self.commandexec.command.script,
                 "ip_addr":self.accesspoint.ipv4Address,
                 "path":"/tmp/_remote_script.sh",
             }

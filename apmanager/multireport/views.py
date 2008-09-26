@@ -86,7 +86,7 @@ def display_multireport(request,multireport_id):
         context = {'report':report,
                  'result':display_data,   
                  'column_list':column_list,
-		 'printable':request.GET.has_key('imprimer'),
+         'printable':request.GET.has_key('imprimer'),
                  'report_footer':report_footer}
  
         report_list.append({"title":report.title % sel_args,

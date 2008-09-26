@@ -70,12 +70,12 @@ setup(#cmdclass={'build_py': VsmanageBuildPy},
       long_description="""Django Application To manage a group of Wifi Hotspots""",
       scripts=['bin/apmanager-cmdexecutor'],
       packages=[
-		"apmanager",
+        "apmanager",
         "apmanager.accesspoints",
         "apmanager.accesspoints.views",
-		"apmanager.genericsql",
-		"apmanager.multireport",
-	],
+        "apmanager.genericsql",
+        "apmanager.multireport",
+    ],
       #package_data=
       data_files = data_files_list,
 )

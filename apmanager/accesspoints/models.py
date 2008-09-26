@@ -25,9 +25,10 @@ class AccessPoint ( models.Model ):
     class Meta:
         ordering = ('name','ipv4Address',)
 
-    def __str__(self):
+    def __repr__(self):
         return "AP: %s ( %s -- %s )" % (self.name, self.ipv4Address, self.macAddress)
-    __repr__ = __str__
+    def __str__(self):
+		return "AP: %s"
 
     def table_view_header():
         return "".join(["<th>%s</th>" % i for i in ('Nom','IP','MAC','Description')])
@@ -86,7 +87,7 @@ class APGroup ( models.Model ):
         ordering = ('name',)
     
     def __str__(self):
-        return "Group: %s" % (self.name)
+        return "Groupe: %s" % (self.name)
     __repr__ = __str__
 
     def table_view_header():

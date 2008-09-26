@@ -11,7 +11,14 @@
 
 <form method="post">
 <table>
+		<tr><th><label for="group_id">Groupe</label></th><td><select name="group_id">
+        <option value="">Choisir un Groupe</option>
+		{% for group in group_list %}
+		<option value="{{group.id}}" {% ifequal group.id data.group_id  %}selected="true"{% endifequal %}>{{group.name}}</option>
+		{% endfor %}
+		</select></td></tr>
 		<tr><th><label for="ap_id">Point d'acc&egrave;s</label></th><td><select name="ap_id">
+        <option value="">Choisir un AP</option>
 		{% for ap in ap_list %}
 		<option value="{{ap.id}}" {% ifequal ap.id data.ap_id  %}selected="true"{% endifequal %}>{{ap.name}}</option>
 		{% endfor %}

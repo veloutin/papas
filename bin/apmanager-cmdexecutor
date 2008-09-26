@@ -4,7 +4,7 @@ os.environ["DJANGO_SETTINGS_MODULE"] = "apmanager.settings"
 from apmanager import settings
 
 from pyinotify import WatchManager, Notifier, ProcessEvent, EventsCodes
-from apmanager.accesspoints.apcommands import CommandExec
+from apmanager.accesspoints.apcommands import CommandExecResult
 from apmanager.accesspoints.models import AccessPoint
 from apmanager import utils
 from threading import Thread
@@ -30,7 +30,7 @@ def Monitor(path):
                 os.unlink(f)
             print 'processing command exec: ' + event.name
             try:
-                a = CommandExec.objects.get(pk=event.name)
+                a = CommandExecResult.objects.get(pk=event.name)
                 a.execute() 
             except Exception, e:
                 print e
