@@ -3,7 +3,8 @@ import os, sys
 os.environ["DJANGO_SETTINGS_MODULE"] = "apmanager.settings"
 from apmanager import settings
 
-from pyinotify import WatchManager, Notifier, ProcessEvent, EventsCodes
+import pyinotify
+from pyinotify import WatchManager, Notifier, ProcessEvent
 from apmanager.accesspoints.apcommands import CommandExecResult
 from apmanager.accesspoints.models import AccessPoint
 from apmanager import utils
@@ -63,8 +64,9 @@ def Monitor(path):
 
     wm = WatchManager()
     notifier = Notifier(wm, PCreate())
-    wm.add_watch(path, EventsCodes.IN_CREATE | EventsCodes.IN_CLOSE_WRITE , None, True)
+    wm.add_watch(path, pyinotify.IN_CREATE | pyinotify.IN_CLOSE_WRITE , None, True)
 
+    #FIXME
     try:
         while 1:
             notifier.process_events()
