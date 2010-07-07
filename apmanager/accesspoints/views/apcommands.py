@@ -1,3 +1,6 @@
+import logging
+LOG = logging.getLogger('apmanager.accesspoints')
+
 from apmanager.accesspoints.models import *
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -86,7 +89,6 @@ def edit_new_command(request, command_id, ap_id=None, group_id=None):
     if request.method == "POST" and (ap_id or group_id):
         instance = cmd.create_instance(group or ap)
         for param in cmd.commandparameter_set.all():
-            print UsedParameter.objects.all().count()
             up = param.create_instance(instance,request.POST.get(param.get_form_id(),''))
             #TODO treat errors
 

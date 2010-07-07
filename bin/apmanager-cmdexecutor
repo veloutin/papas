@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 import os, sys
+import logging
+
+LOG = logging.getLogger("apmanager.bin.cmdexecutor")
+
 os.environ["DJANGO_SETTINGS_MODULE"] = "apmanager.settings"
 from apmanager import settings
 
@@ -17,34 +21,38 @@ def Monitor(path):
             (settings.AP_REFRESH_WATCH_DIR, 'ap'),
         )
         def dispatch_process(self, func, event):
+            """ Event dispatching function """
+            LOG.debug('dispatch_process(%s, %s)', func, event.pathname)
             for action in self.ACTIONS:
                 if os.path.samefile(event.path,action[0]):
                     tocall = 'process_'+action[1]+'_'+func
                     if hasattr(self,tocall) and callable(getattr(self,tocall)):
                         return getattr(self,tocall)(event)
-            print "Unhandled Event: ", event
+
+            LOG.debug("Dispatcher :: Unhandled Event")
             return None
         
         def process_command_IN_CREATE(self,event):
+            LOG.debug('Command execution request for: %s', event.name)
             f = os.path.join(event.path, event.name)
             if os.path.isfile(f):
                 os.unlink(f)
-            print 'processing command exec: ' + event.name
             try:
                 a = CommandExecResult.objects.get(pk=event.name)
                 a.execute() 
             except Exception, e:
-                print e
+                LOG.error("Command Exec Failed with error: %s", str(e))
 
         def process_ap_IN_CLOSE(self,event):
-            print 'processing ap refresh: ' + event.name
+            LOG.debug('AccessPoint Refresh request for: %s', event.name)
             try:
                 a = AccessPoint.objects.get(pk=event.name)
                 a.refresh_clients()
             except Exception, e:
-                print e
+                LOG.error("AP Refresh failed with error: %s", str(e))
             
         def process_IN_CREATE(self, event):
+            LOG.debug('IN_CREATE event received : %s', event.pathname)
             pid = os.fork()
             if not pid:
                 self.dispatch_process('IN_CREATE',event)
@@ -54,6 +62,7 @@ def Monitor(path):
             return 
 
         def process_IN_CLOSE(self,event):
+            LOG.debug('IN_CLOSE event received : %s', event.pathname)
             pid = os.fork()
             if not pid:
                 self.dispatch_process('IN_CLOSE',event)
@@ -66,13 +75,14 @@ def Monitor(path):
     notifier = Notifier(wm, PCreate())
     wm.add_watch(path, pyinotify.IN_CREATE | pyinotify.IN_CLOSE_WRITE , None, True)
 
-    #FIXME
+    LOG.info("Starting Main Loop")
     try:
         while 1:
             notifier.process_events()
             if notifier.check_events():
                 notifier.read_events()
     except KeyboardInterrupt:
+        LOG.info("Interrupted, stopping")
         notifier.stop()
         return
 
@@ -80,6 +90,22 @@ def Monitor(path):
 if __name__ == '__main__':
     if "--daemon" in sys.argv[1:]:
         utils.daemonize()
-    
-    print "using default path, ", settings.WATCH_DIR
+        handler = logging.SysLogHandler()
+    else:
+        handler = logging.StreamHandler()
+
+    handler.setFormatter(logging.Formatter("%(asctime)s %(name)s %(levelname)s %(message)s"))
+    if settings.DEBUG:
+        logging.root.setLevel(logging.DEBUG)
+    elif "-v" in sys.argv[1:] or "--verbose" in sys.argv[1:]:
+        logging.root.setLevel(logging.INFO)
+    else:
+        logging.root.setLevel(logging.ERROR)
+
+    logging.root.addHandler(handler)
+            
+    LOG.info("using default path: %s", settings.WATCH_DIR)
+    LOG.debug("command watch dir: %s", settings.COMMAND_WATCH_DIR)
+    LOG.debug("ap watch dir: %s", settings.AP_REFRESH_WATCH_DIR)
+
     Monitor(settings.WATCH_DIR)

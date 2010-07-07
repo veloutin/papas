@@ -1,8 +1,10 @@
+import logging
+LOG = logging.getLogger('apmanger.accesspoints')
+import commands
+
 from django.db import models
 from django.core.urlresolvers import reverse
 
-# Import Command 
-import commands
 from apmanager.settings import DEBUG
 # Create your models here.
 
@@ -49,18 +51,19 @@ class AccessPoint ( models.Model ):
         file(os.path.join(settings.AP_REFRESH_WATCH_DIR,str(self.id)),'w').close()
         
     def refresh_clients(self):
+        LOG.debug("refreshing client list for %s", str(self))
         (ret, out) = commands.getstatusoutput(r'ssh -o BatchMode=yes -o StrictHostKeyChecking=no %(ip)s wl assoclist 2>/dev/null | cut -d" " -f 2' % {'ip':self.ipv4Address} )
-        if DEBUG:
-            print out, ret
         if ret == 0:
             #Attempt to get all IP for MAC in arp tables
             (ret, out2) = commands.getstatusoutput(r'ssh -o BatchMode=yes %(ip)s -o StrictHostKeyChecking=no cat /proc/net/arp 2>/dev/null | sed -e "1d;s/ \{1,\}/ /g" | cut -d" " -f 1,4' % {'ip':self.ipv4Address} )
             ipmap = {}
             if ret == 0:
                 for line in out2.splitlines():
-                    print line
                     ip,mac = line.split()
                     ipmap.update({mac:ip})
+            else:
+                LOG.warning("Failed to get arp table for AP %s", str(self))
+                LOG.debug("Command output: %s", out2)
                 
             #Delete all connected clients
             for c in self.apclient_set.all():
@@ -68,13 +71,16 @@ class AccessPoint ( models.Model ):
 
             #Recreate all clients
             for mac in out.splitlines():
-                print "client ip for mac %s is %s" % (mac, ipmap.get(mac))
+                LOG.debug("client ip for mac %s is %s",mac, ipmap.get(mac))
                 c = APClient()
                 c.ipv4Address = ipmap.get(mac)
                 c.macAddress = mac
                 c.connected_to = self
                 c.save()
 
+        else:
+            LOG.error("Failed to get list of clients for AP %s", str(self))
+            LOG.debug("Command output: %s", out)
 
 class APGroup ( models.Model ):
     """
