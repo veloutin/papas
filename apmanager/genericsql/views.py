@@ -1,17 +1,18 @@
 # -*- coding: UTF-8 -*-
+import re
+
+from MySQLdb import ProgrammingError
+
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import get_mod_func
 from django.db.models import Q
-from apmanager.genericsql.models import Report, ColumnName, ReportFooter
-from MySQLdb import ProgrammingError
-import re
+from django.template import RequestContext
+from django.contrib.auth.decorators import login_required
 
-from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth import LOGIN_URL
 from django.conf import settings 
-SITE_PREFIX_URL = settings.SITE_PREFIX_URL
 
-login_required = user_passes_test(lambda u: u.is_authenticated(), ("/"+SITE_PREFIX_URL+LOGIN_URL).replace("//","/"))
+from apmanager.genericsql.models import Report, ColumnName, ReportFooter
+
 
 class GenericDbProxy:
     def __init__(self, data_source):
@@ -83,7 +84,8 @@ def display_report_list(request):
         if report.verify_user_access(request.user.username):
             reports.append(report)
     return render_to_response('genericsql/report_list.html',
-        {'object_list':reports,})
+        {'object_list':reports,},
+        context_instance=RequestContext(request))
         
         
 @login_required
@@ -95,7 +97,8 @@ def display_report(request, report_id):
     
     #if the report has access restrictions
     if not report.verify_user_access(request.user.username):
-        return render_to_response('genericsql/access_denied.html',{})
+        return render_to_response('genericsql/access_denied.html',{},
+        context_instance=RequestContext(request))
             
     #Sort the report if sortable
     allow_sort=False
@@ -111,7 +114,8 @@ def display_report(request, report_id):
     try:
         result = db.select(report.sql,sel_args)
     except (KeyError,ProgrammingError),e:
-        return render_to_response('genericsql/report_error.html',{"exception":e}) 
+        return render_to_response('genericsql/report_error.html',{"exception":e},
+        context_instance=RequestContext(request)) 
     
     column_list = db.get_column_list()
     db.commit()
@@ -134,7 +138,8 @@ def display_report(request, report_id):
     #Render callback for sorting
     if request.GET.has_key('callback'):
         return render_to_response('genericsql/report_data.table.inner.html',
-            {'column_list':column_list, 'result':display_data,'report_footer':report_footer})
+            {'column_list':column_list, 'result':display_data,'report_footer':report_footer},
+        context_instance=RequestContext(request))
             
     #Render CSV document :o
     if request.GET.has_key('csv'):
@@ -160,7 +165,8 @@ def display_report(request, report_id):
                 'column_list':column_list,
                 'allow_sort':allow_sort,
                 'report_footer':report_footer,
-                'printable':request.GET.has_key('imprimer')}
+                'printable':request.GET.has_key('imprimer'),
+        }
 
     #Add maps if possible
     if hasattr(report,'map_set'):
@@ -185,7 +191,8 @@ def display_report(request, report_id):
             context['panel'] = JSONEncoder(separators=(',',':')).encode( panel)
 
     #Render normal/iframe report
-    return render_to_response('genericsql/' + template,context)
+    return render_to_response('genericsql/' + template,context,
+        context_instance=RequestContext(request))
 
 
 
@@ -292,5 +299,4 @@ def _render_csv(report,display_data, request):
     })
     response.write(t.render(c))
     return response
-    
     

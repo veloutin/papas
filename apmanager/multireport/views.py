@@ -1,17 +1,15 @@
 # -*- coding: UTF-8 -*-
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.loader import render_to_string
-from django.contrib.auth.decorators import user_passes_test
+from django.template import RequestContext
+from django.contrib.auth.decorators import login_required
+from django.conf import settings 
+
 from apmanager.multireport.models import MultiReport
-from apmanager.genericsql.models import Report, ColumnName, ReportFooter
+from apmanager.genericsql.models import Report, ColumnName, ReportFooter, ReportParameter
 from apmanager.genericsql.views import *
 from apmanager.genericsql.views import _convert_data,_get_footer_or_none,_do_sort,_get_column_iter
 
-from django.contrib.auth import LOGIN_URL
-from django.conf import settings 
-SITE_PREFIX_URL = settings.SITE_PREFIX_URL
-
-login_required = user_passes_test(lambda u: u.is_authenticated(), ("/"+SITE_PREFIX_URL+LOGIN_URL).replace("//","/"))
 
 
 @login_required
@@ -24,7 +22,8 @@ def display_multireport(request,multireport_id):
 
     #Test Report Access
     if not report.verify_user_access(request.user.username):
-        return render_to_response('genericsql/access_denied.html',{})
+        return render_to_response('genericsql/access_denied.html',{},
+        context_instance=RequestContext(request))
 
     #Sort the report if sortable
     allow_sort=False
@@ -46,7 +45,8 @@ def display_multireport(request,multireport_id):
         
     except ProgrammingError,e:
         return render_to_response('genericsql/report_error.html',
-            {"exception":e})
+            {"exception":e},
+            context_instance=RequestContext(request))
     report_list = []
     for param in param_values:
         #update the sel args with the param
@@ -96,7 +96,8 @@ def display_multireport(request,multireport_id):
     return render_to_response('multireport/report_list.html',{
                 'report_list':report_list,
                 'report':report,
-                'printable':request.GET.has_key('imprimer')})
+                'printable':request.GET.has_key('imprimer')},
+        context_instance=RequestContext(request))
 
 
 
@@ -115,9 +116,6 @@ def display_multireport_list(request):
         if report.report_parameter.report.verify_user_access(request.user.username):
             reports.append(report)
     return render_to_response('multireport/multireport_list.html',
-        {'object_list':reports,})
-
-
-
-
+        {'object_list':reports,},
+        context_instance=RequestContext(request))
 

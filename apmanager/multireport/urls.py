@@ -1,6 +1,4 @@
-
 from django.conf.urls.defaults import *
-from apmanager.multireport.models import MultiReport
 
 # Report list
 urlpatterns = patterns('apmanager.multireport',

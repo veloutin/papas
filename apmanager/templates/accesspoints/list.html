@@ -7,14 +7,14 @@
 {% block body %}
 <table>
 {% if caption %} <caption>{{ caption }}</caption>{% endif %}
-{% if table_header %}<thead><tr>{{ table_header }}</tr></thead>{% endif %}
-{% if table_footer %}<tfoot><tr>{{ table_footer }}</tr></tfoot>{% endif %}
+{% if table_header %}<thead><tr>{{ table_header|safe }}</tr></thead>{% endif %}
 {% if object_list %}
 <tbody>{% for object in object_list %} 
     <tr>
-    {{ object.to_table_row }}
+    {{ object.to_table_row|safe }}
     </tr>
 {% endfor %}</tbody>{% endif %}
+{% if table_footer %}<tfoot><tr>{{ table_footer|safe }}</tr></tfoot>{% endif %}
 </table>
 {% if add_refresh_button %}
     <br><form method="POST">

@@ -17,11 +17,11 @@
 
 <h3>Resultats</h3>
 <table>
-{% if result_header %}<tr>{{result_header}}</tr>{% endif %}
+{% if result_header %}<tr>{{result_header|safe}}</tr>{% endif %}
 {% for c in cmd.commandexecresult_set.iterator %}
-	<tr>{{ c.to_table_row }}</tr>
+	<tr>{{ c.to_table_row|safe }}</tr>
 {% endfor %}
-{% if result_footer %}<tr>{{result_footer}}</tr>{% endif %}
+{% if result_footer %}<tr>{{result_footer|safe}}</tr>{% endif %}
 </table>
     <form method="GET">
         <input type="submit" value="Actualiser!"/>

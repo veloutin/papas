@@ -1,10 +1,7 @@
 from apmanager.accesspoints.models import *
-from apmanager.settings import SITE_PREFIX_URL
+from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
-from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth import LOGIN_URL
-
-login_required = user_passes_test(lambda u: u.is_authenticated(), ("/"+SITE_PREFIX_URL+LOGIN_URL).replace("//","/"))
+from django.contrib.auth.decorators import login_required
 
 @login_required
 def view_group_list(request):
@@ -16,7 +13,8 @@ def view_group_list(request):
         {'object_list':group_list,
          'caption':"Liste des groupes",
          'table_header':APGroup.table_view_header(),
-         'table_footer':APGroup.table_view_footer(),})
+         'table_footer':APGroup.table_view_footer(),},
+        context_instance=RequestContext(request))
 
 
 @login_required
@@ -30,6 +28,7 @@ def view_group(request, group_id):
         {'group':group,
         'ap_list':group.accessPoints.all(),
         'header':AccessPoint.table_view_header(),
-        'footer':AccessPoint.table_view_footer(),})
+        'footer':AccessPoint.table_view_footer(),},
+        context_instance=RequestContext(request))
 
 

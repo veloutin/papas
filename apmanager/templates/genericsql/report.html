@@ -16,24 +16,24 @@
 
 {% block head %}
     {% if panel or allow_sort %}
-    <script type="text/javascript" src = "/site-media/jsutils.js"></script>
+    <script type="text/javascript" src = "{{MEDIA_URL}}jsutils.js"></script>
     {% endif %}
     
     {% if allow_sort %}
-    <script type="text/javascript" src = "/site-media/TableSort.js"></script>
+    <script type="text/javascript" src = "{{MEDIA_URL}}TableSort.js"></script>
     {% endif %}
     
     {% if panel %}
-    <script type="text/javascript" src = "/site-media/Panel.js"></script>
+    <script type="text/javascript" src = "{{MEDIA_URL}}Panel.js"></script>
     <script type="text/javascript">var options = {{panel}};</script>
     {% endif %}
 {% endblock %}
 {% block feuillestyle %}
 {% if printable %}
-    <link rel="StyleSheet" href="/site-media/rapportsrt_toprint.css" type="text/css" media="screen">
-    <link rel="StyleSheet" href="/site-media/print.css" type="text/css" media="print">    
+    <link rel="StyleSheet" href="{{MEDIA_URL}}rapportsrt_toprint.css" type="text/css" media="screen">
+    <link rel="StyleSheet" href="{{MEDIA_URL}}print.css" type="text/css" media="print">    
 {% else %}
-    <link rel="StyleSheet" href="/site-media/rapportsrt.css" type="text/css" media="screen">
+    <link rel="StyleSheet" href="{{MEDIA_URL}}rapportsrt.css" type="text/css" media="screen">
 {% endif %}
 {% endblock %}
 {% block menu %}
@@ -63,6 +63,6 @@
 {% if report.owner %}
 <p>Pour toutes questions sur ce rapport, consultez {{ report.owner }}.</p>
 {% endif %}
-<p><a href="{% url django.contrib.admin.views.main.index %}genericsql/report/{{ report.id }}/">Modifier ce rapport</a></p>
+<p><a href="{% url admin:genericsql_report_change report.id %}">Modifier ce rapport</a></p>
 {% endif %}
 {% endblock %}

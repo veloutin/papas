@@ -1,8 +1,9 @@
 # -*- coding: UTF-8 -*-
+from django.utils.translation import ugettext as _
 from django.db import models
+from django.core.urlresolvers import reverse
 from django.contrib.auth.models import Group#,User #possible accès User
 from django.conf import settings
-from apmanager.urls import prefix
 INSTALLED_APPS = settings.INSTALLED_APPS
 
 LDAP_CONNECTOR=False
@@ -23,34 +24,31 @@ ENCODING_CHOICE = (
 
 
 class DataSource(models.Model):
-    name = models.CharField(maxlength = 100, unique=True, 
-        help_text="A name to easily identify this data source in the administration interface.")
-    database_name = models.CharField(maxlength = 30, 
-        help_text="The name of the database containing the data for the report.")
-    database_type = models.CharField(maxlength = 2, choices = DATABASE_CHOICE)
-    host = models.CharField(maxlength = 100)
+    name = models.CharField(max_length = 100, unique=True, 
+        help_text=u"A name to easily identify this data source in the administration interface.")
+    database_name = models.CharField(max_length = 30, 
+        help_text=u"The name of the database containing the data for the report.")
+    database_type = models.CharField(max_length = 2, choices = DATABASE_CHOICE)
+    host = models.CharField(max_length = 100)
     port = models.PositiveIntegerField(
-        help_text="Leave blank to use default port.", blank=True, null=True)
-    user = models.CharField(maxlength = 100)
-    password = models.CharField(maxlength = 100, 
-        help_text="<strong>Warning</strong> : the password will appear in clear text at the screen.")
-    data_encoding = models.CharField(maxlength = 4, choices = ENCODING_CHOICE,
-        help_text="""Indicates the native data format of the database.
+        help_text=u"Leave blank to use default port.", blank=True, null=True)
+    user = models.CharField(max_length = 100)
+    password = models.CharField(max_length = 100, 
+        help_text=u"<strong>Warning</strong> : the password will appear in clear text at the screen.")
+    data_encoding = models.CharField(max_length = 4, choices = ENCODING_CHOICE,
+        help_text=u"""Indicates the native data format of the database.
             Change this setting if accents are incorrectly displayed for this data source.""")
-    def __str__(self):
+    def __unicode__(self):
         return self.name
-    class Admin:
-        list_display=('name', 'database_name', 'database_type', 'host')
-        list_filter=['database_type']
 
 class Report(models.Model):
-    title = models.CharField(maxlength = 300)
+    title = models.CharField(max_length = 300)
     data_source = models.ForeignKey(DataSource)
-    owner = models.CharField(maxlength = 150, blank=True, null=True,
-        help_text="The name of the person maintaining this report.")
+    owner = models.CharField(max_length = 150, blank=True, null=True,
+        help_text=u"The name of the person maintaining this report.")
     sql = models.TextField()
-    data_filter = models.CharField(maxlength = 150, blank=True, null=True,
-        help_text="""A Python function to call to alter the data.
+    data_filter = models.CharField(max_length = 150, blank=True, null=True,
+        help_text=u"""A Python function to call to alter the data.
             The parameters to the function are : sql_column_name, data.
             You must include the full module path to the function, ex:
             apmanager.contrib.datafilters.rt_ticket_link""")
@@ -58,8 +56,8 @@ class Report(models.Model):
     if LDAP_CONNECTOR: 
         allowed_groups = models.ManyToManyField(LDAPGroup,filter_interface=True, null=True, blank=True)
     
-    default_order_by = models.CharField(maxlength = 150, null=True, blank=True,
-        help_text="""The default sorting for the results.
+    default_order_by = models.CharField(max_length = 150, null=True, blank=True,
+        help_text=u"""The default sorting for the results.
             the keyworks ORDER BY are NOT to be included in this field.
             ex: for ORDER BY 1,2 DESC, the value would be "1,2 DESC" """)
             
@@ -86,10 +84,10 @@ class Report(models.Model):
             sel_args[key] = val
         return sel_args
 
-    def __str__(self):
+    def __unicode__(self):
         return self.title
     def get_absolute_url(self):
-        return prefix("/rapports/%i/" % self.id,settings.SITE_PREFIX_URL)
+        return reverse("apmanager.genericsql.views.display_report", args=(self.id,))
     def has_footers(self):
         return self.reportfooter_set.count()>0
     
@@ -119,19 +117,16 @@ class Report(models.Model):
         def verify_user_access(self,username):
             return True
             
-    class Admin:
-        list_display=('title', 'data_source', 'owner')
-        list_filter=['data_source', 'owner']
-    
 class ReportParameter(models.Model):
-    name = models.CharField(core=True,maxlength = 50, verbose_name="Parameter name")
-    defaultvalue = models.CharField(maxlength = 300, verbose_name="Default value")
-    report = models.ForeignKey(Report, edit_inline=models.TABULAR, num_in_admin=3, num_extra_on_change=3)
-    display_name = models.CharField(null=True,blank=True,maxlength = 100, verbose_name="Display name")
-    display = models.BooleanField(default=False, verbose_name="Show in parameter panel")
+    name = models.CharField(max_length = 50, verbose_name=u"Parameter name")
+    defaultvalue = models.CharField(max_length = 300, verbose_name=u"Default value")
+    report = models.ForeignKey(Report)
+    display_name = models.CharField(null=True,blank=True,max_length = 100, verbose_name=u"Display name")
+    display = models.BooleanField(default=False, verbose_name=u"Show in parameter panel")
     
-    def __str__(self):
-        return "%s=%s" % (self.name, self.defaultvalue)
+    def __unicode__(self):
+        return u"%s=%s" % (self.name, self.defaultvalue)
+
    
     def str_report(self):
         return "%s: %s" % (self.report.title, self.name)
@@ -146,31 +141,28 @@ class ReportParameter(models.Model):
             ret['value'] = str(self.defaultvalue)
             ret['enabled'] = True
         
-        return ret        
+        return ret
+
     class Meta:
         verbose_name = "Default report parameter"
         ordering = ['report','name']
     
 class ColumnName(models.Model):
     report = models.ForeignKey(Report, null=True,blank=True)
-    sql_column_name = models.CharField(maxlength = 40)
-    display_column_name = models.CharField(maxlength = 100)
-    def __str__(self):
+    sql_column_name = models.CharField(max_length = 40)
+    display_column_name = models.CharField(max_length = 100)
+    def __unicode__(self):
         return self.display_column_name
-    class Admin:
-        list_display=('sql_column_name', 'display_column_name', 'report')
-        list_filter=['report']
-
 
 class ReportFooter(models.Model):
-    report = models.ForeignKey(Report, edit_inline=models.TABULAR, num_in_admin=3, num_extra_on_change=3)
-    column_name= models.CharField(maxlength = 40, core=True)
-    function = models.PositiveSmallIntegerField(blank=True, verbose_name=_('Agregate function to perform'),
+    report = models.ForeignKey(Report)
+    column_name= models.CharField(max_length = 40, )
+    function = models.PositiveSmallIntegerField(blank=True, verbose_name=_(u'Agregate function to perform'),
         choices=((0, 'None'),
                  (1, 'Addition'),
                  (2, 'Average'),
                  (3, 'Count')))
-    label = models.CharField(maxlength = 100,blank=True)
+    label = models.CharField(max_length = 100,blank=True)
     
     def render(self,values_iter):
         if self.function == 1:  # Addition
@@ -211,3 +203,4 @@ class ReportFooter(models.Model):
                 return "%s&nbsp;: %s" % (self.label, count)
         else:
             return self.label
+

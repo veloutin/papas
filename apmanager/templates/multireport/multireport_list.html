@@ -11,5 +11,5 @@
 {% endif %}
 {% endblock %}
 {% block admin %}
-<a href="{% url django.contrib.admin.views.main.index %}multireport/multireport/">Gestion des rapports</a>
+<a href="{% url admin:multireport_multireport_changelist %}">Gestion des rapports</a>
 {% endblock %}

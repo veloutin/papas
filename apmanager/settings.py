@@ -40,6 +40,7 @@ UPLOAD_ROOT = '/var/lib/apmanager/uploads/'
 #Site prefix to add to relative urls, such as apmanager/ for a site on example.com/apmanager/
 # Leave blank if installed on web root
 SITE_PREFIX_URL='apmanager/'
+LOGIN_URL = ("/"+SITE_PREFIX_URL+"accounts/login/").replace("//","/")
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
@@ -47,7 +48,7 @@ MEDIA_ROOT = ''
 
 # URL that handles the media served from MEDIA_ROOT.
 # Example: "http://media.lawrence.com"
-MEDIA_URL = ''
+MEDIA_URL = ("/" + SITE_PREFIX_URL + 'site-media/').replace("//","/")
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.

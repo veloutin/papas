@@ -9,12 +9,12 @@
 {% block body %}
 <h2>{{ group.name }}</h2>
 <table>
-{% if header %}<thead><tr>{{ header }}</tr></thead>{% endif %}
-{% if footer %}<tfoot><tr>{{ footer }}</tr></tfoot>{% endif %}
+{% if header %}<thead><tr>{{ header|safe }}</tr></thead>{% endif %}
+{% if footer %}<tfoot><tr>{{ footer|safe }}</tr></tfoot>{% endif %}
 {% if ap_list %}
 <tbody>{% for ap in ap_list %} 
 <tr>
-    {{ ap.to_table_row }}
+    {{ ap.to_table_row|safe }}
 </tr>
 {% endfor %}</tbody>{% endif %}
 </table>

@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.urlresolvers import reverse
 
 # Import Command 
 import commands
@@ -10,35 +11,38 @@ class AccessPoint ( models.Model ):
     """
         Represents an Access Point, with name, IP, MAC and description.
     """
-    name = models.CharField( maxlength=100, core=True,
-        help_text="Host Name" )
-    ipv4Address = models.IPAddressField( core=True, unique=True,
-        help_text="IP address of the access point" )
-    macAddress = models.CharField( maxlength=17, core=True, unique=True,
-        help_text="MAC address" )
-    description = models.CharField( maxlength=255,
-        help_text="Short description / Location" )
-
-    class Admin:
-        list_display = ('name', 'ipv4Address', 'macAddress')
+    name = models.CharField( max_length=100,
+        help_text=u"Host Name" )
+    ipv4Address = models.IPAddressField( unique=True,
+        help_text=u"IP address of the access point" )
+    macAddress = models.CharField( max_length=17, unique=True,
+        help_text=u"MAC address" )
+    description = models.CharField( max_length=255,
+        help_text=u"Short description / Location" )
 
     class Meta:
         ordering = ('name','ipv4Address',)
 
-    def __repr__(self):
-        return "AP: %s ( %s -- %s )" % (self.name, self.ipv4Address, self.macAddress)
-    def __str__(self):
-		return "AP: %s" % (self.name)
+    def get_absolute_url(self):
+        return reverse('apmanager.accesspoints.views.ap.view_ap', args=(self.id,))
 
+    def __repr__(self):
+        return u"AP: %s ( %s -- %s )" % (self.name, self.ipv4Address, self.macAddress)
+
+    def __unicode__(self):
+		return u"AP: %s" % (self.name)
+
+    @staticmethod
     def table_view_header():
         return "".join(["<th>%s</th>" % i for i in ('Nom','IP','MAC','Description')])
-    table_view_header = staticmethod(table_view_header)
+
+    @staticmethod
     def table_view_footer():
         return None
-    table_view_footer = staticmethod(table_view_footer)
+
     def to_table_row(self):
         return "".join(["<td>%s</td>" % i for i in (
-            '<a href="/accesspoints/%d/">%s</a>' % (int(self.id),self.name),
+            '<a href="%s">%s</a>' % (self.get_absolute_url(), self.name),
             self.ipv4Address,self.macAddress,self.description)])
 
     def schedule_refresh(self):
@@ -76,48 +80,53 @@ class APGroup ( models.Model ):
     """
         Used to group Access Points into Groups
     """
-    name = models.CharField ( maxlength=100, core=True,
-        help_text="Name of the Group", unique=True )
-    accessPoints = models.ManyToManyField(AccessPoint, filter_interface=models.VERTICAL,
-        help_text="Access Points in this AP group")
-    class Admin:
-        list_display = ('name',)
+    name = models.CharField ( max_length=100,
+        help_text=u"Name of the Group", unique=True )
+    accessPoints = models.ManyToManyField(AccessPoint,
+        help_text=u"Access Points in this AP group")
 
     class Meta:
         ordering = ('name',)
     
-    def __str__(self):
-        return "Groupe: %s" % (self.name)
-    __repr__ = __str__
+    def __unicode__(self):
+        return u"Groupe: %s" % (self.name)
+    __repr__ = __unicode__
 
+    def get_absolute_url(self):
+        return reverse('apmanager.accesspoints.views.apgroup.view_group', args=(self.id,))
+
+    @staticmethod
     def table_view_header():
         return "".join(["<th>%s</th>" % i for i in ('Nom' + "&nbsp;".join(['' for i in range(10)]), ) 
             ])
-    table_view_header = staticmethod(table_view_header)
+
+    @staticmethod
     def table_view_footer():
         return None
-    table_view_footer = staticmethod(table_view_footer)
+
     def to_table_row(self):
-        return "".join(["<td>%s</td>" % i for i in ('<a href="/groups/%d/">%s</a>' % (int(self.id),self.name),)])
+        return "".join(["<td>%s</td>" % i for i in ('<a href="%s">%s</a>' % (self.get_absolute_url(),self.name),)])
 
 
 class APClient ( models.Model ):
     """
         Client connected to an Access Point
     """
-    ipv4Address = models.IPAddressField( core=False, null=True,
-        help_text="IP address of the client" )
-    macAddress = models.CharField( maxlength=17, core=True, 
-        help_text="Client MAC address" )
+    ipv4Address = models.IPAddressField( null=True,
+        help_text=u"IP address of the client" )
+    macAddress = models.CharField( max_length=17, 
+        help_text=u"Client MAC address" )
     connected_to = models.ForeignKey( AccessPoint ) 
         
 
+    @staticmethod
     def table_view_header():
         return "".join(["<th>%s</th>" % i for i in ('AP','IP','MAC')])
-    table_view_header = staticmethod(table_view_header)
+
+    @staticmethod
     def table_view_footer():
         return None
-    table_view_footer = staticmethod(table_view_footer)
+
     def to_table_row(self):
         return "".join(["<td>%s</td>" % i for i in (
             '<a href="/accesspoints/%d/">%s</a>' % (int(self.connected_to.id),self.connected_to.name),

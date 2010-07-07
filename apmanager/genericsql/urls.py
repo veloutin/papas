@@ -1,5 +1,4 @@
 from django.conf.urls.defaults import *
-from apmanager.genericsql.models import Report
 
 # Report list
 urlpatterns = patterns('apmanager.genericsql',

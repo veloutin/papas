@@ -1,11 +1,8 @@
 from apmanager.accesspoints.models import *
 from django.shortcuts import render_to_response, get_object_or_404
-from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth import LOGIN_URL
+from django.contrib.auth.decorators import login_required
 from django.conf import settings 
-SITE_PREFIX_URL = settings.SITE_PREFIX_URL
-
-login_required = user_passes_test(lambda u: u.is_authenticated(), ("/"+SITE_PREFIX_URL+LOGIN_URL).replace("//","/"))
+from django.template import RequestContext
 
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -26,7 +23,8 @@ def view_home(request):
         {'object_list':cexec_list,
          'caption':caption,
          'table_header':CommandExec.table_view_header(),
-         'table_footer':CommandExec.table_view_footer(),})
+         'table_footer':CommandExec.table_view_footer(),},
+        context_instance=RequestContext(request))
 
 @login_required
 def create_new_command(request):
@@ -63,13 +61,15 @@ def create_new_command(request):
             return render_to_response('accesspoints/commands/create.html',{'data':request.POST,
                         'cmd_list':Command.objects.all(),
                         'ap_list':AccessPoint.objects.all(),
-                		'group_list':APGroup.objects.all(),})
+                        'group_list':APGroup.objects.all(),},
+                        context_instance=RequestContext(request))
 
     #Otherwise, Display blank form
     return render_to_response('accesspoints/commands/create.html',{'data':{},
                         'cmd_list':Command.objects.all(),
                         'ap_list':AccessPoint.objects.all(),
-                		'group_list':APGroup.objects.all(),})
+                        'group_list':APGroup.objects.all(),},
+                        context_instance=RequestContext(request))
 
 @login_required
 def edit_new_command(request, command_id, ap_id=None, group_id=None):
@@ -97,7 +97,8 @@ def edit_new_command(request, command_id, ap_id=None, group_id=None):
     
     return render_to_response('accesspoints/commands/edit.html',{
             'param_list':cmd.commandparameter_set.all(),
-        })
+        },
+        context_instance=RequestContext(request))
 
 @login_required
 def view_command(request, command_id):
@@ -112,7 +113,8 @@ def view_command(request, command_id):
 			'result_header':CommandExecResult.table_view_header(),
 			'result_footer':CommandExecResult.table_view_footer(),
             'cmd':cmd,
-        })
+        },
+        context_instance=RequestContext(request))
 
 @login_required
 def view_exec(request, exec_id):
@@ -125,6 +127,7 @@ def view_exec(request, exec_id):
 
     return render_to_response('accesspoints/commands/viewexec.html',{
             'cmd':cmd,
-        })
+        },
+        context_instance=RequestContext(request))
 
 

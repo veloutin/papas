@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block body %}
 {% if object_list %}
@@ -16,8 +17,11 @@
         </li>
     {% endfor %}
     </ul>
+{% else %}
+    {% trans "No reports available" %}
+<a href="{% url admin:genericsql_report_add %}">{% trans "Create a new report" %}</a>
 {% endif %}
 {% endblock %}
 {% block admin %}
-<a href="{% url django.contrib.admin.views.main.index %}genericsql/report/">Gestion des rapports</a>
+<a href="{% url admin:genericsql_report_changelist %}">Gestion des rapports</a>
 {% endblock %}

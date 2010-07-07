@@ -1,10 +1,7 @@
 from apmanager.accesspoints.models import *
+from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
-from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth import LOGIN_URL
-from apmanager.settings import SITE_PREFIX_URL
-
-login_required = user_passes_test(lambda u: u.is_authenticated(), ("/"+SITE_PREFIX_URL+LOGIN_URL).replace("//","/"))
+from django.contrib.auth.decorators import login_required
 
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
@@ -19,7 +16,8 @@ def view_ap_list(request):
         {'object_list':ap_list,
          'caption':"Liste des points d'acc&egrave;s",
          'table_header':AccessPoint.table_view_header(),
-         'table_footer':AccessPoint.table_view_footer(),})
+         'table_footer':AccessPoint.table_view_footer(),},
+        context_instance=RequestContext(request))
 
 
 @login_required
@@ -33,9 +31,11 @@ def view_ap(request, ap_id):
         return render_to_response('redirect.html',
             {'url':reverse(view_ap,kwargs={'ap_id':ap.id}),
              'time':10
-            })
+            },
+            context_instance=RequestContext(request))
     return render_to_response('accesspoints/ap.html',
-        {'ap':ap},)
+        {'ap':ap},
+        context_instance=RequestContext(request))
 
 def view_ap_nagios_config(request, ap_id):
     """
@@ -66,13 +66,15 @@ def view_client_list(request):
         return render_to_response('redirect.html',
             {'url':reverse(view_client_list),
              'time':30
-            })
+            },
+            context_instance=RequestContext(request))
     return render_to_response('accesspoints/list.html',
         {'object_list':client_list,
          'caption':'List of Clients',
          'table_header':APClient.table_view_header(),
          'table_footer':APClient.table_view_footer(),
-         'add_refresh_button':True,})
+         'add_refresh_button':True,},
+        context_instance=RequestContext(request))
     
 @login_required
 def create_ap(request):
@@ -101,5 +103,6 @@ def create_ap(request):
 
     # Create the FormWrapper, template, context, response.
     form = forms.FormWrapper(manipulator, new_data, errors)
-    return render_to_response('accesspoints/create_aps.html', {'form': form})
+    return render_to_response('accesspoints/create_aps.html', {'form': form},
+        context_instance=RequestContext(request))
 

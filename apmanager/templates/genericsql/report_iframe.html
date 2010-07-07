@@ -12,21 +12,21 @@
 
 {% block head %}
     {% if panel or allow_sort %}
-    <script type="text/javascript" src = "/site-media/jsutils.js"></script>
+    <script type="text/javascript" src = "{{MEDIA_URL}}jsutils.js"></script>
     {% endif %}
     
     {% if allow_sort %}
-    <script type="text/javascript" src = "/site-media/TableSort.js"></script>
+    <script type="text/javascript" src = "{{MEDIA_URL}}TableSort.js"></script>
     {% endif %}
     
     {% if panel %}
-    <script type="text/javascript" src = "/site-media/Panel.js"></script>
+    <script type="text/javascript" src = "{{MEDIA_URL}}Panel.js"></script>
     <script type="text/javascript">var options = {{panel}};</script>
     {% endif %}
 {% endblock %}
 
 {% block feuillestyle %}
-    <link rel="StyleSheet" href="/site-media/rapportsrt_iframe.css" type="text/css" media="screen">
+    <link rel="StyleSheet" href="{{MEDIA_URL}}rapportsrt_iframe.css" type="text/css" media="screen">
 {% endblock %}
 
 {% block menu %}

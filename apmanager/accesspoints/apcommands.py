@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.urlresolvers import reverse
+
 from apmanager.accesspoints.models import AccessPoint, APGroup
 from datetime import datetime
 from apmanager import settings
@@ -6,23 +8,19 @@ from tempfile import mkstemp
 import commands
 import os,sys
 
-from django.core import validators
-
 def sleep_and_exit( exit=0, len='5s' ):
     os.system('sleep '+ len)
     return HttpResponseNotModified()
     sys.exit(exit)
 
-validate_file_or_text = validators.RequiredIfOtherFieldNotGiven("script","Vous devez fournir soit un fichier ou du texte comme script")
-
 class Command ( models.Model ):
     """
         Command to execute on an Access Point.
     """
-    name = models.CharField( maxlength=255, core=True,
-        help_text="Display Name", unique=True )
-    script = models.FileField ( upload_to=settings.UPLOAD_ROOT, core=False, blank=True )
-    script_text = models.TextField( blank=True, validator_list=(validate_file_or_text,))
+    name = models.CharField( max_length=255,
+        help_text=u"Display Name", unique=True )
+    script = models.FileField ( upload_to=settings.UPLOAD_ROOT, blank=True )
+    script_text = models.TextField( blank=True)
 
     def save(self):
         if self.script_text:
@@ -30,15 +28,12 @@ class Command ( models.Model ):
         models.Model.save(self)
 
    
-    def __str__(self):
-        return "Script: %s" % self.name
+    def __unicode__(self):
+        return u"Script: %s" % self.name
 
     def __repr__(self):
-        return "Script: %s [%s]" % (self.name, self.script or self.script_text[0:30])
+        return u"Script: %s [%s]" % (self.name, self.script or self.script_text[0:30])
 
-    class Admin:
-        pass
-    
     def has_params(self):
         return self.commandparameter_set.count() > 0
 
@@ -61,15 +56,15 @@ class Command ( models.Model ):
 
         return cmd
 
-import django.newforms as forms
+from django import forms
 class CommandParameter ( models.Model ):
     ALLOWED_TYPES = (
         (int,'Integer',forms.IntegerField),
         (str,'String',forms.CharField),
     )
-    name = models.CharField(core=True, maxlength = 100, verbose_name="Parameter name")
-    type = models.CharField(core=True, maxlength = 50, choices=[(i[0],i[1]) for i in ALLOWED_TYPES], )#radio_admin=True, )
-    command = models.ForeignKey(Command, edit_inline=models.TABULAR)
+    name = models.CharField(max_length = 100, verbose_name="Parameter name")
+    type = models.CharField(max_length = 50, choices=[(i[0],i[1]) for i in ALLOWED_TYPES], )#radio_admin=True, )
+    command = models.ForeignKey(Command)
 
     unique_together= (('name','command'),)
   
@@ -93,39 +88,47 @@ class CommandParameter ( models.Model ):
                 return t[2]()
         return forms.Field() 
 
-validate_ap_or_group = validators.RequiredIfOtherFieldNotGiven("group","Besoin du groupe ou du AP")
+#FIXME Was this used?
+#validate_ap_or_group = validators.RequiredIfOtherFieldNotGiven("group","Besoin du groupe ou du AP")
 
 class CommandExec ( models.Model ):
     command = models.ForeignKey(Command)
-    accesspoint = models.ForeignKey(AccessPoint,null=True,validator_list=(validate_ap_or_group,))
+    accesspoint = models.ForeignKey(AccessPoint,null=True,)#FIXME See above validator_list=(validate_ap_or_group,))
     group = models.ForeignKey(APGroup,null=True)
     last_run = models.DateTimeField(null=True)
 
+    def get_absolute_url(self):
+        return reverse("apmanager.accesspoints.views.apcommands.view_command", args=(self.id,))
+
     def target(self):
         return self.group or self.accesspoint
+
     def target_list(self):
         if self.group:
             return self.group.accessPoints.all()
         else:
             return [self.accesspoint,]
+
     def __target_table_row(self):
         if self.group:
-            return '<a href="/groups/%d/">%s</a>' % (int(self.group.id),self.group.name)
+            return '<a href="%s">%s</a>' % (self.group.get_absolute_url(),self.group.name)
         else:
-            return '<a href="/accesspoints/%d/">%s</a>' % (int(self.accesspoint.id),self.accesspoint.name) 
+            return '<a href="%s">%s</a>' % (self.accesspoint.get_absolute_url(),self.accesspoint.name) 
 
+    @staticmethod
     def table_view_header():
         return "".join(["<th>%s</th>" % i for i in (
             'Commande','Cible','Dernier lancement',#'R&eacute;ussi','Cr&eacute;&eacute;',
            # 'D&eacute;but&eacute;', 'Termin&eacute;',
         )])
-    table_view_header = staticmethod(table_view_header)
+
+    @staticmethod
     def table_view_footer():
         return None
-    table_view_footer = staticmethod(table_view_footer)
+
     def to_table_row(self):
         return "".join(["<td>%s</td>" % i for i in (
-            '<a href="/commands/view/%d/">%s</a>' % (int(self.id),self.command.name),
+            '<a href="%s">%s</a>' % (self.get_absolute_url(),self.command.name),
             self.__target_table_row(),
 			self.last_run,
            # self.result == 0,self.created, self.started, self.ended,
@@ -150,20 +153,25 @@ class CommandExecResult ( models.Model ):
     started = models.DateTimeField(null=True)
     ended = models.DateTimeField(null=True)
 
+    def get_absolute_url(self):
+        return reverse("apmanager.accesspoints.views.apcommands.view_exec", args=(self.id,))
+
+    @staticmethod
     def table_view_header():
         return "".join(["<th>%s</th>" % i for i in (
             'AP','R&eacute;ussi','Cr&eacute;&eacute;',
             'D&eacute;but&eacute;', 'Termin&eacute;', '',
         )])
-    table_view_header = staticmethod(table_view_header)
+
+    @staticmethod
     def table_view_footer():
         return None
-    table_view_footer = staticmethod(table_view_footer)
+
     def to_table_row(self):
         return "".join(["<td>%s</td>" % i for i in (
-            '<a href="/accesspoints/%d/">%s</a>' % (int(self.accesspoint.id),self.accesspoint.name),
+            '<a href="%s">%s</a>' % (self.accesspoint.get_absolute_url(),self.accesspoint.name),
             self.result == 0,self.created, self.started, self.ended,
-            '<a href="/commands/viewexec/%d/">%s</a>' % (int(self.id),'D&eacute;tails'),
+            '<a href="%s">%s</a>' % (self.get_absolute_url(),'D&eacute;tails'),
         )])
 
     def schedule(self):

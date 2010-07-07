@@ -7,14 +7,14 @@
 {% endblock %}
 
 {% block head %}
-    <script type="text/javascript" src = "/site-media/jsutils.js"></script>
+    <script type="text/javascript" src = "{{MEDIA_URL}}jsutils.js"></script>
 {% endblock %}
 {% block feuillestyle %}
 {% if printable %}
-    <link rel="StyleSheet" href="/site-media/rapportsrt_toprint.css" type="text/css" media="screen">
-    <link rel="StyleSheet" href="/site-media/print.css" type="text/css" media="print">    
+    <link rel="StyleSheet" href="{{MEDIA_URL}}rapportsrt_toprint.css" type="text/css" media="screen">
+    <link rel="StyleSheet" href="{{MEDIA_URL}}print.css" type="text/css" media="print">    
 {% else %}
-    <link rel="StyleSheet" href="/site-media/rapportsrt.css" type="text/css" media="screen">
+    <link rel="StyleSheet" href="{{MEDIA_URL}}rapportsrt.css" type="text/css" media="screen">
 {% endif %}
 {% endblock %}
 {% block menu %}
@@ -37,6 +37,6 @@
 {% if report.owner %}
 <p>Pour toutes questions sur ce rapport, consultez {{ report.owner }}.</p>
 {% endif %}
-<p><a href="{% url django.contrib.admin.views.main.index %}genericsql/report/{{ report.id }}/">Modifier ce rapport</a></p>
+<p><a href="{% url admin:genericsql_report_change report.id %}">Modifier ce rapport</a></p>
 {% endif %}
 {% endblock %}
