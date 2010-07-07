@@ -5,9 +5,9 @@
         @param tableid the id of the table to sort
         @param sortid the id of the div that will receive the sorting "bar"
     */
-    function initSort(tableid,sortid)
+    function initSort(tableid,sortid,media_root)
     {
-        tablesort = new TableSort(tableid,sortid);
+        tablesort = new TableSort(tableid,sortid,media_root);
     }
 
     //---------------------------------------------------------------------
@@ -17,7 +17,7 @@
         @param sortBar the id of the div that will receive the sorting bar
         @return a TableSort object
     */
-    function TableSort(tableID,sortBar)
+    function TableSort(tableID,sortBar,media_root)
     {
         //variables
         this.table = document.getElementById(tableID);
@@ -26,6 +26,7 @@
         this.sortLength = 0;
         this.sortCriterias = new Array();
         this.usedCriterias = new Array();
+        this.media_root = media_root;
 
         //initialisation
         this.initSortAction();
@@ -124,7 +125,7 @@
         elm.setAttribute("alt","remove");
         elm.setAttribute("title","Enlever le tri");
         elm.setAttribute("class","clickable");
-        elm.setAttribute("src","/site-media/ximg.gif");
+        elm.setAttribute("src",this.media_root + "ximg.gif");
         elm.setAttribute("onclick","tablesort.removeSort("+lineId+")");
         return elm;
     }
@@ -140,7 +141,7 @@
         elm.setAttribute("alt","add");
         elm.setAttribute("title","AJouter un autre niveau de tri");
         elm.setAttribute("class","clickable");
-        elm.setAttribute("src","/site-media/add.gif");
+        elm.setAttribute("src",this.media_root + "add.gif");
         elm.setAttribute("onclick","tablesort.lockCurrentSort()");
         return elm;
     }
@@ -195,11 +196,11 @@
         elm.setAttribute("title","Changer la direction du tri");
         elm.setAttribute("class","clickable");
         if(sortBy.split(' ')[1]=="DESC"){
-            imgurl="/site-media/down.gif"
-            mimgurl="/site-media/down-to-up.gif"
+            imgurl=this.media_root + "down.gif"
+            mimgurl=this.media_root + "down-to-up.gif"
         }else{
-            imgurl="/site-media/up.gif"
-            mimgurl="/site-media/up-to-down.gif"
+            imgurl=this.media_root + "up.gif"
+            mimgurl=this.media_root + "up-to-down.gif"
         }
         var img = document.createElement("img");
         img.setAttribute("alt",imgurl);

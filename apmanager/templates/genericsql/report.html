@@ -5,7 +5,7 @@
   onload="window.print();"
 {% else %}
     {% if allow_sort  %}
-        onload='initSort("refreshtable","sortdiv");{% if panel %} initPanel("refreshtable","paneldiv",options);{% endif %}'
+        onload='initSort("refreshtable","sortdiv","{{MEDIA_URL}}");{% if panel %} initPanel("refreshtable","paneldiv",options);{% endif %}'
     {% else %}
         {% if panel %}
         onload='initPanel("refreshtable","paneldiv",options);'

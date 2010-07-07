@@ -205,15 +205,15 @@ def _do_sort(report,request):
     #Get the default sorting value
     orderby = report.default_order_by
     #See if a non-blank value was supplied
-    if request.GET.has_key("order_by") and request["order_by"]:
+    if request.GET.has_key("order_by") and request.GET["order_by"]:
         #avoid SQL injection, only allow numerics, commas and DESC
-        if re.compile("^[\d]+(\sDESC)?(\s?,\s?([\d]+(\sDESC)?))*\s?$").match(request["order_by"]):
+        if re.compile("^[\d]+(\sDESC)?(\s?,\s?([\d]+(\sDESC)?))*\s?$").match(request.GET["order_by"]):
             #use valid ORDER BY
-            orderby = request["order_by"]
+            orderby = request.GET["order_by"]
         else:
             #Throw an error. To use the default value instead, replace this line by "pass"
             return render_to_response('genericsql/report_error.html',
-                {"exception":ProgrammingError("ORDER BY "+request["order_by"])})
+                {"exception":ProgrammingError("ORDER BY "+request.GET["order_by"])})
         
     #now we replace the placeholder in the sql query
     report.sql = report.sql.replace("ORDER BY","ORDER BY " + orderby + " ")
