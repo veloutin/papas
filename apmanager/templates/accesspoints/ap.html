@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% comment %}{% block feuillestyle %}
 {% endblock %}{% endcomment %}
@@ -9,13 +10,14 @@
 {% block body %}
 <h2>{{ ap.name }}</h2>
 <table>
-<tr><th>IP</th><td>{{ ap.ipv4Address }}</td></tr>
-<tr><th>MAC</th><td>{{ ap.macAddress }}</td></tr>
-<tr><th>Description</th><td>{{ ap.description }}</td></tr>
+<tr><th>{% trans "IP" %}</th><td>{{ ap.ipv4Address }}</td></tr>
+<tr><th>{% trans "MAC" %}</th><td>{{ ap.macAddress }}</td></tr>
+<tr><th>{% trans "Description" %}</th><td>{{ ap.description }}</td></tr>
+<tr><th>{% trans "Architecture" %}</th><td>{{ ap.architecture }}</td></tr>
 </table>
 <a href='{% url apmanager.accesspoints.views.ap.view_ap_nagios_config ap.id %}'>Configuration Nagios</a>
 <br /><hr /><br />
-<h3>Clients</h3>
+<h3>{% trans "Clients" %}</h3>
 <table>
 <thead><tr><th>MAC</th><th>IP</th></tr></thead>
 {% if ap.apclient_set.all %}
@@ -26,7 +28,7 @@
 </table>
 <br />
     <form method="POST">
-        <input type="submit" value="Actualiser"/>
+        <input type="submit" name="refresh_btn" value="{% trans "Refresh" %}"/>
     </form>
 
 <br />

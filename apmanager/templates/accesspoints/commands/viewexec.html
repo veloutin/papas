@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load i18n %}
+
 {% comment %}{% block feuillestyle %}
 {% endblock %}{% endcomment %}
 {% block head %} {% endblock %}
@@ -8,34 +10,34 @@
 {% block body %}
 <h2><a href="{% url apmanager.accesspoints.views.apcommands.view_command cmd.commandexec.id %}">{{ cmd.commandexec.command.name }}</a></h2>
 <table>
-<tr><th>Param&egrave;tre</th><th>Valeur</th></tr>
-<tr><td>Cible:</td><td>{{ cmd.accesspoint.name }}</td></tr>
+<tr><th>{% trans "Parameter" %}</th><th>{% trans "Value" %}</th></tr>
+<tr><td>{% trans "Target:" %}</td><td>{{ cmd.accesspoint.name }}</td></tr>
 {% for up in cmd.commandexec.command.usedparameter_set.iterator %}
     <tr><td>{{ up.parameter.name }}:</td><td>{{ up.value }}</td></tr>
 {% endfor %}
 </table>
-    <p> Date de cr&eacute;ation&nbsp;: {{ cmd.created }}</p>
+    <p>{% blocktrans %}Created on: {{ cmd.created }}{% endblocktrans %}</p>
 {% if cmd.started %}
-    <p> Lanc&eacute;&nbsp;: {{ cmd.started }}</p>
+    <p>{% blocktrans %}Started on: {{ cmd.started }}{% endblocktrans %}</p>
     {% if cmd.ended %}
         <ul>
-            <li><b>Resultat&nbsp;:&nbsp;</b>{{ cmd.result }}</li>
-            <li><b>Termin&eacute;&nbsp;:&nbsp;</b>{{ cmd.ended }}</li>
+            <li><b>{% trans "Result:" %}</b>{{ cmd.result }}</li>
+            <li><b>{% trans "Finished: " %}</b>{{ cmd.ended }}</li>
         </ul>
-        <p> Sortie&nbsp;: </p>
+        <p>{% trans "Output:" %}</p>
         <pre>{{ cmd.output }}</pre>
         <form method="POST">
-            <input type="submit" value="Relancer!"/>
+            <input type="submit" name="rerun_btn" value="{% trans "Run Again" %}"/>
         </form>
     {% else %}
     <form method="GET">
-        <input type="submit" value="Actualiser!"/>
+        <input type="submit" name="refresh_btn" value="{% trans "Refresh" %}"/>
     </form>
     {% endif %}
     
 {% else %}
     <form method="POST">
-        <input type="submit" value="Lancer!"/>
+        <input type="submit" name="run_btn" value="{% trans "Run" %}"/>
     </form>
 {% endif %}
 {% include "accesspoints/ap/links.html" %}

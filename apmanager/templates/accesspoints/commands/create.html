@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% comment %}{% block feuillestyle %}
 {% endblock %}{% endcomment %}
@@ -7,23 +8,23 @@
 {% block menu %}
 {% endblock %}
 {% block body %}
-<h2>Create a Command!</h2>
+<h2>{% trans "Create a Command" %}</h2>
 
 <form method="post">
 <table>
-		<tr><th><label for="group_id">Groupe</label></th><td><select name="group_id">
-        <option value="">Choisir un Groupe</option>
+		<tr><th><label for="group_id">{% trans "Group" %}</label></th><td><select name="group_id">
+        <option value="">{% trans "Select a Group" %}</option>
 		{% for group in group_list %}
 		<option value="{{group.id}}" {% ifequal group.id data.group_id  %}selected="true"{% endifequal %}>{{group.name}}</option>
 		{% endfor %}
 		</select></td></tr>
-		<tr><th><label for="ap_id">Point d'acc&egrave;s</label></th><td><select name="ap_id">
-        <option value="">Choisir un AP</option>
+		<tr><th><label for="ap_id">{% trans "Access Point" %}</label></th><td><select name="ap_id">
+        <option value="">{% trans "Select an AP" %}</option>
 		{% for ap in ap_list %}
 		<option value="{{ap.id}}" {% ifequal ap.id data.ap_id  %}selected="true"{% endifequal %}>{{ap.name}}</option>
 		{% endfor %}
 		</select></td></tr>
-<tr><th><label for="command_id">Commande</label></th><td><select name="command_id">
+<tr><th><label for="command_id">{% trans "Command" %}</label></th><td><select name="command_id">
 		{% for cmd in cmd_list %}
 		<option value="{{cmd.id}}" {% ifequal cmd.id cmd.ap_id %}selected="true"{% endifequal %}>{{cmd.name}}</option>
 		{% endfor %}

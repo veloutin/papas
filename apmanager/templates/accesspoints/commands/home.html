@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% comment %}{% block feuillestyle %}
 {% endblock %}{% endcomment %}
@@ -7,7 +8,7 @@
 {% block menu %}
 {% endblock %}
 {% block body %}
-<h2>Commandes!</h2>
+<h2>{% trans "Commands" %}</h2>
 
 {% include "accesspoints/ap/links.html" %}
 {% include "accesspoints/groups/links.html" %}

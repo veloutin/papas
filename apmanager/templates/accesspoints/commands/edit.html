@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% comment %}{% block feuillestyle %}
 {% endblock %}{% endcomment %}
@@ -7,7 +8,7 @@
 {% block menu %}
 {% endblock %}
 {% block body %}
-<h2>Chosir les param&egrave;tres de la commande</h2>
+<h2>{% trans "Choose the command parameters" %}</h2>
 <form method="post">
 <table>
 {% for param in param_list %}

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% comment %}{% block feuillestyle %}
 {% endblock %}{% endcomment %}
 {% block head %} {% endblock %}
@@ -8,14 +9,14 @@
 {% block body %}
 <h2>{{ cmd.command.name }}</h2>
 <table>
-<tr><th>Param&egrave;tre</th><th>Valeur</th></tr>
-<tr><td>Cible:</td><td>{{ cmd.target }}</td></tr>
+<tr><th>{% trans "Parameter" %}</th><th>{% trans "Value" %}</th></tr>
+<tr><td>{% trans "Target:" %}</td><td>{{ cmd.target }}</td></tr>
 {% for up in cmd.usedparameter_set.iterator %}
     <tr><td>{{ up.parameter.name }}:</td><td>{{ up.value }}</td></tr>
 {% endfor %}
 </table>
 
-<h3>Resultats</h3>
+<h3>{% trans "Results" %}</h3>
 <table>
 {% if result_header %}<tr>{{result_header|safe}}</tr>{% endif %}
 {% for c in cmd.commandexecresult_set.iterator %}
@@ -24,10 +25,10 @@
 {% if result_footer %}<tr>{{result_footer|safe}}</tr>{% endif %}
 </table>
     <form method="GET">
-        <input type="submit" value="Actualiser!"/>
+        <input type="submit" name="refresh_btn" value="{% trans "Refresh" %}"/>
     </form>
         <form method="POST">
-            <input type="submit" value="Lancer!"/>
+            <input type="submit" name = "launch_btn" value="{% trans "Run" %}"/>
         </form>
 {% include "accesspoints/ap/links.html" %}
 {% include "accesspoints/groups/links.html" %}

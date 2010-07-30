@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block meta %}
 <meta http-equiv="Refresh" content="{{time}}; url={{url}}">
 {% endblock %}
@@ -8,7 +9,7 @@
 
 <br>
 
-<span align="center">Vous serez redirig&eacute;s dans {{time}} secondes vers <a href="{{url}}">ici</a></span>
+<span align="center">{% blocktrans %}You will be redirected <a href="{{url}}">here</a> in {{time}} seconds{% endblocktrans %}</span>
 
 <br /><br /><hr />
 

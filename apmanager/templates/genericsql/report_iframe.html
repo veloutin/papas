@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block bodytags %}
 {% if allow_sort  %}
@@ -36,7 +37,7 @@
 {% endblock %}
 
 {% block body %}
-{% if panel %}<a href="#" onclick="panel.toggle(); return false;">Avanc&eacute;</a>&nbsp;{% endif %}
+{% if panel %}<a href="#" onclick="panel.toggle(); return false;">{% trans "Toggle Panel" %}</a>&nbsp;{% endif %}
 {% if allow_sort %}<div id="sortdiv" class=" sortbar"></div>{% endif %}
 {% include "genericsql/report_data.inc.html" %}
 {% endblock %}

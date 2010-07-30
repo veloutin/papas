@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load i18n %}
 {% block bodytags %}
 {% if printable %}
   onload="window.print();"
@@ -44,15 +44,15 @@
 {% block body %}
 <h2>{{ report.title }}</h2>
 {% if printable %}
-<p>Imprim&eacute; le {% now "Y-m-d \à H\hi" %}.</p>
+<p>{% blocktrans %}Printed on {% now "Y-m-d \à H\hi" %}{% endblocktrans %}</p>
 {% else %}
     <p>
     {% if allow_sort or panel %}
-    <a href="?imprimer" onclick="window.open(addAllParameters(document.location.href.addParameter('imprimer','',true))); return false;">Imprimer</a>&nbsp;<a href="?csv" onclick="window.open(addAllParameters(document.location.href.addParameter('csv','',true))); return false;" >Exporter en .csv</a>
+    <a href="?imprimer" onclick="window.open(addAllParameters(document.location.href.addParameter('imprimer','',true))); return false;">{% trans "Print" %}</a>&nbsp;<a href="?csv" onclick="window.open(addAllParameters(document.location.href.addParameter('csv','',true))); return false;" >{% trans "CSV Export" %}</a>
     {% else %}
-    <p><a href="?imprimer" onclick="window.open('?imprimer'); return false;">Imprimer</a>&nbsp;<a href="?csv" >Exporter en .csv</a>
+    <p><a href="?imprimer" onclick="window.open('?imprimer'); return false;">{% trans "Print" %}</a>&nbsp;<a href="?csv" >{% trans "CSV Export" %}</a>
     {% endif %}
-    {% if panel %}&nbsp;<a href="#" onclick="panel.toggle(); return false;">Avanc&eacute;</a>{% endif %}
+    {% if panel %}&nbsp;<a href="#" onclick="panel.toggle(); return false;">{% trans "Toggle Panel" %}</a>{% endif %}
     </p>
 {% endif %}
 {% if allow_sort %}<div id="sortdiv" class=" sortbar"></div>{% endif %}
@@ -61,8 +61,8 @@
 {% block admin %}
 {% if not printable %}
 {% if report.owner %}
-<p>Pour toutes questions sur ce rapport, consultez {{ report.owner }}.</p>
+<p>{% blocktrans %}For any questions concerning this report, see {{ report.owner }}.{% endblocktrans %}</p>
 {% endif %}
-<p><a href="{% url admin:genericsql_report_change report.id %}">Modifier ce rapport</a></p>
+<p><a href="{% url admin:genericsql_report_change report.id %}">{% trans "Modify Report" %}</a></p>
 {% endif %}
 {% endblock %}

@@ -1,8 +1,9 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block feuillestyle %}{% endblock %}
 {% block menu %}{% endblock %}
 
-{% block body %}<h3>Accès refusé</h3><p>Vous n'avez pas les droits nécessaires pour accéder à cette page</p>{% endblock %}
+{% block body %}<h3>{% trans "Access Denied" %}</h3><p>{% trans "You are not allowed to access this page" %}</p>{% endblock %}
 
 {% block body_public %}{% endblock %}

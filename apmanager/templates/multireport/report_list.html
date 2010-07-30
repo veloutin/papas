@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block bodytags %}
 {% if printable %}
@@ -23,9 +24,9 @@
 {% for sreport in report_list %}
 <h2 {% if not forloop.first %}{% endif %}>{{ sreport.title }}</h2>
 {% if printable %}
-<p>Imprim&eacute; le {% now "Y-m-d \à H\hi" %}.</p>
+<p>{% blocktrans %}Printed on {% now "Y-m-d \à H\hi" %}.{% endblocktrans %}</p>
 {% else %}
-<p><a href="?imprimer" onclick="window.open(addAllParameters(document.location.href.addParameter('imprimer','',true))); return false;">Imprimer</a></p>
+<p><a href="?imprimer" onclick="window.open(addAllParameters(document.location.href.addParameter('imprimer','',true))); return false;">{% trans "Print" %}</a></p>
 {% endif %}
 {{ sreport.html }}
 
@@ -35,8 +36,8 @@
 
 {% if not printable %}
 {% if report.owner %}
-<p>Pour toutes questions sur ce rapport, consultez {{ report.owner }}.</p>
+<p>{% blocktrans %}For any questions concerning this report, see {{ report.owner }}.{% endblocktrans %}</p>
 {% endif %}
-<p><a href="{% url admin:genericsql_report_change report.id %}">Modifier ce rapport</a></p>
+<p><a href="{% url admin:genericsql_report_change report.id %}">{% trans "Modify Report" %}</a></p>
 {% endif %}
 {% endblock %}

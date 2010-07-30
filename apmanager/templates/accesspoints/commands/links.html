@@ -1,2 +1,3 @@
-<a href='{% url apmanager.accesspoints.views.apcommands.view_home %}'>Liste des commandes ex&eacute;cut&eacute;es</a><br />
-<a href='{% url apmanager.accesspoints.views.apcommands.create_new_command %}'>Ex&eacute;cuter une commande</a><br />
+{% load i18n %}
+<a href='{% url apmanager.accesspoints.views.apcommands.view_home %}'>{% trans "Executed Commands List" %}</a><br />
+<a href='{% url apmanager.accesspoints.views.apcommands.create_new_command %}'>{% trans "Run a command" %}</a><br />

@@ -3,7 +3,7 @@
 
 {% block body %}
 {% if object_list %}
-    Rapports disponibles :
+    {% trans "Available Reports:" %}
     <ul>
     {% for report in object_list %}
         <li><a href="{{ report.get_absolute_url }}">{{ report.title }}</a>
@@ -23,5 +23,5 @@
 {% endif %}
 {% endblock %}
 {% block admin %}
-<a href="{% url admin:genericsql_report_changelist %}">Gestion des rapports</a>
+<a href="{% url admin:genericsql_report_changelist %}">{% trans "Report Management" %}</a>
 {% endblock %}

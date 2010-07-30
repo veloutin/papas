@@ -1,8 +1,9 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block body %}
 {% if object_list %}
-    Multi-Rapports disponibles :
+    {% trans "Available Multi-Reports:" %}
     <ul>
     {% for report in object_list %}
         <li><a href="{{ report.get_absolute_url }}">{{ report.name }}</a></li>
@@ -11,5 +12,5 @@
 {% endif %}
 {% endblock %}
 {% block admin %}
-<a href="{% url admin:multireport_multireport_changelist %}">Gestion des rapports</a>
+<a href="{% url admin:multireport_multireport_changelist %}">{% trans "Report Management" %}</a>
 {% endblock %}
