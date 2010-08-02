@@ -2,6 +2,7 @@ from apmanager.accesspoints.models import *
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.utils.translation import ugettext as _
 
 @login_required
 def view_group_list(request):
@@ -11,7 +12,7 @@ def view_group_list(request):
     group_list=APGroup.objects.all().order_by('name')
     return render_to_response('accesspoints/list.html',
         {'object_list':group_list,
-         'caption':"Liste des groupes",
+         'caption':_(u"Groups List"),
          'table_header':APGroup.table_view_header(),
          'table_footer':APGroup.table_view_footer(),},
         context_instance=RequestContext(request))

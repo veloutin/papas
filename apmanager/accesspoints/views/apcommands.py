@@ -10,6 +10,7 @@ from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
+from django.utils.translation import ugettext as _
 
 @login_required
 def view_home(request):
@@ -18,10 +19,10 @@ def view_home(request):
     """
     if request.GET.has_key("all"):
         cexec_list = CommandExec.objects.order_by('-last_run', '-id')
-        caption = "Liste de toutes les ex&eacute;cutions de commandes"
+        caption = _(u"List of all command executions")
     else:
         cexec_list = CommandExec.objects.order_by('-last_run', '-id')[:20]
-        caption = "Liste d'ex&eacute;cutions r&eacute;centes (<a href='?all'>Toutes</a>)"
+        caption = _(u"List of recent command executions")
     return render_to_response('accesspoints/list.html',
         {'object_list':cexec_list,
          'caption':caption,

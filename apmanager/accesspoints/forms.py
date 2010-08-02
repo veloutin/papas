@@ -1,10 +1,10 @@
-from models import Command
+import models
 
 from django.forms import ModelForm
 
 class CommandForm(ModelForm):
     class Meta:
-        model = Command
+        model = models.Command
 
     def clean(self):
         cleaned_data = self.cleaned_data

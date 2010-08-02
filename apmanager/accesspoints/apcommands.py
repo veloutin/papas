@@ -8,11 +8,6 @@ from tempfile import mkstemp
 import commands
 import os,sys
 
-def sleep_and_exit( exit=0, len='5s' ):
-    os.system('sleep '+ len)
-    return HttpResponseNotModified()
-    sys.exit(exit)
-
 class Command ( models.Model ):
     """
         Command to execute on an Access Point.

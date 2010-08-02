@@ -1,7 +1,11 @@
 # -*- coding: UTF-8 -*-
 import re
 
-from MySQLdb import ProgrammingError
+try:
+    from MySQLdb import ProgrammingError
+except ImportError:
+    class ProgrammingError(Exception):
+        pass
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import get_mod_func

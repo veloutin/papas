@@ -1,0 +1,177 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-07-27 15:44-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: accesspoints/architecture.py:28
+msgid "Console"
+msgstr "Ligne de commande"
+
+#: accesspoints/architecture.py:29
+msgid "SNMP"
+msgstr "SNMP"
+
+#: accesspoints/architecture.py:33
+msgid "String"
+msgstr "Texte court"
+
+#: accesspoints/architecture.py:34
+msgid "Integer"
+msgstr "Entier"
+
+#: accesspoints/architecture.py:35
+msgid "Boolean"
+msgstr "Vrai/Faux"
+
+#: accesspoints/architecture.py:36
+msgid "Text"
+msgstr "Texte"
+
+#: accesspoints/architecture.py:37
+msgid "Password"
+msgstr "Mot de passe"
+
+#: accesspoints/architecture.py:40
+msgid "IP Address"
+msgstr "Addresse IP"
+
+#: accesspoints/architecture.py:44
+msgid "Not Set"
+msgstr "Non défini"
+
+#: accesspoints/architecture.py:45
+msgid "Inherited"
+msgstr "Hérité"
+
+#: accesspoints/architecture.py:46
+msgid "Set"
+msgstr "Défini"
+
+#: accesspoints/architecture.py:56 accesspoints/architecture.py:65
+#: accesspoints/architecture.py:89
+msgid "Name"
+msgstr "Nom"
+
+#: accesspoints/architecture.py:68
+msgid "Type"
+msgstr "Type"
+
+#: accesspoints/architecture.py:73
+msgid "Default Value"
+msgstr "Valeur par défaut"
+
+#: accesspoints/architecture.py:86
+msgid "Parent"
+msgstr "Parent"
+
+#: accesspoints/architecture.py:95 templates/accesspoints/ap.html:16
+msgid "Architecture"
+msgstr "Architecture"
+
+#: accesspoints/architecture.py:100
+msgid "Source"
+msgstr "Source"
+
+#: accesspoints/architecture.py:105
+msgid "Value"
+msgstr "Valeur"
+
+#: accesspoints/architecture.py:119
+msgid "Script Template"
+msgstr "Gabarit de script"
+
+#: accesspoints/architecture.py:122
+msgid "Mode"
+msgstr "Mode"
+
+#: accesspoints/architecture.py:127
+#, python-format
+msgid "%(section)s for %(arch)s [%(mode)s]"
+msgstr "%(section)s pour %(arch)s [%(mode)s]"
+
+#: accesspoints/models.py:14
+msgid "Host Name"
+msgstr "Nom d'hôte"
+
+#: accesspoints/models.py:16
+msgid "IP address of the access point"
+msgstr "Adresse IP du point d'accès"
+
+#: accesspoints/models.py:18
+msgid "MAC address"
+msgstr "Adresse MAC"
+
+#: accesspoints/models.py:20
+msgid "Short description / Location"
+msgstr "Description / Emplacement"
+
+#: accesspoints/models.py:88
+msgid "Name of the Group"
+msgstr "Nom du groupe"
+
+#: accesspoints/models.py:90
+msgid "Access Points in this AP group"
+msgstr "Points d'accès dans ce groupe"
+
+#: accesspoints/models.py:96
+#, python-format
+msgid "Group: %s"
+msgstr "Groupe: %s"
+
+#: accesspoints/models.py:119
+msgid "IP address of the client"
+msgstr "Adresse IP du client"
+
+#: accesspoints/models.py:121
+msgid "Client MAC address"
+msgstr "Adresse MAC du client"
+
+#: genericsql/models.py:160
+msgid "Agregate function to perform"
+msgstr "Fonction agrégée à exécuter"
+
+#: templates/redirect.html:12
+#, python-format
+msgid "You will be redirected <a href=\"%(url)s\">here</a> in %(time)s seconds"
+msgstr "Vous serez redirigés dans %(time)s secondes vers <a href=\"%(url)s\">ici</a>"
+
+#: templates/accesspoints/ap.html:13
+msgid "IP"
+msgstr "IP"
+
+#: templates/accesspoints/ap.html:14
+msgid "MAC"
+msgstr "MAC"
+
+#: templates/accesspoints/ap.html:15
+msgid "Description"
+msgstr "Description"
+
+#: templates/accesspoints/ap.html:20
+msgid "Clients"
+msgstr "Clients"
+
+#: templates/accesspoints/ap.html:31
+msgid "Refresh"
+msgstr "Actualiser"
+
+#: templates/genericsql/report_list.html:21
+msgid "No reports available"
+msgstr "Aucune rapport disponible"
+
+#: templates/genericsql/report_list.html:22
+msgid "Create a new report"
+msgstr "Créer un nouveau rapport"

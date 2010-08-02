@@ -4,23 +4,21 @@ import commands
 
 from django.db import models
 from django.core.urlresolvers import reverse
-
-from apmanager.settings import DEBUG
-# Create your models here.
-
+from django.utils.translation import ugettext_lazy as _
 
 class AccessPoint ( models.Model ):
     """
         Represents an Access Point, with name, IP, MAC and description.
     """
     name = models.CharField( max_length=100,
-        help_text=u"Host Name" )
+        help_text=_(u"Host Name") )
     ipv4Address = models.IPAddressField( unique=True,
-        help_text=u"IP address of the access point" )
+        help_text=_(u"IP address of the access point") )
     macAddress = models.CharField( max_length=17, unique=True,
-        help_text=u"MAC address" )
+        help_text=_(u"MAC address") )
     description = models.CharField( max_length=255,
-        help_text=u"Short description / Location" )
+        help_text=_(u"Short description / Location") )
+    architecture = models.ForeignKey('Architecture')
 
     class Meta:
         ordering = ('name','ipv4Address',)
@@ -87,15 +85,15 @@ class APGroup ( models.Model ):
         Used to group Access Points into Groups
     """
     name = models.CharField ( max_length=100,
-        help_text=u"Name of the Group", unique=True )
+        help_text=_(u"Name of the Group"), unique=True )
     accessPoints = models.ManyToManyField(AccessPoint,
-        help_text=u"Access Points in this AP group")
+        help_text=_(u"Access Points in this AP group"))
 
     class Meta:
         ordering = ('name',)
     
     def __unicode__(self):
-        return u"Groupe: %s" % (self.name)
+        return _(u"Group: %s") % (self.name)
     __repr__ = __unicode__
 
     def get_absolute_url(self):
@@ -113,15 +111,14 @@ class APGroup ( models.Model ):
     def to_table_row(self):
         return "".join(["<td>%s</td>" % i for i in ('<a href="%s">%s</a>' % (self.get_absolute_url(),self.name),)])
 
-
 class APClient ( models.Model ):
     """
         Client connected to an Access Point
     """
     ipv4Address = models.IPAddressField( null=True,
-        help_text=u"IP address of the client" )
+        help_text=_(u"IP address of the client") )
     macAddress = models.CharField( max_length=17, 
-        help_text=u"Client MAC address" )
+        help_text=_(u"Client MAC address") )
     connected_to = models.ForeignKey( AccessPoint ) 
         
 
@@ -135,11 +132,10 @@ class APClient ( models.Model ):
 
     def to_table_row(self):
         return "".join(["<td>%s</td>" % i for i in (
-            '<a href="/accesspoints/%d/">%s</a>' % (int(self.connected_to.id),self.connected_to.name),
+            '<a href="%s">%s</a>' % (self.connected_to.get_absolute_url(),self.connected_to.name),
             self.ipv4Address,self.macAddress)])
-
 
 
 #Import other models
 from apmanager.accesspoints.apcommands import *
-
+from apmanager.accesspoints.architecture import *
