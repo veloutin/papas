@@ -1,14 +1,54 @@
 import re
+from gettext import gettext as _
+from operator import attrgetter
 
 import commands
 import logging
 
+
+
+class ScopedDict(dict):
+    SCOPE_SEP = "::"
+    def __getattribute__(self, name):
+        scope, split, attrname = name.partition(ScopedDict.SCOPE_SEP)
+        if split:
+            obj = self[scope]
+            if isinstance(obj, ScopedDict):
+                #Continue the scope search in ScopedDict's
+                return getattr(obj, attrname)
+            elif isinstance(obj, dict):
+                #Normal dicts will be searched directly for keys
+                return obj[attrname]
+            else:
+                #Everything else, getattr
+                return getattr(obj, attrname)
+        else:
+            return dict.__getattribute__(self, name)
+            
+
+
 class Protocol(object):
     """ Base Protocol Object """
+
+    @classmethod
+    def _require(cls, source, name):
+        try:
+            return attrgetter(name)(source)
+        except (KeyError, AttributeError):
+            raise MissingParametersException(_("%s is a required parameter") % name)
+            
 
 class ConsoleProtocol(Protocol):
     """ Console Protocol """
 
+class MissingParametersException(Exception):
+    """ Missing Parameters to use Protocol """
+
+class TemporaryFailure(Exception):
+    """ Temporary failure to use Protocol, possible to try again """
+
+class PermanentFailure(Exception):
+    """ Permanent failure, do not try again with same parameters """
 
 def iter_by(iterable, count):
     gen = iter(iterable)
@@ -22,6 +62,13 @@ class SNMPProtocol(Protocol):
     """ SNMP Protocol """
     TYPES = "iusxdnotab="
     RES_RE = re.compile("^(?P<oid>.*) = (?P<type>[A-Z]*): (?P<value>.*)$")
+    def __init__(self):
+        self._host = None
+        self._community = None
+
+    def init(self, parameters):
+        self._host = self._require(parameters, "ap::ipv4Address")
+        self._community = self._require(parameters, "param::Community")
 
     def get_common_options(self):
         raise NotImplementedError("Base SNMP Protocol must be extended")
@@ -71,5 +118,4 @@ class SNMPProtocol(Protocol):
         return dict(
                 ( self._extract_value(line) for line in out.splitlines() ),
             )
-
 
