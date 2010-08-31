@@ -1,12 +1,23 @@
 from django.db import models
 from django.core.urlresolvers import reverse
+from django import forms
 
-from apmanager.accesspoints.models import AccessPoint, APGroup
+from apmanager.accesspoints.models import (
+    AccessPoint,
+    APGroup,
+    CommandTarget,
+    )
+
+from apmanager.accesspoints.architecture import (
+    CommandDefinition,
+    )
+
 from datetime import datetime
 from apmanager import settings
 from tempfile import mkstemp
 import commands
 import os,sys
+
 
 class Command ( models.Model ):
     """
@@ -32,7 +43,7 @@ class Command ( models.Model ):
     def has_params(self):
         return self.commandparameter_set.count() > 0
 
-    def create_instance(self,target) :
+    def create_instance(self, target) :
         if isinstance( target, AccessPoint ):
             return self.__create_instance(accesspoint=target)
         elif isinstance( target, APGroup ):
@@ -51,7 +62,6 @@ class Command ( models.Model ):
 
         return cmd
 
-from django import forms
 class CommandParameter ( models.Model ):
     ALLOWED_TYPES = (
         (int,'Integer',forms.IntegerField),
@@ -87,7 +97,7 @@ class CommandParameter ( models.Model ):
 #validate_ap_or_group = validators.RequiredIfOtherFieldNotGiven("group","Besoin du groupe ou du AP")
 
 class CommandExec ( models.Model ):
-    command = models.ForeignKey(Command)
+    command = models.ForeignKey(CommandDefinition)
     accesspoint = models.ForeignKey(AccessPoint,null=True,)#FIXME See above validator_list=(validate_ap_or_group,))
     group = models.ForeignKey(APGroup,null=True)
     last_run = models.DateTimeField(null=True)
@@ -95,20 +105,16 @@ class CommandExec ( models.Model ):
     def get_absolute_url(self):
         return reverse("apmanager.accesspoints.views.apcommands.view_command", args=(self.id,))
 
+    @property
     def target(self):
-        return self.group or self.accesspoint
+        return CommandTarget(self.accesspoint, self.group)
 
+    @property
     def target_list(self):
-        if self.group:
-            return self.group.accessPoints.all()
-        else:
-            return [self.accesspoint,]
+        return self.target.targets
 
     def __target_table_row(self):
-        if self.group:
-            return '<a href="%s">%s</a>' % (self.group.get_absolute_url(),self.group.name)
-        else:
-            return '<a href="%s">%s</a>' % (self.accesspoint.get_absolute_url(),self.accesspoint.name) 
+        return '<a href="%s">%s</a>' % (self.target.target.get_absolute_url(), self.target.target.name)
 
     @staticmethod
     def table_view_header():
@@ -130,7 +136,7 @@ class CommandExec ( models.Model ):
         )])
 
     def schedule(self):
-        for target in self.target_list():
+        for target in self.target_list:
             cer, created = CommandExecResult.objects.get_or_create(commandexec=self,accesspoint=target, defaults={'created':datetime.now()})
             cer.schedule()
         self.last_run = datetime.now()
@@ -239,10 +245,13 @@ class CommandExecResult ( models.Model ):
         return
 
 class UsedParameter ( models.Model ):
-    parameter = models.ForeignKey(CommandParameter)
+    # parameter = models.ForeignKey(CommandParameter)
+    name = models.CharField(max_length=250)
     command = models.ForeignKey(CommandExec)
     value = models.TextField()
     
-    unique_together = (('parameter','command'),)
+    class Meta:
+        # unique_together = (('parameter','command'),)
+        unique_together = (('name','command'),)
     def to_bash(self):
         return "%s=%s\n" % (self.parameter.name,self.value)

@@ -84,4 +84,8 @@ class Telnet(ConsoleProtocol):
         #Send lines
         for line in text.splitlines():
             self._child.sendline(line)
-        
+
+    def send_if_no_echo(self, text):
+        self._child.waitnoecho(0)
+        self._child.sendline(text)
+

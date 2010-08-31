@@ -3,43 +3,36 @@ from django.conf import settings
 from django.contrib import admin
 
 DEBUG = settings.DEBUG
-SITE_PREFIX_URL = settings.SITE_PREFIX_URL
-
-def prefix(url,prefix):
-    if prefix and len(url)>0:
-        s = url[0]    
-        return url.replace(s,s+prefix)
-    return url
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (prefix(r'^admin/',SITE_PREFIX_URL), include(admin.site.urls)),
+    (r'^admin/', include(admin.site.urls)),
 
 
-    (prefix(r'^accounts/login/',SITE_PREFIX_URL),           'django.contrib.auth.views.login' ),
-    (prefix(r'^accounts/logout/',SITE_PREFIX_URL),          'django.contrib.auth.views.logout' ),
+    (r'^accounts/login/', 'django.contrib.auth.views.login' ),
+    (r'^accounts/logout/', 'django.contrib.auth.views.logout' ),
 
     # Access points
-    (prefix(r'^accesspoints/',SITE_PREFIX_URL),               include('apmanager.accesspoints.apurls')),
+    (r'^accesspoints/', include('apmanager.accesspoints.apurls')),
     # DSH Groups
-    (prefix(r'^groups/',SITE_PREFIX_URL),                     include('apmanager.accesspoints.groupurls')),
+    (r'^groups/', include('apmanager.accesspoints.groupurls')),
 
     # Commands
-    (prefix(r'^commands/',SITE_PREFIX_URL),                   include('apmanager.accesspoints.cmdurls')),
+    (r'^commands/', include('apmanager.accesspoints.cmdurls')),
 
     # Application de rapports generiques
-    (prefix(r'^rapports/',SITE_PREFIX_URL),                 include('apmanager.genericsql.urls')),
+    (r'^rapports/', include('apmanager.genericsql.urls')),
    
     # Multireports
-    (prefix(r'^multireport/',SITE_PREFIX_URL),                 include('apmanager.multireport.urls')),
+    (r'^multireport/', include('apmanager.multireport.urls')),
 
-    (prefix(r'^$',SITE_PREFIX_URL),                         include('apmanager.accesspoints.apurls')),
+    (r'^$', include('apmanager.accesspoints.apurls')),
 )
 # This is used to server static content (images and CSS) during development.
 # For production, Apache must be configured.
 if DEBUG:
     urlpatterns += patterns('',
-        (prefix(r'^site-media/(?P<path>.*)$',SITE_PREFIX_URL), 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+        (r'^site-media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     )
 

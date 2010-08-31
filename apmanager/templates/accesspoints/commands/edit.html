@@ -8,15 +8,23 @@
 {% block menu %}
 {% endblock %}
 {% block body %}
-<h2>{% trans "Choose the command parameters" %}</h2>
+<h2>{% blocktrans %}Executing {{ command }} on {{ target }}{% endblocktrans %}</h2>
+<h3>{% trans "Choose the command parameters" %}</h2>
 <form method="post">
 <table>
-{% for param in param_list %}
-    {{ param.to_input }}
-{% endfor %}
+{{ param_form.as_table }}
 </table>
+{% if target_list %}
 <input type="submit" />
+<h3>{% trans "Target list: " %}</h3>
+<ul>
+{% for t in target_list %}
+    <li>{{t}}</li>
+{% endfor %}
+</ul>
+{% else %}
+<h3>{% trans "Target list if empty" %}</h3>
+{% endif %}
 </form>
-
 {% endblock %}
 {% block body_public %}{% endblock %}

@@ -8,7 +8,7 @@ Architecture todo
  | -SNMP Map     |              |
  | -Console Map  |              |*
  | -Initial Conf |       .------+------.
- '---------------'       | Option      |
+ '---------------'       | Parameter   |
                          +-------------+
           .----------.   |  -key       |
           | Section  |---|  -value     |
@@ -20,13 +20,20 @@ LOG = logging.getLogger('apmanger.accesspoints')
 import commands
 
 from django.db import models
+from django import forms
 from django.forms import widgets
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 
+from lib6ko.protocol import Protocol as BaseProtocol
+from lib6ko import templatetags as cmdtags
+
+
+CONTROL_MODE_CONSOLE = cmdtags.ConsoleNodeBase.mode
+CONTROL_MODE_SNMP = cmdtags.SNMPNodeBase.mode
 CONTROL_MODES = (
-    ("console" , _(u"Console")),
-    ("snmp"    , _(u"SNMP")),
+    (CONTROL_MODE_CONSOLE , _(u"Console")),
+    (CONTROL_MODE_SNMP    , _(u"SNMP")),
 )
 
 FIELD_TYPES = {
@@ -46,6 +53,18 @@ SOURCE_TYPE = {
     "set"    : _(u"Set"),
 }
 
+SUPPORT_TYPE_UNKNOWN = "unknown"
+SUPPORT_TYPE_ERROR = "error"
+SUPPORT_TYPE_UNVERIFIED = "unverified"
+SUPPORT_TYPE_NO = "no"
+SUPPORT_TYPE_OK = "ok"
+SUPPORT_TYPES = (
+    (SUPPORT_TYPE_UNKNOWN, _(u"Unknown")),
+    (SUPPORT_TYPE_UNVERIFIED, _(u"Not Verified")),
+    (SUPPORT_TYPE_NO, _(u"Not Supported")),
+    (SUPPORT_TYPE_OK, _(u"Supported")),
+    (SUPPORT_TYPE_ERROR, _(u"Error occured")),
+)
 
 
 class Section (models.Model):
@@ -58,7 +77,7 @@ class Section (models.Model):
     def __unicode__(self):
         return self.name
 
-class ArchOption (models.Model):
+class Parameter (models.Model):
     name = models.CharField(
         primary_key = True,
         max_length = 255,
@@ -76,6 +95,62 @@ class ArchOption (models.Model):
 
     def __unicode__(self):
         return self.section_id + u"." + self.name
+
+class Protocol (models.Model):
+    modname = models.CharField(
+        primary_key = True,
+        max_length = 255,
+        verbose_name = _(u"Name"),
+        editable = False,
+        )
+    parent = models.ForeignKey('self',
+        null = True,
+        editable = False,
+        )
+    mode = models.CharField(
+        verbose_name = _(u"Mode"),
+        max_length = 255,
+        blank = True, null = True,
+        choices = CONTROL_MODES, )
+
+    def __unicode__(self):
+        return self.modname
+
+    def get_class(self):
+        try:
+            mod, sep, cls = self.modname.rpartition(".")
+            mod = __import__(mod, fromlist=[cls])
+            return getattr(mod, cls)
+        except ImportError, e:
+            LOG.error("Unable to import Protocol %s :\n%s" % (self.modname, str(e)))
+            LOG.debug("Downgrading to BaseProtocol")
+            return BaseProtocol
+
+class APProtocolSupport (models.Model):
+    protocol = models.ForeignKey(Protocol,
+        related_name="protocol_support",
+        )
+    ap = models.ForeignKey('AccessPoint',
+        related_name="protocol_support",
+        )
+    priority = models.IntegerField(
+        default = 0,
+        help_text = _(u"The highest priority protocol is tried first for each mode"),
+        )
+    status = models.CharField(
+        max_length=32,
+        verbose_name = _(u"Status"),
+        choices = SUPPORT_TYPES,
+        default = "unknown",
+        )
+    message = models.TextField(
+        null = True, blank = True,
+        )
+
+    class Meta:
+        ordering = [
+            'priority',
+            ]
 
 class Architecture (models.Model):
     """
@@ -95,8 +170,29 @@ class Architecture (models.Model):
     class Meta:
         verbose_name = _(u"Architecture")
 
-class ArchOptionValue (models.Model):
-    option = models.ForeignKey(ArchOption)
+
+class ProtocolParameter (models.Model):
+    protocol = models.ForeignKey(Protocol)
+    parameter = models.ForeignKey(Parameter)
+    optional = models.BooleanField(
+        verbose_name = _(u"Optional"),
+        default = False,
+        )
+
+    def __unicode__(self):
+        return u"[%(proto)s] %(param)s%(opt)s" % dict(
+            proto=self.protocol_id,
+            param=self.parameter_id,
+            opt=self.optional and "?" or "",
+            )
+
+    class Meta:
+        unique_together = (
+            ('parameter', 'protocol'),
+        )
+
+class ArchParameter (models.Model):
+    parameter = models.ForeignKey(Parameter)
     arch = models.ForeignKey(Architecture, related_name="options_set")
     value_type = models.CharField(verbose_name = _(u"Source"), 
             max_length = 15,
@@ -109,7 +205,20 @@ class ArchOptionValue (models.Model):
 
     class Meta:
         unique_together = (
-            ('option', 'arch'),
+            ('parameter', 'arch'),
+        )
+
+class APParameter (models.Model):
+    parameter = models.ForeignKey(Parameter)
+    ap = models.ForeignKey('AccessPoint')
+    value = models.CharField(
+        verbose_name = _(u"Value"),
+        max_length = 255,
+        null=True, blank=True ,)
+
+    class Meta:
+        unique_together = (
+            ('parameter', 'ap'),
         )
 
 class InitSection (models.Model):
@@ -129,13 +238,14 @@ class InitSection (models.Model):
             section = self.section_id,
             arch = self.architecture,
             mode = self.mode, )
+
     class Meta:
         unique_together = (
             ('section', 'architecture',),
         )
 
 
-class ConsoleCommand (models.Model):
+class CommandDefinition (models.Model):
     name = models.CharField(
         max_length = 100,
         verbose_name = _(u"Name"),
@@ -150,8 +260,50 @@ class ConsoleCommand (models.Model):
     def __unicode__(self):
         return u"%(name)s(%(parameters)s)" % {"name":self.name, "parameters":self.parameters}
 
-class ConsoleCommandImplementation (models.Model):
-    command = models.ForeignKey(ConsoleCommand)
+    def create_instance(self, target) :
+        from apmanager.accesspoints.models import (
+            AccessPoint,
+            APGroup,
+            )
+        if isinstance( target, AccessPoint ):
+            return self.__create_instance(accesspoint=target)
+        elif isinstance( target, APGroup ):
+            return self.__create_instance(group=target)
+        else:
+            raise NotImplementedError("command creation not implemented on objects of type %s" % type(target))
+
+    def __create_instance ( self, **kwargs ):
+        from apmanager.accesspoints.models import CommandExec
+        cmd = CommandExec(command=self, **kwargs )
+        cmd.save()
+       
+        #Created Elsewhere 
+        #for param in self.commandparameter_set.iterator():
+        #    p = UsedParameter(parameter=param, command=cmd)
+        #    p.save()
+
+        return cmd
+
+    def getForm(self):
+        def form_save(form_self, cmdexec):
+            from apmanager.accesspoints.models import UsedParameter
+            for key, val in form_self.cleaned_data.items():
+                u, c = UsedParameter.objects.get_or_create(name=key, command=cmdexec)
+                u.value = val
+                u.save()
+
+        return type("CommandDefinitionParameterForm",
+            (forms.Form, ), # bases
+            dict(
+                [ (p, forms.CharField()) for p in map(
+                    unicode.strip, self.parameters.split(",")
+                    ) ],
+                save = form_save,
+            ), # attrs
+        )
+
+class CommandImplementation (models.Model):
+    command = models.ForeignKey(CommandDefinition)
     architecture = models.ForeignKey(Architecture)
     template = models.TextField(
         verbose_name = _(u"Template"),

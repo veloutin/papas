@@ -10,9 +10,9 @@
 <h2>{{ cmd.command.name }}</h2>
 <table>
 <tr><th>{% trans "Parameter" %}</th><th>{% trans "Value" %}</th></tr>
-<tr><td>{% trans "Target:" %}</td><td>{{ cmd.target }}</td></tr>
+<tr><td>{% trans "Target:" %}</td><td>{{ cmd.target.target }}</td></tr>
 {% for up in cmd.usedparameter_set.iterator %}
-    <tr><td>{{ up.parameter.name }}:</td><td>{{ up.value }}</td></tr>
+    <tr><td>{{ up.name }}:</td><td>{{ up.value }}</td></tr>
 {% endfor %}
 </table>
 

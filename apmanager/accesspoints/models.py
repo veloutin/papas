@@ -3,6 +3,7 @@ LOG = logging.getLogger('apmanger.accesspoints')
 import commands
 
 from django.db import models
+from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 
@@ -135,7 +136,65 @@ class APClient ( models.Model ):
             '<a href="%s">%s</a>' % (self.connected_to.get_absolute_url(),self.connected_to.name),
             self.ipv4Address,self.macAddress)])
 
+class CommandTarget (object) :
+    """ CommandTarget is used to wrap AccessPoint and APGroup into a common
+    target for commands. Even though it accepts both, it will only use the
+    AccessPoint if given an AccessPoint and an APGroup.
+    """
+    def __init__(self, ap=None, group=None):
+        if ap:
+            if isinstance(ap, AccessPoint):
+                self._ap = ap
+            else:
+                self._ap = get_object_or_404(AccessPoint, pk=ap)
+        else:
+            self._ap = None
+
+        if group:
+            if isinstance(group, APGroup):
+                self._group = group
+            else:
+                self._group = get_object_or_404(APGroup, pk=group)
+        else:
+            self._group = None
+
+    @classmethod
+    def fromQueryDict(cls, querydict, ap_id = "ap_id", group_id="group_id"):
+        return cls(querydict.get(ap_id, None), querydict.get(group_id, None))
+
+    @property
+    def targets(self):
+        if self._ap:
+            return [self._ap]
+        elif self._group:
+            return self._group.accessPoints.all()
+        else:
+            return []
+
+    @property
+    def target(self):
+        return self.ap or self.group
+
+    def __nonzero__(self):
+        """ Truth testing """
+        return self._ap is not None or self._group is not None
+
+    @property
+    def ap(self):
+        return self._ap
+
+    @property
+    def ap_id(self):
+        return self.ap.id
+
+    @property
+    def group(self):
+        return self._group
+
+    @property
+    def group_id(self):
+        return self.group.id
 
 #Import other models
-from apmanager.accesspoints.apcommands import *
 from apmanager.accesspoints.architecture import *
+from apmanager.accesspoints.apcommands import *

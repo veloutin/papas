@@ -13,12 +13,12 @@
 <tr><th>{% trans "Parameter" %}</th><th>{% trans "Value" %}</th></tr>
 <tr><td>{% trans "Target:" %}</td><td>{{ cmd.accesspoint.name }}</td></tr>
 {% for up in cmd.commandexec.command.usedparameter_set.iterator %}
-    <tr><td>{{ up.parameter.name }}:</td><td>{{ up.value }}</td></tr>
+    <tr><td>{{ up.name }}:</td><td>{{ up.value }}</td></tr>
 {% endfor %}
 </table>
-    <p>{% blocktrans %}Created on: {{ cmd.created }}{% endblocktrans %}</p>
+    <p>{% blocktrans with cmd.created as created %}Created on: {{ created }}{% endblocktrans %}</p>
 {% if cmd.started %}
-    <p>{% blocktrans %}Started on: {{ cmd.started }}{% endblocktrans %}</p>
+    <p>{% blocktrans with cmd.started as started %}Started on: {{ started }}{% endblocktrans %}</p>
     {% if cmd.ended %}
         <ul>
             <li><b>{% trans "Result:" %}</b>{{ cmd.result }}</li>
