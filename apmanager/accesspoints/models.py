@@ -51,35 +51,28 @@ class AccessPoint ( models.Model ):
         
     def refresh_clients(self):
         LOG.debug("refreshing client list for %s", str(self))
-        (ret, out) = commands.getstatusoutput(r'ssh -o BatchMode=yes -o StrictHostKeyChecking=no %(ip)s wl assoclist 2>/dev/null | cut -d" " -f 2' % {'ip':self.ipv4Address} )
-        if ret == 0:
-            #Attempt to get all IP for MAC in arp tables
-            (ret, out2) = commands.getstatusoutput(r'ssh -o BatchMode=yes %(ip)s -o StrictHostKeyChecking=no cat /proc/net/arp 2>/dev/null | sed -e "1d;s/ \{1,\}/ /g" | cut -d" " -f 1,4' % {'ip':self.ipv4Address} )
-            ipmap = {}
-            if ret == 0:
-                for line in out2.splitlines():
-                    ip,mac = line.split()
-                    ipmap.update({mac:ip})
-            else:
-                LOG.warning("Failed to get arp table for AP %s", str(self))
-                LOG.debug("Command output: %s", out2)
-                
-            #Delete all connected clients
-            for c in self.apclient_set.all():
-                c.delete()
+        LOG.error("Not implemented yet!")
 
-            #Recreate all clients
-            for mac in out.splitlines():
-                LOG.debug("client ip for mac %s is %s",mac, ipmap.get(mac))
-                c = APClient()
-                c.ipv4Address = ipmap.get(mac)
-                c.macAddress = mac
-                c.connected_to = self
-                c.save()
+    def get_param_dict(self):
+        res = {}
 
-        else:
-            LOG.error("Failed to get list of clients for AP %s", str(self))
-            LOG.debug("Command output: %s", out)
+        #Get params from architecture, and parent architecture
+        arch = self.architecture
+        arch_list = []
+        while arch is not None:
+            arch_list.append(arch)
+            arch = arch.parent
+
+        #Update parameters by starting from the arch hierarchy's top
+        for arch in reversed(arch_list):
+            for option in arch.option_set.all():
+                option.update_dict(res)
+
+        #Go through the AP's parameters
+        for param in self.apparameter_set.all():
+            param.update_dict(res)
+
+        return res
 
 class APGroup ( models.Model ):
     """

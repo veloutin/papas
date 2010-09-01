@@ -52,6 +52,19 @@ SOURCE_TYPE = {
     "inherit": _(u"Inherited"),
     "set"    : _(u"Set"),
 }
+def _source_set_action(dict_, key, value):
+    dict_[key] = value
+def _source_inherit_action(dict_, key, value=None):
+    pass
+def _source_notset_action(dict_, key, value=None):
+    del dict_[key]
+
+SOURCE_TYPE_ACTIONS = {
+    "notset" : _source_notset_action,
+    "set" : _source_set_action,
+    "inherit" : _source_inherit_action,
+    None : _source_set_action,
+}
 
 SUPPORT_TYPE_UNKNOWN = "unknown"
 SUPPORT_TYPE_ERROR = "error"
@@ -94,7 +107,11 @@ class Parameter (models.Model):
         null = True, blank=True, )
 
     def __unicode__(self):
-        return self.section_id + u"." + self.name
+        return self.scoped_name
+
+    @property
+    def scoped_name(self):
+        return u"{0.section_id}::{0.name}".format(self)
 
 class Protocol (models.Model):
     modname = models.CharField(
@@ -208,18 +225,28 @@ class ArchParameter (models.Model):
             ('parameter', 'arch'),
         )
 
+    def update_dict(self, d):
+        if self.value_type in SOURCE_TYPE_ACTIONS:
+            func = SOURCE_TYPE_ACTIONS[self.value_type]
+        else:
+            func = SOURCE_TYPE_ACTIONS[None]
+        func(d, self.parameter.scoped_name, self.value)
+
 class APParameter (models.Model):
     parameter = models.ForeignKey(Parameter)
     ap = models.ForeignKey('AccessPoint')
     value = models.CharField(
         verbose_name = _(u"Value"),
         max_length = 255,
-        null=True, blank=True ,)
+        null=True, blank=True, )
 
     class Meta:
         unique_together = (
             ('parameter', 'ap'),
         )
+
+    def update_dict(self, d):
+        d[self.parameter.scoped_name] = self.value
 
 class InitSection (models.Model):
     section = models.ForeignKey(Section)
@@ -284,7 +311,22 @@ class CommandDefinition (models.Model):
 
         return cmd
 
-    def getForm(self):
+    def get_implementation(self, ap):
+        imp_list = self.commandimplementation_set.all()
+        arch = ap.architecture
+        while arch is not None:
+            # Look for specific first
+            for imp in imp_list:
+                if imp.architecture == arch:
+                    return imp
+            # Then in the parent
+            arch = arch.parent
+        else:
+            # Not found
+            # FIXME error handling?
+            return None
+
+    def get_form(self):
         def form_save(form_self, cmdexec):
             from apmanager.accesspoints.models import UsedParameter
             for key, val in form_self.cleaned_data.items():

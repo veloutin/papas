@@ -79,7 +79,7 @@ def edit_new_command(request, command_id=None, ap_id=None, group_id=None):
     target = CommandTarget(ap_id, group_id)
 
     cmd = get_object_or_404(CommandDefinition,pk=command_id)
-    form_cls = cmd.getForm()
+    form_cls = cmd.get_form()
     if request.method == "POST" and target:
         form = form_cls(request.POST)
         if form.is_valid():

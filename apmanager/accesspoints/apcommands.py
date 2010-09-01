@@ -93,12 +93,9 @@ class CommandParameter ( models.Model ):
                 return t[2]()
         return forms.Field() 
 
-#FIXME Was this used?
-#validate_ap_or_group = validators.RequiredIfOtherFieldNotGiven("group","Besoin du groupe ou du AP")
-
 class CommandExec ( models.Model ):
     command = models.ForeignKey(CommandDefinition)
-    accesspoint = models.ForeignKey(AccessPoint,null=True,)#FIXME See above validator_list=(validate_ap_or_group,))
+    accesspoint = models.ForeignKey(AccessPoint,null=True,)
     group = models.ForeignKey(APGroup,null=True)
     last_run = models.DateTimeField(null=True)
 
@@ -144,8 +141,6 @@ class CommandExec ( models.Model ):
 
 
 class CommandExecResult ( models.Model ):
-    SCP_COMMAND="scp -Bq -o StrictHostKeyChecking=no %(filename)s %(ip_addr)s:%(path)s"
-    EXEC_COMMAND="ssh -o BatchMode=yes -o StrictHostKeyChecking=no %(ip_addr)s . /tmp/_remote_script_wrapper.sh "
     commandexec = models.ForeignKey(CommandExec)
     accesspoint = models.ForeignKey(AccessPoint)
     result = models.IntegerField(null=True)
@@ -187,59 +182,27 @@ class CommandExecResult ( models.Model ):
         
     def execute(self):
         #Make params file
-        (fd, name) = mkstemp()        
-        fdo = os.fdopen(fd,'w')
-        fdo.write("#!/bin/sh\n")
-        fdo.writelines([p.to_bash() for p in self.commandexec.usedparameter_set.all()])
-        fdo.write("\n")
-        if not self.commandexec.command.script:
-            fdo.write(self.commandexec.command.script_text)
-        else:
-            fdo.write(". /tmp/_remote_script.sh \n")
+        from lib6ko.run import Executer
+        params = self.accesspoints.get_param_dict()
+        executer = Executer(params)
 
-        fdo.flush()
-        fdo.close()
-
-        #scp params to ap
-        scp = self.SCP_COMMAND % {
-            "filename":name,
-            "ip_addr":self.accesspoint.ipv4Address,
-            "path":"/tmp/_remote_script_wrapper.sh",
-        }
-        (ret, output) = commands.getstatusoutput(scp)
-
-        if ret!= 0:
-            self.output = output or "SCP Failed"
+        # Get the good command implementation
+        impl = self.command.get_implementation(ap)
+        if impl is None:
+            self.output = "No implementation for command"
+            self.result = -1
             self.ended = datetime.now()
-            self.result = ret
             self.save()
             return
- 
-        if self.commandexec.command.script:
-            #scp script to ap
-            scp = self.SCP_COMMAND % {
-                "filename":self.commandexec.command.script,
-                "ip_addr":self.accesspoint.ipv4Address,
-                "path":"/tmp/_remote_script.sh",
-            }
-            (ret, output) = commands.getstatusoutput(scp)
 
-            if ret!= 0:
-                self.output = output or "SCP Failed"
-                self.ended = datetime.now()
-                self.result = ret
-                self.save()
-                return
-      
-        #exec script on ap 
-        exec_cmd = self.EXEC_COMMAND % {
-            "ip_addr":self.accesspoint.ipv4Address,
-        } 
-        
-        (ret, output) = commands.getstatusoutput(exec_cmd)
-    
-        self.output = output
-        self.result = ret
+        # Execute
+        try:
+            self.output = executer.execute_template(impl.template, ap, params)
+            self.result = 0
+        except Exception, e:
+            self.output = str(e)
+            self.result = -1
+
         self.ended = datetime.now()
         self.save()
         return

@@ -101,7 +101,15 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.media',
     'django.core.context_processors.request',
 )
-#WATCH_DIR='/var/lib/apmanager/watch/'
-WATCH_DIR='/home/vvinet/var/apmanager/watch/'
+if DEBUG:
+    WATCH_DIR=os.path.join(os.path.dirname(__file__),"..","watch")
+else:
+    WATCH_DIR='/var/lib/apmanager/watch/'
+
 COMMAND_WATCH_DIR=      WATCH_DIR + 'commands/'
 AP_REFRESH_WATCH_DIR=   WATCH_DIR + 'refresh_ap/'
+
+if DEBUG:
+    for dpath in ( WATCH_DIR, COMMAND_WATCH_DIR, AP_REFRESH_WATCH_DIR ):
+        if not os.path.isdir(dpath): os.mkdir(dpath)
+
