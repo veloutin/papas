@@ -70,7 +70,9 @@ class CommandParameter ( models.Model ):
         (str,'String',forms.CharField),
     )
     name = models.CharField(max_length = 100, verbose_name="Parameter name")
-    type = models.CharField(max_length = 50, choices=[(i[0],i[1]) for i in ALLOWED_TYPES], )#radio_admin=True, )
+    type = models.CharField(max_length = 50,
+        choices=[(i[0],i[1]) for i in ALLOWED_TYPES],
+        )#radio_admin=True, )
     command = models.ForeignKey(Command)
 
     unique_together= (('name','command'),)
@@ -87,7 +89,10 @@ class CommandParameter ( models.Model ):
         return "param_id_%(id)d" % {'id':self.id}
 
     def to_input(self):
-        return "<tr><td><label for='%(form_id)s'>%(name)s</label></td><td><input type='text' name='%(form_id)s' /></td></tr>" % {'form_id':self.get_form_id(), 'name':self.name }
+        return "<tr><td><label for='%(form_id)s'>%(name)s</label></td><td><input type='text' name='%(form_id)s' /></td></tr>" % {
+            'form_id':self.get_form_id(),
+            'name':self.name,
+            }
 
     def to_field(self):
         for t in self.ALLOWED_TYPES:
@@ -102,7 +107,9 @@ class CommandExec ( models.Model ):
     last_run = models.DateTimeField(null=True)
 
     def get_absolute_url(self):
-        return reverse("apmanager.accesspoints.views.apcommands.view_command", args=(self.id,))
+        return reverse("apmanager.accesspoints.views.apcommands.view_command",
+            args=(self.id,),
+            )
 
     @property
     def target(self):
@@ -113,7 +120,10 @@ class CommandExec ( models.Model ):
         return self.target.targets
 
     def __target_table_row(self):
-        return '<a href="%s">%s</a>' % (self.target.target.get_absolute_url(), self.target.target.name)
+        return '<a href="%s">%s</a>' % (
+            self.target.target.get_absolute_url(),
+            self.target.target.name,
+            )
 
     @staticmethod
     def table_view_header():
@@ -136,7 +146,11 @@ class CommandExec ( models.Model ):
 
     def schedule(self):
         for target in self.target_list:
-            cer, created = CommandExecResult.objects.get_or_create(commandexec=self,accesspoint=target, defaults={'created':datetime.now()})
+            cer, created = CommandExecResult.objects.get_or_create(
+                commandexec=self,
+                accesspoint=target,
+                defaults={'created':datetime.now()},
+                )
             cer.schedule()
         self.last_run = datetime.now()
         self.save()
@@ -152,13 +166,19 @@ class CommandExecResult ( models.Model ):
     ended = models.DateTimeField(null=True)
 
     def get_absolute_url(self):
-        return reverse("apmanager.accesspoints.views.apcommands.view_exec", args=(self.id,))
+        return reverse("apmanager.accesspoints.views.apcommands.view_exec",
+            args=(self.id,),
+            )
 
     @staticmethod
     def table_view_header():
         return "".join(["<th>%s</th>" % i for i in (
-            'AP','R&eacute;ussi','Cr&eacute;&eacute;',
-            'D&eacute;but&eacute;', 'Termin&eacute;', '',
+            'AP',
+            'R&eacute;ussi',
+            'Cr&eacute;&eacute;',
+            'D&eacute;but&eacute;',
+            'Termin&eacute;',
+            '',
         )])
 
     @staticmethod
@@ -167,9 +187,18 @@ class CommandExecResult ( models.Model ):
 
     def to_table_row(self):
         return "".join(["<td>%s</td>" % i for i in (
-            '<a href="%s">%s</a>' % (self.accesspoint.get_absolute_url(),self.accesspoint.name),
-            self.result == 0,self.created, self.started, self.ended,
-            '<a href="%s">%s</a>' % (self.get_absolute_url(),'D&eacute;tails'),
+            '<a href="%s">%s</a>' % (
+                self.accesspoint.get_absolute_url(),
+                self.accesspoint.name,
+                ),
+            self.result == 0,
+            self.created,
+            self.started,
+            self.ended,
+            '<a href="%s">%s</a>' % (
+                self.get_absolute_url(),
+                'D&eacute;tails',
+                ),
         )])
 
     def schedule(self):
@@ -236,6 +265,6 @@ class UsedParameter ( models.Model ):
     
     class Meta:
         # unique_together = (('parameter','command'),)
-        unique_together = (('name','command'),)
-    def to_bash(self):
-        return "%s=%s\n" % (self.parameter.name,self.value)
+        unique_together = (
+            ('name','command'),
+            )
