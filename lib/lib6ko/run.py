@@ -154,15 +154,22 @@ class Executer (object):
         start = 0
         for match in self.RE_TBLOCK.finditer(text):
             match_start, match_end = match.span()
+
+            # Output the block before the match as text if non-empty
             if match_start - start > 0:
                 yield text[start:match_start]
 
+            # Output the node corresponding to the matched tag
             node_id = match.group("id")
             if node_id in self._command_nodes:
                 yield self._command_nodes[node_id]
             else:
                 LOG.error(_("Unknown node id {0}").format(node_id))
+
+            # Make sure we don't output the tag itself
             start = match_end
+
+        # What's left is text
         if start < len(text):
             yield text[start:]
 

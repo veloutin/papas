@@ -28,7 +28,9 @@ def do_paramnode(parser, token):
     args = token.split_contents()
 
     if len(args) != 2:
-        raise template.TemplateSyntaxError(PARAM_TAG + ' requires one parameter')
+        raise template.TemplateSyntaxError(
+            '{tag} requires one parameter'.format(tag=PARAM_TAG),
+            )
 
     return ParameterNode(parser.compile_filter(args[1]))
 
@@ -47,7 +49,12 @@ class ConsoleNode(ConsoleNode, template.Node):
 def do_console(parser, token):
     nodelist = parser.parse(('end' + CONSOLE_TAG,))
     if nodelist.get_nodes_by_type(SNMPNodeBase):
-        raise template.TemplateSyntaxError("%s cannot exist inside a %s tag" % (SNMP_TAG, CONSOLE_TAG))
+        raise template.TemplateSyntaxError(
+            "{inner} cannot exist inside a {outer} tag".format(
+                inner=SNMP_TAG,
+                outer=CONSOLE_TAG,
+                ),
+            )
     parser.delete_first_token()
     return ConsoleNode(nodelist)
 

@@ -7,15 +7,7 @@ class CommandNodeBase( object ):
     mode = None
 
     def __init__(self):
-        self._backend = None
-
-    @property
-    def backend(self):
-        return self._backend
-
-    @backend.setter
-    def backend(self, value):
-        self._backend = value
+        self.backend = None
 
     @property
     def protocol(self):

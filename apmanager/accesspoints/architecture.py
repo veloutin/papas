@@ -231,6 +231,9 @@ class ArchParameter (models.Model):
         max_length = 255,
         null=True, blank=True ,)
 
+    def __unicode__(self):
+        return u"{0.parameter.name} [{0.value_type}: {0.value}]".format(self)
+
     class Meta:
         unique_together = (
             ('parameter', 'arch'),
@@ -250,6 +253,9 @@ class APParameter (models.Model):
         verbose_name = _(u"Value"),
         max_length = 255,
         null=True, blank=True, )
+
+    def __unicode__(self):
+        return u"{0.parameter.name} [{0.value}]".format(self)
 
     class Meta:
         unique_together = (
@@ -364,6 +370,9 @@ class CommandImplementation (models.Model):
     template = models.TextField(
         verbose_name = _(u"Template"),
         )
+
+    def __unicode__(self):
+        return u"{0.command} on {0.architecture}".format(self)
 
     def compile_template(self):
         return Template(self.template)
