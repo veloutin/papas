@@ -3,6 +3,7 @@
 from django.conf import settings
 from django.db.models.signals import post_syncdb
 from apmanager.accesspoints import models
+from lib6ko import parameters as _P
 
 PROTOCOLS = (
     {
@@ -48,37 +49,47 @@ def create_protocol(proto, parent=None):
 SECTIONS = {
     "SNMP" : [
         dict(
-            name =          "Community",
+            name =          _P.SNMP_COMMUNITY,
 #            field_type =    "text",
             default_value = None,
 #            builtin = True,
         ),
         dict(
-            name =          "traps",
+            name =          _P.SNMP_TRAPS,
 #            field_type =    "text",
             default_value = None,
         ),
     ],
     "Console" : [
         dict(
-            name =          "Telnet::Username",
+            name =          _P.CONSOLE_PRIV_MODE,
+        ),
+        dict(
+            name =          _P.CONSOLE_PRIV_END,
+        ),
+        dict(
+            name =          _P.CONSOLE_EXIT,
+            default_value = "exit",
+        ),
+        dict(
+            name =          _P.TELNET_USERNAME,
 #            field_type =    "str",
             default_value = "root",
 #            builtin =       True,
         ),
         dict(
-            name =          "Telnet::Password",
+            name =          _P.TELNET_PASSWORD,
 #            field_type =    "pwd",
 ##            builtin =       True,
         ),
         dict(
-            name =          "SSH::Username",
+            name =          _P.SSH_USERNAME,
 #            field_type =    "str",
             default_value = "root",
 #            builtin =       True,
         ),
         dict(
-            name =          "SSH::Password",
+            name =          _P.SSH_PASSWORD,
 #            field_type =    "pwd",
 ##            builtin =       True,
         ),

@@ -6,6 +6,7 @@ import re
 from operator import attrgetter
 from itertools import imap, chain, izip
 from cStringIO import StringIO
+from copy import deepcopy
 
 from django.template import Context
 
@@ -52,9 +53,20 @@ class ProtocolChain(object):
         #Initialize the next one
         for p in self._protos[:]:
             try:
-                params = p.load_default_parameter_values()
-                params.update(self._paramters)
-                self._protocol = p.get_class()(params)
+                #Copy the param dict
+                config = deepcopy(self._parameters)
+                params = config["param"]
+
+                #Fetch the protocol default parameters
+                default_params = p.load_default_parameter_values()
+
+                #Update missing "param::paramname" in the dict
+                for key, val in default_params.items():
+                    if not key in params:
+                        params[key] = val
+                
+                #Initialize the protocol
+                self._protocol = p.get_class()(config)
                 return self._protocol
             except TemporaryFailure:
                 continue
@@ -107,7 +119,8 @@ class Executer (object):
     def __init__(self, protocol_classes=()):
         self._rendered_templates = {}
         self._command_nodes = {}
-        
+        self.parameters = {}
+
         #Init the protocol class lists
         self._protocol_classes = {}
         for protocol in protocol_classes:
@@ -134,7 +147,7 @@ class Executer (object):
 
     def execute_template(self, template, ap, parameters={}):
         #Get protocols by mode
-        params = ScopedDict(ap=ap, param=parameters)
+        self.parameters = params = ScopedDict(ap=ap, param=parameters)
 
         #TODO: Use protocol support
         for key, val in self._protocol_classes.items():
