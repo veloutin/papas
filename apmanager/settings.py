@@ -104,10 +104,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 if DEBUG:
     WATCH_DIR=os.path.join(os.path.dirname(__file__),"..","watch")
 else:
-    WATCH_DIR='/var/lib/apmanager/watch/'
+    WATCH_DIR='/var/lib/apmanager/watch'
 
-COMMAND_WATCH_DIR=      WATCH_DIR + 'commands/'
-AP_REFRESH_WATCH_DIR=   WATCH_DIR + 'refresh_ap/'
+COMMAND_WATCH_DIR=      WATCH_DIR + '/commands/'
+AP_REFRESH_WATCH_DIR=   WATCH_DIR + '/refresh_ap/'
 
 if DEBUG:
     for dpath in ( WATCH_DIR, COMMAND_WATCH_DIR, AP_REFRESH_WATCH_DIR ):

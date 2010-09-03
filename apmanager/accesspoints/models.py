@@ -65,7 +65,7 @@ class AccessPoint ( models.Model ):
 
         #Update parameters by starting from the arch hierarchy's top
         for arch in reversed(arch_list):
-            for option in arch.option_set.all():
+            for option in arch.options_set.all():
                 option.update_dict(res)
 
         #Go through the AP's parameters

@@ -17,8 +17,8 @@ class Telnet(ConsoleProtocol):
     def __init__(self, parameters):
         self._child = None
         self._host = self._require(parameters, "ap::ipv4Address")
-        self._username = self._require(parameters, "param::Username")
-        self._password = self._require(parameters, "param::Password")
+        self._username = self._require(parameters, "param::Telnet::Username")
+        self._password = self._require(parameters, "param::Telnet::Password")
 
         self.connect()
 

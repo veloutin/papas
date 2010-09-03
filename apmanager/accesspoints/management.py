@@ -59,15 +59,26 @@ SECTIONS = {
             default_value = None,
         ),
     ],
-    "Telnet" : [
+    "Console" : [
         dict(
-            name =          "Username",
+            name =          "Telnet::Username",
 #            field_type =    "str",
             default_value = "root",
 #            builtin =       True,
         ),
         dict(
-            name =          "Password",
+            name =          "Telnet::Password",
+#            field_type =    "pwd",
+##            builtin =       True,
+        ),
+        dict(
+            name =          "SSH::Username",
+#            field_type =    "str",
+            default_value = "root",
+#            builtin =       True,
+        ),
+        dict(
+            name =          "SSH::Password",
 #            field_type =    "pwd",
 ##            builtin =       True,
         ),

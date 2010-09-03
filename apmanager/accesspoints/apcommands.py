@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from django import forms
+from django.conf import settings
 
 from apmanager.accesspoints.models import (
     AccessPoint,
@@ -10,6 +11,7 @@ from apmanager.accesspoints.models import (
 
 from apmanager.accesspoints.architecture import (
     CommandDefinition,
+    Protocol,
     )
 
 from datetime import datetime
@@ -177,17 +179,32 @@ class CommandExecResult ( models.Model ):
         self.ended = None
         self.output = ''
         self.save()
-        #write a new file with this commandexec's id in the watched dir
-        file(os.path.join(settings.COMMAND_WATCH_DIR,str(self.id)),'w').close()
+
+        #In debug mode, execute now instead of with the daemon
+        #FIXME use a separate setting
+        if settings.DEBUG:
+            self.execute()
+        else:
+            #write a new file with this commandexec's id in the watched dir
+            file(
+                os.path.join(
+                    settings.COMMAND_WATCH_DIR,
+                    str(self.id),
+                    ),
+                'w',
+                ).close()
         
     def execute(self):
         #Make params file
         from lib6ko.run import Executer
-        params = self.accesspoints.get_param_dict()
-        executer = Executer(params)
+        params = self.accesspoint.get_param_dict()
+        for up in self.commandexec.usedparameter_set.all():
+            params[up.name] = up.value
+
+        executer = Executer(Protocol.objects.all())
 
         # Get the good command implementation
-        impl = self.command.get_implementation(ap)
+        impl = self.commandexec.command.get_implementation(self.accesspoint)
         if impl is None:
             self.output = "No implementation for command"
             self.result = -1
@@ -197,7 +214,11 @@ class CommandExecResult ( models.Model ):
 
         # Execute
         try:
-            self.output = executer.execute_template(impl.template, ap, params)
+            self.output = executer.execute_template(
+                impl.compile_template(),
+                self.accesspoint,
+                params,
+                )
             self.result = 0
         except Exception, e:
             self.output = str(e)

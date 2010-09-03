@@ -24,6 +24,7 @@ from django import forms
 from django.forms import widgets
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
+from django.template import Template
 
 from lib6ko.protocol import Protocol as BaseProtocol
 from lib6ko import templatetags as cmdtags
@@ -111,7 +112,9 @@ class Parameter (models.Model):
 
     @property
     def scoped_name(self):
-        return u"{0.section_id}::{0.name}".format(self)
+        # XXX Should we add the section or not?
+        # return u"{0.section_id}::{0.name}".format(self)
+        return self.name
 
 class Protocol (models.Model):
     modname = models.CharField(
@@ -142,6 +145,14 @@ class Protocol (models.Model):
             LOG.error("Unable to import Protocol %s :\n%s" % (self.modname, str(e)))
             LOG.debug("Downgrading to BaseProtocol")
             return BaseProtocol
+
+    def load_default_parameter_values(self):
+        res = {}
+        for pparam in self.protocolparameter_set.filter(
+                parameter__default_value__isnull=False
+            ):
+            res[pparam.parameter.name] = pparam.parameter.default_value
+        return res
 
 class APProtocolSupport (models.Model):
     protocol = models.ForeignKey(Protocol,
@@ -260,6 +271,9 @@ class InitSection (models.Model):
         max_length = 255,
         choices = CONTROL_MODES, )
 
+    def compile_template(self):
+        return Template(self.template)
+
     def __unicode__(self):
         return _(u"%(section)s for %(arch)s [%(mode)s]") % dict(
             section = self.section_id,
@@ -350,6 +364,9 @@ class CommandImplementation (models.Model):
     template = models.TextField(
         verbose_name = _(u"Template"),
         )
+
+    def compile_template(self):
+        return Template(self.template)
 
     class Meta:
         unique_together = (

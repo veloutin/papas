@@ -52,7 +52,9 @@ class ProtocolChain(object):
         #Initialize the next one
         for p in self._protos[:]:
             try:
-                self._protocol = p.get_class()(self._parameters)
+                params = p.load_default_parameter_values()
+                params.update(self._paramters)
+                self._protocol = p.get_class()(params)
                 return self._protocol
             except TemporaryFailure:
                 continue
