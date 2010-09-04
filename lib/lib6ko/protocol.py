@@ -37,14 +37,14 @@ class Protocol(object):
 
     def require(self, name, default=None):
         try:
-            return attrgetter(name)(source)
+            return attrgetter(name)(self.parameters)
         except (KeyError, AttributeError):
             if default is None:
                 raise MissingParametersException(_("%s is a required parameter") % name)
             else:
                 return default
             
-    def require_parameter(self, name, default=None):
+    def require_param(self, name, default=None):
         return self.require("param::" + name, default)
 
 class ConsoleProtocol(Protocol):

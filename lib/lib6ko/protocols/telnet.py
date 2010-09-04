@@ -5,7 +5,10 @@ from gettext import gettext as _
 
 _LOG = logging.getLogger("protocols.telnet")
 
-from ..protocol import ConsoleProtocol
+from ..protocol import (
+    ConsoleProtocol,
+    TemporaryFailure,
+    )
 from lib6ko import parameters as _P
 
 
@@ -15,6 +18,7 @@ class Telnet(ConsoleProtocol):
         self._host = self.require("ap::ipv4Address")
         self._username = self.require_param(_P.TELNET_USERNAME)
         self._password = self.require_param(_P.TELNET_PASSWORD)
+        self._port = self.require_param(_P.TELNET_PORT)
 
     def connect(self):
         _LOG.info(_("Attempting to connect to {0._username}@{0._host}").format(self))
@@ -24,7 +28,7 @@ class Telnet(ConsoleProtocol):
             _LOG.error(str(e))
             raise PermanentFailure("Invalid host: " + e.strerror)
 
-        self.child = c = pexpect.spawn("telnet %s" % target)
+        self.child = c = pexpect.spawn("telnet %s %s" % (target, self._port))
 
         index = c.expect([
                 self.LOGIN_PROMPT,

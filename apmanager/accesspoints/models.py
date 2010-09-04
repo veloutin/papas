@@ -7,6 +7,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 
+from apmanager.accesspoints.architecture import *
 class AccessPoint ( models.Model ):
     """
         Represents an Access Point, with name, IP, MAC and description.
@@ -189,5 +190,4 @@ class CommandTarget (object) :
         return self.group.id
 
 #Import other models
-from apmanager.accesspoints.architecture import *
 from apmanager.accesspoints.apcommands import *
