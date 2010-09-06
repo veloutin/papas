@@ -35,7 +35,7 @@ class CommandNodeBase( object ):
         pass
 
     def execute_text(self, text):
-        self.protocol.execute_text(text)
+        return self.protocol.execute_text(text)
 
 class ConsoleNodeBase( CommandNodeBase ):
     mode = "console"

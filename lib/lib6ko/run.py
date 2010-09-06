@@ -187,15 +187,18 @@ class Executer (object):
             yield text[start:]
 
     def _execute_text(self, text, node=None):
+        res = u""
         #Split the template in text and nodes
         for part in self._partition_template_text(text):
             if isinstance(part, CommandNodeBase):
                 with part.get_context(self):
-                    self._execute_text(self.get_output(part), node=part)
+                    res += self._execute_text(self.get_output(part), node=part)
             else:
                 if node:
-                    node.execute_text(part)
-            
+                    res += node.execute_text(part)
+                else:
+                    res += "TEXTNODE" + part + "END"
+        return res
 
     def prerender_template(self, template, context):
         """ Pre-Render a Template and return the resulting text """

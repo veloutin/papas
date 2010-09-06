@@ -1,3 +1,6 @@
+import traceback
+
+
 from django.db import models
 from django.core.urlresolvers import reverse
 from django import forms
@@ -250,7 +253,7 @@ class CommandExecResult ( models.Model ):
                 )
             self.result = 0
         except Exception, e:
-            self.output = str(e)
+            self.output = traceback.format_exc()
             self.result = -1
 
         self.ended = datetime.now()

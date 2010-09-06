@@ -1,4 +1,12 @@
+import re
+import logging
+import pexpect
+from cStringIO import StringIO
+
+from lib6ko import parameters as _P
 from lib6ko.protocol import Protocol
+
+_LOG = logging.getLogger("protocols.console")
 
 class ConsoleProtocol(Protocol):
     LOGIN_PROMPT = re.compile(r"(username|login) ?:", re.I)
@@ -37,12 +45,24 @@ class ConsoleProtocol(Protocol):
         self.child = None
         
     def execute_text(self, text):
+        res = StringIO()
+        self.child.logfile = res
         #Consume previous text
-        self.child.expect([self.PROMPT, pexpect.TIMEOUT], timeout=0)
+        if self.child.expect([self.PROMPT, pexpect.TIMEOUT], timeout=0) == 0:
+            pass
+            #res += self.child.match.group()
 
         #Send lines
         for line in text.splitlines():
             self.child.sendline(line)
+
+        #Consume the output
+        if self.child.expect([self.PROMPT, pexpect.TIMEOUT], timeout=0) == 0:
+            pass
+            #res += self.child.match.group()
+
+        self.child.logfile = None
+        return res.getvalue()
 
     def send_if_no_echo(self, text):
         self.child.waitnoecho(0)
