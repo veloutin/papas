@@ -72,7 +72,6 @@ class ProtocolChain(object):
                 continue
             except (PermanentFailure, MissingParametersException):
                 self._protos.remove(p)
-                raise
         else:
             #We didn't manage to get any protocol
             if len(self._protos):

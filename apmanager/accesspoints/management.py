@@ -18,6 +18,12 @@ PROTOCOLS = (
                     mode = "console",
                 ),
             },
+            {
+                "protocol":dict(
+                    modname = "lib6ko.protocols.ssh.SSH",
+                    mode = "console",
+                ),
+            },
         ),
     },
     {

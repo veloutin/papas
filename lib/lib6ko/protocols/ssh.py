@@ -1,22 +1,25 @@
 import pexpect, re
+import pxssh
 import socket
 import logging
 from gettext import gettext as _
 
-_LOG = logging.getLogger("protocols.telnet")
+_LOG = logging.getLogger("protocols.ssh")
 
 from lib6ko import parameters as _P
 from lib6ko.protocol import TemporaryFailure
 from lib6ko.protocols.console import ConsoleProtocol
 
 
-class Telnet(ConsoleProtocol):
+class SSH(ConsoleProtocol):
     def __init__(self, parameters):
-        super(Telnet, self).__init__(parameters)
+        super(SSH, self).__init__(parameters)
         self._host = self.require("ap::ipv4Address")
-        self._username = self.require_param(_P.TELNET_USERNAME)
-        self.priv_password = self._password = self.require_param(_P.TELNET_PASSWORD)
-        self._port = self.require_param(_P.TELNET_PORT, default=23)
+        self._username = self.require_param(_P.SSH_USERNAME)
+        if "'" in self._username:
+            raise ValueError("Username contains invalid characters")
+        self.priv_password = self._password = self.require_param(_P.SSH_PASSWORD)
+        self._port = int(self.require_param(_P.SSH_PORT, default="22"))
 
     def connect(self):
         _LOG.info(_("Attempting to connect to {0._username}@{0._host}").format(self))
@@ -26,23 +29,22 @@ class Telnet(ConsoleProtocol):
             _LOG.error(str(e))
             raise PermanentFailure("Invalid host: " + e.strerror)
 
-        self.child = c = pexpect.spawn("telnet %s %s" % (target, self._port))
+        # In theory, we could use
+        # import pxssh
+        # self.child = c = pxssh.pxssh()
+        # pxssh.login(self._host, self._username, self._password)
+        # c.prompt()
+        #
+        # What I observed is that due to improper handling of exceptions in 
+        # pxssh, login() fails.
+        self.child = c = pexpect.spawn(
+            "ssh -l '{0._username}' -p {0._port} {options} {0._host}".format(
+                self,
+                options = "-o StrictHostKeyChecking=no",
+                )
+            )
 
-        index = c.expect([
-                self.LOGIN_PROMPT,
-                pexpect.TIMEOUT,
-                pexpect.EOF,
-            ], timeout=30)
-
-        if index == 0:
-            c.sendline(self._username) #Make sure it is the right end of line CR/LF?
-        else:
-            _LOG.info("Unable to get prompt")
-            c.terminate()
-            self.child = None
-            raise TemporaryFailure("Unable to connect")
-
-        c.waitnoecho( 30 )
+        c.waitnoecho( 30)
         c.sendline(self._password)
 
         index = c.expect([

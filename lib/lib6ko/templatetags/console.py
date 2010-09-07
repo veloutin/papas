@@ -1,3 +1,5 @@
+from lib6ko import parameters as _P
+
 from . import ConsoleNodeBase
 
 class ConsoleNode(ConsoleNodeBase):
@@ -15,8 +17,16 @@ class ConsoleNode(ConsoleNodeBase):
 
 class RootConsoleNode(ConsoleNodeBase):
     def setUp(self):
-        self.protocol.execute_text("enable")
-        self.protocol.send_if_no_echo("Cisco")
+        priv_cmd = self.protocol.require_param(_P.CONSOLE_PRIV_MODE)
+        priv_password = self.protocol.require_param(
+            _P.CONSOLE_PRIV_PASSWORD,
+            default=self.protocol.priv_password,
+            )
+        if priv_cmd:
+            self.protocol.execute_text(priv_cmd)
+            self.protocol.send_if_no_echo(priv_password)
 
     def tearDown(self):
-        self.protocol.execute_text("disable")
+        unpriv_cmd = self.protocol.require_param(_P.CONSOLE_PRIV_END)
+        if unpriv_cmd:
+            self.protocol.execute_text(unpriv_cmd)

@@ -14,11 +14,17 @@ class InitSectionInline(admin.StackedInline):
 class ArchValueInline(admin.TabularInline):
     model = models.ArchParameter
 
+class APParamInline(admin.TabularInline):
+    model = models.APParameter
+
 class CommandImplementationInline(admin.TabularInline):
     model = models.CommandImplementation
 
 class AccessPointAdmin(admin.ModelAdmin):
     list_display = ('name', 'ipv4Address', 'macAddress')
+    inlines = [
+        APParamInline,
+    ]
 
 class APGroupAdmin(admin.ModelAdmin):
     list_display = ('name', )
@@ -45,5 +51,10 @@ admin.site.register(mset.pop("APGroup"), APGroupAdmin)
 admin.site.register(mset.pop("AccessPoint"), AccessPointAdmin)
 admin.site.register(mset.pop("Command"), CommandAdmin)
 admin.site.register(mset.pop("Architecture"), ArchitectureAdmin)
+
+#Show every other model in admin
+del mset["APParameter"]
+del mset["APProtocolSupport"]
+del mset["ArchParameter"]
 for remaining in mset.itervalues():
     admin.site.register(remaining)

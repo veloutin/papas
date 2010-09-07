@@ -23,6 +23,7 @@ class ConsoleProtocol(Protocol):
             _P.CONSOLE_EXIT,
             default="exit",
             )
+        self.priv_password = None
     
     @property
     def connected(self):
@@ -65,5 +66,5 @@ class ConsoleProtocol(Protocol):
         return res.getvalue()
 
     def send_if_no_echo(self, text):
-        self.child.waitnoecho(0)
-        self.child.sendline(text)
+        if not self.child.getecho():
+            self.child.sendline(text)
