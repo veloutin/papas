@@ -1,6 +1,6 @@
 import logging
 from gettext import gettext as _
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 import re
 from operator import attrgetter
@@ -68,9 +68,11 @@ class ProtocolChain(object):
                 #Initialize the protocol
                 self._protocol = p.get_class()(config)
                 return self._protocol
-            except TemporaryFailure:
+            except (TemporaryFailure), e:
+                _LOG.error(_("TemporaryFailure in getting protocol {0}: {1}").format(p, e))
                 continue
-            except (PermanentFailure, MissingParametersException):
+            except (PermanentFailure, MissingParametersException), e:
+                _LOG.error(_("PermanentFailure in getting protocol {0}: {1}").format(p, e))
                 self._protos.remove(p)
         else:
             #We didn't manage to get any protocol
@@ -176,7 +178,7 @@ class Executer (object):
             if node_id in self._command_nodes:
                 yield self._command_nodes[node_id]
             else:
-                LOG.error(_("Unknown node id {0}").format(node_id))
+                _LOG.error(_("Unknown node id {0}").format(node_id))
 
             # Make sure we don't output the tag itself
             start = match_end
@@ -196,7 +198,9 @@ class Executer (object):
                 if node:
                     res += node.execute_text(part)
                 else:
-                    res += "TEXTNODE" + part + "END"
+                    part = part.strip()
+                    if part:
+                        _LOG.debug(_("Following text will not be executed: {0}").format(part))
         return res
 
     def prerender_template(self, template, context):
@@ -206,7 +210,7 @@ class Executer (object):
 
         #Attach self as a backend on all command nodes
         for node in nodes:
-            LOG.debug(_("Attaching backend to node %s"), str(node))
+            _LOG.debug(_("Attaching backend to node %s"), str(node))
             node.backend = self
 
         #Render the template, causing all concerned nodes

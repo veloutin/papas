@@ -13,4 +13,6 @@ except ImportError:
     sys.exit(1)
 
 if __name__ == "__main__":
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
     execute_manager(settings)

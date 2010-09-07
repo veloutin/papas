@@ -12,7 +12,7 @@ class ConsoleProtocol(Protocol):
     LOGIN_PROMPT = re.compile(r"(username|login) ?:", re.I)
     FAILURE = re.compile(r"failed", re.I)
     CLOSED = re.compile(r"closed", re.I)
-    PROMPT = re.compile(r"(>|#)")
+    PROMPT = re.compile(r"(>|#)$")
     ROOT_PROMPT = re.compile(r"#")
 
     """ Console Protocol """

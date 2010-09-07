@@ -1,14 +1,11 @@
-import re
-from gettext import gettext as _
-from operator import attrgetter
-
-import commands
 import logging
-import pexpect
+from gettext import gettext as _
+_LOG = logging.getLogger("protocol")
+
+from operator import attrgetter
 
 from lib6ko import parameters as _P
 
-_LOG = logging.getLogger("protocol")
 
 class ScopedDict(dict):
     SCOPE_SEP = "::"
