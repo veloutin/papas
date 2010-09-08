@@ -5,24 +5,54 @@
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="content-type">
 {% block meta %} {% endblock %}
-    <title>{% trans "Access Point Management" %}</title>
+    <title>{% trans "6ko Access Point Manager" %}</title>
     <link rel="SHORTCUT ICON" href="{{MEDIA_URL}}favicon.ico">
 {% block feuillestyle %}
+    <link rel="StyleSheet" href="{{MEDIA_URL}}layout.css" type="text/css" media="screen">
     <link rel="StyleSheet" href="{{MEDIA_URL}}default.css" type="text/css" media="screen">
 {% endblock %}
 {% block head %} {% endblock %}
 </head>
 <body {% block bodytags %}{% endblock %}>
+{% comment %} Header {% endcomment %}
+{% block header_outer %}
+<div id="header">{% block header %}
+<ul><li class="branding"><a href="{% url home %}">{% trans "6ko Access Point Manager" %}</a></li></ul>
+{% endblock header %}</div>
+{% endblock header_outer %}
+
+<div id="document">
+{% comment %} Side menu {% endcomment %}
+{% block menu_outer %}
+<div id="sidemenu">
+<ul class="menu">
+    <li><a href="{% url home %}">{% trans "Home" %}</a></li>
+    {% if not user.is_anonymous %}
+    {% block menu_admin %}
+    <li><a href='{% url admin:index %}'>{% trans "Admin Interface" %}</a></li>
+    {% endblock %}
+    {% endif %}
 {% block menu %}
 {% endblock %}
+</ul>
+</div> <!-- sidemenu -->
+{% endblock menu_outer %}
 
+{% comment %} Content {% endcomment %}
+<div id="content">
 {% if not user.is_anonymous %}
-{% block body %}{% endblock %}
-{% block admin %}<a href='{% url admin:index %}'>{% trans "Admin Interface" %}</a><br />{% endblock %}
+    {% block body %}{% endblock %}
 {% endif %}
 
-{% block body_public %}{% endblock %}
+{% block body_public %}{% endblock body_public %}
 
+</div> <!-- content -->
+<div id="clear"></div>
+</div> <!-- document -->
+{% comment %} Footer {% endcomment %}
+{% block footer_outer %}
+<div id="footer">{% block footer %}{% endblock footer %}</div>
+{% endblock footer_outer %}
 </body>
 </html>
 
