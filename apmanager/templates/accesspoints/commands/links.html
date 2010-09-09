@@ -1,3 +1,6 @@
 {% load i18n %}
-<a href='{% url apmanager.accesspoints.views.apcommands.view_home %}'>{% trans "Executed Commands List" %}</a><br />
-<a href='{% url apmanager.accesspoints.views.apcommands.create_new_command %}'>{% trans "Run a command" %}</a><br />
+<li>Commands<ul>
+<li><a href='{% url apmanager.accesspoints.views.apcommands.create_new_command %}'>{% trans "Run a Command" %}</a></li>
+<li><a href='{% url apmanager.accesspoints.views.apcommands.view_home %}'>{% trans "Executed Commands" %}</a>
+    <a href='{% url apmanager.accesspoints.views.apcommands.view_home %}all/'>({% trans "All" %})</a></li>
+</ul></li>

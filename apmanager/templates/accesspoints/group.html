@@ -4,8 +4,6 @@
 {% endblock %}{% endcomment %}
 {% block head %} {% endblock %}
 {% block bodytags %}{% endblock %}
-{% block menu %}
-{% endblock %}
 {% block body %}
 <h2>{{ group.name }}</h2>
 <table>
@@ -18,10 +16,10 @@
 </tr>
 {% endfor %}</tbody>{% endif %}
 </table>
+
+<br /><hr /><br />
+<a href='{% url apmanager.accesspoints.views.apgroup.view_group_nagios_config group.id %}'>Configuration Nagios</a>
 {% endblock %}
 
-{% include "accesspoints/ap/links.html" %}
-{% include "accesspoints/groups/links.html" %}
-{% include "accesspoints/commands/links.html" %}
 
 {% block body_public %}{% endblock %}

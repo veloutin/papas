@@ -2,7 +2,7 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns ('apmanager.accesspoints',
 
-    (r'^$', 'views.ap.view_ap_list' ),
+    url(r'^$', 'views.ap.view_ap_list', name="home" ),
 
     (r'^clients/$', 'views.ap.view_client_list' ),
     
@@ -11,5 +11,4 @@ urlpatterns = patterns ('apmanager.accesspoints',
     (r'^(?P<ap_id>\d+)/nagios/$', 'views.ap.view_ap_nagios_config'),
 
     (r'^nagios/$', 'views.ap.view_nagios_config'),
-
 )

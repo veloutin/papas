@@ -1,4 +1,4 @@
 {% load i18n %}
-<a href='{% url apmanager.accesspoints.views.ap.view_ap_list %}'>{% trans "Access Point List" %}</a>&nbsp;
-<a href='{% url apmanager.accesspoints.views.ap.view_nagios_config %}'>{% trans "Nagios Configuration" %}</a><br />
-<a href='{% url apmanager.accesspoints.views.ap.view_client_list %}'>{% trans "Client List" %}</a><br />
+<li><a href='{% url apmanager.accesspoints.views.ap.view_ap_list %}'>{% trans "Access Point List" %}</a><ul>
+<li><a href='{% url apmanager.accesspoints.views.ap.view_nagios_config %}'>{% trans "Nagios Configuration" %}</a></li></ul>
+</li>

@@ -1,0 +1,30 @@
+div#header {
+    padding: 1em 1.5em 0.5em;
+}
+
+#header ul,
+ul.menu {
+    margin: 0;
+    padding: 0 0 0 1em;
+}
+
+div#header,
+div#footer {
+    background-color: #003355;
+    color: white;
+}
+
+div#header,
+div#footer {
+    background-color: #003355;
+    color: white;
+}
+
+#header ul li {
+    list-style-type: none;
+}
+
+#header li.branding {
+    font-size:1.1em;
+    font-weight: bold;
+}

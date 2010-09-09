@@ -1,0 +1,64 @@
+/* Structure */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+
+div#content {
+    float: left;
+    margin-left: 230px;
+    width: 100%;
+    padding: 1em;
+}
+
+div#sidemenu {
+    float: left;
+    padding: 2em;
+    width: 230px;
+    margin-right: -100%;
+}
+
+div#clear {
+    clear: both;
+}
+
+div#footer {
+}
+
+div#document {
+    width: 100%;
+    float: left;
+}
+
+/* Style */
+
+div#header a {
+    color: white;
+    text-decoration: none;
+}
+
+div#header a:hover {
+    text-decoration: underline;
+}
+
+
+#content {
+    border-left: solid 1px #003355;
+    padding-left: 1em;
+    background-color: white;
+}
+
+#document {
+    background-color: #557799;
+}
+
+#sidemenu li,
+#sidemenu a {
+    color: white;
+}
+
+#sidemenu ul ul {
+    margin-left: -2em;
+}
+    

@@ -8,13 +8,14 @@
     <title>{% trans "6ko Access Point Manager" %}</title>
     <link rel="SHORTCUT ICON" href="{{MEDIA_URL}}favicon.ico">
 {% block feuillestyle %}
+    <link rel="StyleSheet" href="{{MEDIA_URL}}admin.css" type="text/css" media="screen">
     <link rel="StyleSheet" href="{{MEDIA_URL}}layout.css" type="text/css" media="screen">
     <link rel="StyleSheet" href="{{MEDIA_URL}}default.css" type="text/css" media="screen">
 {% endblock %}
 {% block head %} {% endblock %}
 </head>
 <body {% block bodytags %}{% endblock %}>
-{% comment %} Header {% endcomment %}
+{# Header #}
 {% block header_outer %}
 <div id="header">{% block header %}
 <ul><li class="branding"><a href="{% url home %}">{% trans "6ko Access Point Manager" %}</a></li></ul>
@@ -22,23 +23,29 @@
 {% endblock header_outer %}
 
 <div id="document">
-{% comment %} Side menu {% endcomment %}
+{# Side menu #}
 {% block menu_outer %}
 <div id="sidemenu">
 <ul class="menu">
     <li><a href="{% url home %}">{% trans "Home" %}</a></li>
     {% if not user.is_anonymous %}
+    {% block context_menu %}
+    {% endblock %}
     {% block menu_admin %}
-    <li><a href='{% url admin:index %}'>{% trans "Admin Interface" %}</a></li>
+    <li><a href='{% url admin:index %}'>{% trans "Admin Interface" %}</a><{% block adminmenu %}{% endblock %}/li>
     {% endblock %}
     {% endif %}
+    {% include "accesspoints/ap/links.html" %}
+    {% include "accesspoints/groups/links.html" %}
+    {% include "accesspoints/commands/links.html" %}
+    
 {% block menu %}
 {% endblock %}
 </ul>
 </div> <!-- sidemenu -->
 {% endblock menu_outer %}
 
-{% comment %} Content {% endcomment %}
+{# Content #}
 <div id="content">
 {% if not user.is_anonymous %}
     {% block body %}{% endblock %}
@@ -49,7 +56,7 @@
 </div> <!-- content -->
 <div id="clear"></div>
 </div> <!-- document -->
-{% comment %} Footer {% endcomment %}
+{# Footer #}
 {% block footer_outer %}
 <div id="footer">{% block footer %}{% endblock footer %}</div>
 {% endblock footer_outer %}

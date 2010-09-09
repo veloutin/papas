@@ -3,11 +3,9 @@
 
 {% block head %} {% endblock %}
 {% block bodytags %}{% endblock %}
-{% block menu %}
-{% endblock %}
 {% block body %}
 <table>
-{% if caption %} <caption>{{ caption }}</caption>{% endif %}
+{% if caption %} <caption>{{ caption|safe }}</caption>{% endif %}
 {% if table_header %}<thead><tr>{{ table_header|safe }}</tr></thead>{% endif %}
 {% if object_list %}
 <tbody>{% for object in object_list %} 
@@ -23,11 +21,5 @@
     </form>
 {% endif %}
 <br /><hr /><br />
-<span>{% trans "Useful Links" %}</span><br />
-{% include "accesspoints/ap/links.html" %}
-{% include "accesspoints/groups/links.html" %}
-{% include "accesspoints/commands/links.html" %}
-{% include "genericsql/links.html" %}
-
 {% endblock %}
 {% block body_public %}{% endblock %}

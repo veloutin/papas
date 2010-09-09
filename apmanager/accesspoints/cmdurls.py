@@ -15,7 +15,7 @@ urlpatterns = patterns ('apmanager.accesspoints',
     (r'view/(?P<command_id>\d+)/$','views.apcommands.view_command'),
     (r'viewexec/(?P<exec_id>\d+)/$','views.apcommands.view_exec'),
 
-    (r'all/$', 'views.apcommands.view_home', dict(view_all=True) ),
+    (r'all/?$', 'views.apcommands.view_home', dict(view_all=True) ),
     (r'$', 'views.apcommands.view_home' ),
 
 

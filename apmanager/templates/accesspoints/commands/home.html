@@ -5,13 +5,8 @@
 {% endblock %}{% endcomment %}
 {% block head %} {% endblock %}
 {% block bodytags %}{% endblock %}
-{% block menu %}
-{% endblock %}
 {% block body %}
 <h2>{% trans "Commands" %}</h2>
-
-{% include "accesspoints/ap/links.html" %}
-{% include "accesspoints/groups/links.html" %}
 {% include "accesspoints/commands/links.html" %}
 {% endblock body %}
 {% block body_public %}{% endblock %}

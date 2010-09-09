@@ -6,6 +6,8 @@ urlpatterns = patterns ('apmanager.accesspoints',
 
     (r'^(?P<group_id>\d+)/$', 'views.apgroup.view_group' ),
 
+    (r'^(?P<group_id>\d+)/nagios/$', 'views.apgroup.view_group_nagios_config' ),
+
 
 
 )

@@ -2,7 +2,7 @@
  Base style
 
 */
-body { margin:10; padding:10; font-size:12px; font-family:"Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif; color:#333; background:#fff; }
+body { font-size:12px; font-family:"Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif; color:#333; background:#fff; }
 
 /* LINKS */
 a:link, a:visited { color: #5b80b2; text-decoration:none; }
