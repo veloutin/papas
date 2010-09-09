@@ -82,12 +82,12 @@ class SNMPProtocol(Protocol):
 
     def execute_text(self, text):
         res = u""
-        _LOG.debug("TEXT" + text)
-        for line in text.split():
+        _LOG.debug("TEXT" + repr(text[:80]))
+        for line in text.splitlines():
             _LOG.debug(_("Executing line: {0}").format(repr(line)))
             args = line.split(" ", 2)
             if len(args) == 3:
-                res += self.set_value(*args)
+                res += self.set_value(*args) + "\n"
 
             elif len(args) == 1:
                 if len(args[0].strip()) != 0:

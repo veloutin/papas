@@ -90,7 +90,7 @@ class SnmpNode(SNMPNodeBase, template.Node):
 
     @classmethod
     def _check_lines(cls, text):
-        for line in text.splitlines(True):
+        for line in text.splitlines():
             line = line.strip()
             if len(line) == 0:
                 continue
@@ -100,7 +100,7 @@ class SnmpNode(SNMPNodeBase, template.Node):
                 
 
     def do_render(self, ctx):
-        return "".join(self._check_lines(self.nodelist.render(ctx)))
+        return "\n".join(self._check_lines(self.nodelist.render(ctx)))
 
 @register.tag(SNMP_TAG)
 def do_snmp(parser, token):
