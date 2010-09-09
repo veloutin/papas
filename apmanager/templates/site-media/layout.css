@@ -6,7 +6,6 @@ body {
 
 
 div#content {
-    float: left;
     margin-left: 230px;
     width: 100%;
     padding: 1em;
@@ -14,8 +13,8 @@ div#content {
 
 div#sidemenu {
     float: left;
-    padding: 2em;
-    width: 230px;
+    padding: 1em 0 1em 1em;
+    width: 210px;
     margin-right: -100%;
 }
 
@@ -24,6 +23,7 @@ div#clear {
 }
 
 div#footer {
+    padding: 1em;
 }
 
 div#document {
@@ -62,3 +62,11 @@ div#header a:hover {
     margin-left: -2em;
 }
     
+*#footer *.powered {
+    font-size: 0.9em;
+    text-align: center;
+}
+
+#footer ul li {
+    list-style-type: none;
+}

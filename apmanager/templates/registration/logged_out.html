@@ -2,7 +2,11 @@
 {% load i18n %}
 
 {% block body_public %}
-<a href="/">{% trans "Back" %}</a>
+<h2>{% trans "Logged out" %}</h2>
+
+<a href="{% url home %}">{% trans "Back" %}</a>
+<br /><br /><br />
+<br /><br /><br />
 {% endblock %}
 ~
 

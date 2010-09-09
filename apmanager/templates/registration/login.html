@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block feuillestyle %}
+{% block head %}
     {{ super.block }}
     <script language="javascript">
         document.getElementById("id_username").focus();
@@ -8,13 +8,11 @@
 {% endblock %}
 
 {% block body_public %}
+<h2>{% trans "Login" %}</h2>
 
-<br/><br/><br/>
-
-{% if form.has_errors %}
-<p>{% trans "Your username and/or password didn't match. Please try again." %}</p>
+{% if form.errors %}
+<p class="error">{% trans "Your username and/or password didn't match. Please try again." %}</p>
 {% endif %}
-
 
 <form class="form" method="post" action=".">
 <table>
@@ -24,5 +22,6 @@
 </table>
 </form>
 
+<br /><br /><br />
 {% endblock %}
 
