@@ -13,6 +13,34 @@
 <tr><th>{% trans "Description" %}</th><td>{{ ap.description }}</td></tr>
 <tr><th>{% trans "Architecture" %}</th><td>{{ ap.architecture }}</td></tr>
 </table>
+{% if init_status %}
+<h3>{% trans "Initialization Status" %}</h3>
+{# Missing #}
+{% if init_status.missing %}
+    <h4>{%blocktrans with init_status.missing|length as count %}{{ count }} section(s) missing{% endblocktrans %}</h4>
+    {% for inisection in init_status.missing %}
+    <p class="sectionname">{{ inisection.section }}</p>
+    {% endfor %}
+{% endif %}
+
+{# Errors #}
+{% if init_status.error %}
+    <h4>{% blocktrans with init_status.error|length as errorcount %}{{ errorcount }} sections failed{% endblocktrans %}</h4>
+    {% for iniresult in init_status.error %}
+        <p class="sectionname">{{ iniresult.section.section }}</p>
+        <pre class="output">{{ iniresult.output }}</pre>
+    {% endfor %}
+{% endif %}
+
+{# Success #}
+{% if init_status.success %}
+    <h4>{% blocktrans with init_status.success|length as count %}{{ count }} sections succeeded{% endblocktrans %}</h4>
+    {% for iniresult in init_status.success %}
+        <p class="sectionname">{{ iniresult.section.section }}</p>
+        <pre class="output">{{ iniresult.output }}</pre>
+    {% endfor %}
+{% endif %}
+{% endif %}{# if init_status #}
 <br /><hr /><br />
 <a href='{% url apmanager.accesspoints.views.ap.view_ap_nagios_config ap.id %}'>Configuration Nagios</a>
 {% comment %}

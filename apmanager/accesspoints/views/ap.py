@@ -43,16 +43,109 @@ def view_ap_nagios_config(request, ap_id):
     """
     ap = get_object_or_404(AccessPoint, pk=ap_id)
     
-    return HttpResponse("%(name)s;%(ip)s;;ap;\n" % {'name':ap.name,'ip':ap.ipv4Address}, mimetype="text/plain")
+    return HttpResponse("%(name)s;%(ip)s;;ap;\n" % {
+                            'name':ap.name,
+                            'ip':ap.ipv4Address,
+                            },
+                        mimetype="text/plain",
+                        )
 
 def view_nagios_config(request):
     """
         Display the nagios config for all access points
     """
     return HttpResponse("".join(
-                    ["%(name)s;%(ip)s;;ap;\n" % {'name':ap.name,'ip':ap.ipv4Address} for ap in AccessPoint.objects.all() ]
+                    ["%(name)s;%(ip)s;;ap;\n" % {
+                        'name':ap.name,
+                        'ip':ap.ipv4Address,
+                        } for ap in AccessPoint.objects.all() ]
                 ),mimetype="text/plain")
 
+def get_init_status(arch_init_list, ap_init_list):
+    success = []
+    error = []
+    missing = []
+        
+    ap_init = dict(
+        (
+            (init_sect.section.id, init_sect)
+            for init_sect in ap_init_list
+        ),
+    )
+    for ins in arch_init_list:
+        if not ins.section_id in ap_init:
+            missing.append(ins)
+        elif ap_init[ins.section_id].result != 0:
+            error.append(ap_init[ins.section_id])
+        else:
+            success.append(ap_init[ins.section_id])
+        
+    return dict(
+        success = success,
+        missing = missing,
+        error = error,
+        )
+
+@login_required
+def ap_init_overview(request):
+    if request.method == "POST":
+        print request.POST.items()
+    aps = AccessPoint.objects.all()
+    arch_init_sections = {}
+    res = []
+    for ap in aps:
+        #Do not fetch the init sections for each architecture more than once
+        if ap.architecture.id in arch_init_sections:
+            init_sections = arch_init_sections[ap.architecture.id]
+        else:
+            init_sections = arch_init_sections.setdefault(
+                ap.architecture.id,
+                ap.architecture.initsection_set.all(),
+                )
+
+        init_status = get_init_status(
+            init_sections,
+            ap.archinitresult_set.all(),
+            )
+
+        # Check if there is an init output for
+        res.append(dict(
+            ap = ap,
+            missing = len(init_status["missing"]),
+            error = len(init_status["error"]),
+            success = len(init_status["success"]),
+            )
+        )
+
+    return render_to_response("accesspoints/init_overview.html",
+        dict(
+            ap_list=res,
+        ),
+        context_instance=RequestContext(request),
+        )
+
+@login_required
+def view_ap_init(request, ap_id):
+    ap = get_object_or_404(AccessPoint, pk=ap_id)
+
+    init_status = get_init_status(
+        ap.architecture.initsection_set.all(),
+        ap.archinitresult_set.all(),
+        )
+
+    if request.method=='POST':
+        ap.schedule_refresh()
+        return render_to_response('redirect.html',
+            {'url':reverse(view_ap,kwargs={'ap_id':ap.id}),
+             'time':10,
+             'show_init':True,
+
+            },
+            context_instance=RequestContext(request))
+    return render_to_response('accesspoints/ap.html',
+        {'ap':ap,
+         'init_status':init_status,},
+        context_instance=RequestContext(request))
 
 @login_required
 def view_client_list(request):

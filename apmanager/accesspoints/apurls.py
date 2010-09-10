@@ -8,6 +8,10 @@ urlpatterns = patterns ('apmanager.accesspoints',
     
     (r'^(?P<ap_id>\d+)/$', 'views.ap.view_ap' ),
 
+    (r'^init/$', 'views.ap.ap_init_overview' ),
+
+    (r'^(?P<ap_id>\d+)/init/$', 'views.ap.view_ap_init' ),
+
     (r'^(?P<ap_id>\d+)/nagios/$', 'views.ap.view_ap_nagios_config'),
 
     (r'^nagios/$', 'views.ap.view_nagios_config'),

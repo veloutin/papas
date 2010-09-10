@@ -84,3 +84,5 @@ input[type=text], input[type=password], textarea, select { border:1px solid #ccc
 input[type=submit], input[type=button]{ background:white padding:3px; color:black; border:1px solid #bbb; border-color:#ddd #aaa #aaa #ddd; }
 input[type=submit].default, .submit-row input.default { border:2px solid #5b80b2; background:#7CA0C7; font-weight:bold; color:white; }
 
+
+

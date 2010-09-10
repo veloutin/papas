@@ -290,6 +290,15 @@ class InitSection (models.Model):
             ('section', 'architecture',),
         )
 
+class ArchInitResult (models.Model):
+    section = models.ForeignKey(InitSection)
+    ap = models.ForeignKey('AccessPoint')
+    status = models.IntegerField(
+        null=True, blank=True,
+        )
+    output = models.TextField(
+        null=True, blank=True,
+        )
 
 class CommandDefinition (models.Model):
     name = models.CharField(
