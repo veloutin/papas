@@ -30,3 +30,10 @@ class RootConsoleNode(ConsoleNodeBase):
         unpriv_cmd = self.protocol.require_param(_P.CONSOLE_PRIV_END)
         if unpriv_cmd:
             self.protocol.execute_text(unpriv_cmd)
+
+class AllowOutputNode(ConsoleNodeBase):
+    def setUp(self):
+        self.protocol.allow_output = True
+
+    def tearDown(self):
+        self.protocol.allow_output = False

@@ -37,6 +37,7 @@ class SSH(ConsoleProtocol):
         #
         # What I observed is that due to improper handling of exceptions in 
         # pxssh, login() fails.
+        _LOG.debug(_("Spawning child..."))
         self.child = c = pexpect.spawn(
             "ssh -l '{0._username}' -p {0._port} {options} {0._host}".format(
                 self,
@@ -44,18 +45,10 @@ class SSH(ConsoleProtocol):
                 )
             )
 
-        c.waitnoecho( 30)
+        c.waitnoecho(30)
         c.sendline(self._password)
 
-        index = c.expect([
-                self.PROMPT,
-                self.LOGIN_PROMPT,
-                self.FAILURE,
-                pexpect.TIMEOUT,
-                pexpect.EOF,
-            ], timeout=30)
-
-        if index != 0:
+        if not self.arch.console.prompt(timeout=15):
             _LOG.info("Login Failure")
             self.child = None
             raise TemporaryFailure("Login Failure")

@@ -29,7 +29,7 @@ class Telnet(ConsoleProtocol):
         self.child = c = pexpect.spawn("telnet %s %s" % (target, self._port))
 
         index = c.expect([
-                self.LOGIN_PROMPT,
+                self.arch.console.LOGIN_PROMPT,
                 pexpect.TIMEOUT,
                 pexpect.EOF,
             ], timeout=30)
@@ -42,18 +42,9 @@ class Telnet(ConsoleProtocol):
             self.child = None
             raise TemporaryFailure("Unable to connect")
 
-        c.waitnoecho( 30 )
-        c.sendline(self._password)
+        self.arch.console.send_password(self._password)
 
-        index = c.expect([
-                self.PROMPT,
-                self.LOGIN_PROMPT,
-                self.FAILURE,
-                pexpect.TIMEOUT,
-                pexpect.EOF,
-            ], timeout=30)
-
-        if index != 0:
+        if not self.arch.console.prompt(timeout=15):
             _LOG.info("Login Failure")
             self.child = None
             raise TemporaryFailure("Login Failure")

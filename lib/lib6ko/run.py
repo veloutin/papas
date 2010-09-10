@@ -3,6 +3,7 @@ from gettext import gettext as _
 _LOG = logging.getLogger(__name__)
 
 import re
+import traceback
 from operator import attrgetter
 from itertools import imap, chain, izip
 from cStringIO import StringIO
@@ -40,6 +41,12 @@ class ProtocolChain(object):
     Each protocol will be tried until there is no more left.
     """
     def __init__(self, cls_list, parameters):
+        # Test iterability of cls_list
+        iter(cls_list)
+        # Make sure there is a param dict in parameters
+        self._parameters = parameters
+        self._parameters.setdefault("param", {})
+
         self._protocol = None
         self._discared = []
         self._protos = cls_list
@@ -50,6 +57,7 @@ class ProtocolChain(object):
         if self._protocol:
             return self._protocol
 
+        errorlog = []
         #Initialize the next one
         for p in self._protos[:]:
             try:
@@ -69,10 +77,20 @@ class ProtocolChain(object):
                 self._protocol = p.get_class()(config)
                 return self._protocol
             except (TemporaryFailure), e:
-                _LOG.error(_("TemporaryFailure in getting protocol {0}: {1}").format(p, e))
+                msg = _("TemporaryFailure in getting protocol {0}: {1}").format(p, e)
+                _LOG.error(msg)
+                errorlog.append(msg)
                 continue
             except (PermanentFailure, MissingParametersException), e:
-                _LOG.error(_("PermanentFailure in getting protocol {0}: {1}").format(p, e))
+                msg = _("PermanentFailure in getting protocol {0}: {1}").format(p, e)
+                _LOG.error(msg)
+                errorlog.append(msg)
+                self._protos.remove(p)
+            except Exception, e:
+                msg = _("Unhandled exception in protocol {0} initialization: {1}").format(p, e)
+                _LOG.error(msg)
+                _LOG.debug(traceback.format_exc())
+                errorlog.append(msg)
                 self._protos.remove(p)
         else:
             #We didn't manage to get any protocol
@@ -121,6 +139,8 @@ class Executer (object):
         self._rendered_templates = {}
         self._command_nodes = {}
         self.parameters = {}
+        self.output = None
+        self.status = None
 
         #Init the protocol class lists
         self._protocol_classes = {}
@@ -188,6 +208,7 @@ class Executer (object):
             yield text[start:]
 
     def _execute_text(self, text, node=None):
+        """ Recursive execution of templates """
         res = u""
         #Split the template in text and nodes
         for part in self._partition_template_text(text):

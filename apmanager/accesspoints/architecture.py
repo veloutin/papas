@@ -29,6 +29,9 @@ from django.template import Template
 from lib6ko.protocol import Protocol as BaseProtocol
 from lib6ko import templatetags as cmdtags
 
+import re
+TAG_LIBRARY = "commands"
+TAG_EXTENDS_RE = re.compile("{% extends .*? %}", re.MULTILINE)
 
 CONTROL_MODE_CONSOLE = cmdtags.ConsoleNodeBase.mode
 CONTROL_MODE_SNMP = cmdtags.SNMPNodeBase.mode
@@ -272,19 +275,15 @@ class InitSection (models.Model):
         null = False,
         verbose_name = _(u"Script Template"), )
     architecture = models.ForeignKey(Architecture)
-    mode = models.CharField(
-        verbose_name = _(u"Mode"),
-        max_length = 255,
-        choices = CONTROL_MODES, )
 
     def compile_template(self):
         return Template(self.template)
 
     def __unicode__(self):
-        return _(u"%(section)s for %(arch)s [%(mode)s]") % dict(
+        return _(u"%(section)s for %(arch)s") % dict(
             section = self.section_id,
             arch = self.architecture,
-            mode = self.mode, )
+            )
 
     class Meta:
         unique_together = (
@@ -375,6 +374,21 @@ class CommandImplementation (models.Model):
         return u"{0.command} on {0.architecture}".format(self)
 
     def compile_template(self):
+        # Make sure we have the {% load commands %} in there
+        load_tag = "{{% load {0} %}}".format(TAG_LIBRARY)
+        if not load_tag in self.template:
+            #If a extends tag exists, we need to insert after it
+            match = TAG_EXTENDS_RE.search(self.template)
+            if match:
+                end = match.end()
+                return Template(load_tag.join([
+                    self.template[:end],
+                    self.template[end:],
+                    ])
+                )
+            else:
+                return Template(load_tag + self.template)
+            
         return Template(self.template)
 
     class Meta:

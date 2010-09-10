@@ -14,11 +14,14 @@ class CommandNodeBase( object ):
         return self.backend.get_protocol_chain(self.mode).protocol
             
     def render(self, context):
-        if self.backend:
-            out = self.do_render(context)
-            return self.backend.register_output(self, out)
+        if hasattr(self, "do_render"):
+            if self.backend:
+                out = self.do_render(context)
+                return self.backend.register_output(self, out)
+            else:
+                return self.do_render(context)
         else:
-            return self.do_render(context)
+            return ""
 
     @contextlib.contextmanager
     def get_context(self, executer):

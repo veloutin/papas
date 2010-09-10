@@ -55,3 +55,8 @@ class TemporaryFailure(Exception):
 class PermanentFailure(Exception):
     """ Permanent failure, do not try again with same parameters """
 
+class ScriptError(Exception):
+    """ Script failed to execute properly """
+    def __init__(self, message, traceback):
+        super(ScriptError, self).__init__(message)
+        self.traceback = traceback

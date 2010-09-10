@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from apmanager.accesspoints.architecture import *
+
 class AccessPoint ( models.Model ):
     """
         Represents an Access Point, with name, IP, MAC and description.
@@ -16,7 +17,7 @@ class AccessPoint ( models.Model ):
         help_text=_(u"Host Name") )
     ipv4Address = models.IPAddressField( unique=True,
         help_text=_(u"IP address of the access point") )
-    macAddress = models.CharField( max_length=17, unique=True,
+    macAddress = models.CharField( max_length=17, null=True, blank=True,
         help_text=_(u"MAC address") )
     description = models.CharField( max_length=255,
         help_text=_(u"Short description / Location") )
@@ -32,7 +33,7 @@ class AccessPoint ( models.Model ):
         return u"AP: %s ( %s -- %s )" % (self.name, self.ipv4Address, self.macAddress)
 
     def __unicode__(self):
-		return u"AP: %s" % (self.name)
+        return u"AP: %s" % (self.name)
 
     @staticmethod
     def table_view_header():

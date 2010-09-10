@@ -3,11 +3,16 @@ from django import template
 
 from lib6ko.templatetags import CommandNodeBase
 from lib6ko.templatetags import SNMPNodeBase
-from lib6ko.templatetags.console import ConsoleNode, RootConsoleNode
+from lib6ko.templatetags.console import (
+    ConsoleNode,
+    RootConsoleNode,
+    AllowOutputNode,
+    )
 
 register = template.Library()
 
 CONSOLE_TAG="console"
+OUTPUT_TAG="output"
 PRIVILEGED_TAG="root"
 MODE_TAG="mode"
 SNMP_TAG="snmp"
@@ -57,6 +62,27 @@ def do_console(parser, token):
             )
     parser.delete_first_token()
     return ConsoleNode(nodelist)
+
+######################################################################
+# Allow Output Node
+######################################################################
+class OutputNode(AllowOutputNode, template.Node):
+    def __init__(self, nodelist):
+        self.nodelist = nodelist
+
+    def do_render(self, ctx):
+        return self.nodelist.render(ctx)
+
+@register.tag(OUTPUT_TAG)
+def do_root(parser, token):
+    nodelist = parser.parse(('end' + OUTPUT_TAG, ))
+    parser.delete_first_token()
+    for t in parser.tokens:
+        if t.token_type == template.TOKEN_BLOCK and t.contents == "end" + CONSOLE_TAG:
+            break
+    else:
+        raise template.TemplateSyntaxError("%s cannot exist outside of a %s tag" % (OUTPUT_TAG, CONSOLE_TAG))
+    return OutputNode(nodelist)
 
 
 ######################################################################

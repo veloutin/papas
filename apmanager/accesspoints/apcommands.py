@@ -1,5 +1,6 @@
 import traceback
 
+from django.utils.translation import ugettext as _
 
 from django.db import models
 from django.core.urlresolvers import reverse
@@ -176,12 +177,12 @@ class CommandExecResult ( models.Model ):
     @staticmethod
     def table_view_header():
         return "".join(["<th>%s</th>" % i for i in (
-            'AP',
-            'R&eacute;ussi',
+            _('AccessPoint'),
+            _('Status'),
+            '',
             'Cr&eacute;&eacute;',
             'D&eacute;but&eacute;',
             'Termin&eacute;',
-            '',
         )])
 
     @staticmethod
@@ -194,14 +195,14 @@ class CommandExecResult ( models.Model ):
                 self.accesspoint.get_absolute_url(),
                 self.accesspoint.name,
                 ),
-            self.result == 0,
+            self.result == 0 and _("OK") or _("Failed"),
+            '<a href="%s">%s</a>' % (
+                self.get_absolute_url(),
+                _("Details"),
+                ),
             self.created,
             self.started,
             self.ended,
-            '<a href="%s">%s</a>' % (
-                self.get_absolute_url(),
-                'D&eacute;tails',
-                ),
         )])
 
     def schedule(self):
@@ -229,6 +230,7 @@ class CommandExecResult ( models.Model ):
     def execute(self):
         #Make params file
         from lib6ko.run import Executer
+        from lib6ko.protocol import ScriptError
         params = self.accesspoint.get_param_dict()
         for up in self.commandexec.usedparameter_set.all():
             params[up.name] = up.value
@@ -252,6 +254,9 @@ class CommandExecResult ( models.Model ):
                 params,
                 )
             self.result = 0
+        except ScriptError, e:
+            self.output = e.traceback
+            self.result = -1
         except Exception, e:
             self.output = traceback.format_exc()
             self.result = -1

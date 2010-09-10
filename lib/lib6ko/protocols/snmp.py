@@ -6,7 +6,7 @@ import re
 import commands
 
 from lib6ko import parameters as _P
-from lib6ko.protocol import Protocol
+from lib6ko.protocol import Protocol, ScriptError
 
 def iter_by(iterable, count):
     gen = iter(iterable)
@@ -50,6 +50,8 @@ class SNMPProtocol(Protocol):
         )
         _LOG.debug(_("Executing: {0}").format(cmd))
         ret, out = commands.getstatusoutput(cmd)
+        if ret != 0:
+            raise ScriptError(_("Failed to set value"), out)
         return out
 
     def _extract_value(self, line):
@@ -71,7 +73,7 @@ class SNMPProtocol(Protocol):
         ret, out = commands.getstatusoutput(cmd)
         if ret != 0:
             print ret, out
-            raise Exception("Failed to get value")
+            raise ScriptError("Failed to get value", out)
 
         return dict(
                 ( filter(None, 
@@ -82,18 +84,25 @@ class SNMPProtocol(Protocol):
 
     def execute_text(self, text):
         res = u""
+        throw = False
         _LOG.debug("TEXT" + repr(text[:80]))
         for line in text.splitlines():
-            _LOG.debug(_("Executing line: {0}").format(repr(line)))
-            args = line.split(" ", 2)
-            if len(args) == 3:
-                res += self.set_value(*args) + "\n"
+            try:
+                _LOG.debug(_("Executing line: {0}").format(repr(line)))
+                args = line.split(" ", 2)
+                if len(args) == 3:
+                    res += self.set_value(*args) + "\n"
 
-            elif len(args) == 1:
-                if len(args[0].strip()) != 0:
-                    for key, val in self.get_values(*args).items():
-                        res += u"GET {0} = {1}\n".format(key, val)
+                elif len(args) == 1:
+                    if len(args[0].strip()) != 0:
+                        for key, val in self.get_values(*args).items():
+                            res += u"GET {0} = {1}\n".format(key, val)
+            except ScriptError, e:
+                res += e.traceback + "\n"
+                throw = True
 
+        if throw:
+            raise ScriptError(_("Script did not execute properly"), res)
         return res
 
 class SNMP2cProtocol(SNMPProtocol):
