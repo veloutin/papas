@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-12 21:22-0400\n"
+"POT-Creation-Date: 2010-09-13 08:43-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,24 +16,53 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: apmanager/accesspoints/apcommands.py:180
-msgid "AccessPoint"
+#: apmanager/settings.py:32
+msgid "French"
+msgstr ""
+
+#: apmanager/settings.py:33
+msgid "English"
+msgstr ""
+
+#: apmanager/accesspoints/apcommands.py:38
+#: apmanager/templates/accesspoints/commands/create.html:38
+msgid "Command"
+msgstr ""
+
+#: apmanager/accesspoints/apcommands.py:117
+msgid "Command Execution"
+msgstr ""
+
+#: apmanager/accesspoints/apcommands.py:118
+msgid "Command Executions"
 msgstr ""
 
 #: apmanager/accesspoints/apcommands.py:181
-#: apmanager/accesspoints/architecture.py:173
+msgid "Command Execution Result"
+msgstr ""
+
+#: apmanager/accesspoints/apcommands.py:182
+msgid "Command Execution Results"
+msgstr ""
+
+#: apmanager/accesspoints/apcommands.py:192
+msgid "AccessPoint"
+msgstr ""
+
+#: apmanager/accesspoints/apcommands.py:193
+#: apmanager/accesspoints/architecture.py:182
 msgid "Status"
 msgstr ""
 
-#: apmanager/accesspoints/apcommands.py:198
+#: apmanager/accesspoints/apcommands.py:210
 msgid "OK"
 msgstr ""
 
-#: apmanager/accesspoints/apcommands.py:198
+#: apmanager/accesspoints/apcommands.py:210
 msgid "Failed"
 msgstr ""
 
-#: apmanager/accesspoints/apcommands.py:201
+#: apmanager/accesspoints/apcommands.py:213
 #: apmanager/templates/accesspoints/init_overview.html:26
 msgid "Details"
 msgstr ""
@@ -103,104 +132,191 @@ msgid "Error occured"
 msgstr ""
 
 #: apmanager/accesspoints/architecture.py:92
-#: apmanager/accesspoints/architecture.py:101
-#: apmanager/accesspoints/architecture.py:126
-#: apmanager/accesspoints/architecture.py:196
-#: apmanager/accesspoints/architecture.py:306
+#: apmanager/accesspoints/architecture.py:104
+#: apmanager/accesspoints/architecture.py:132
+#: apmanager/accesspoints/architecture.py:205
+#: apmanager/accesspoints/architecture.py:327
 msgid "Name"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:110
+#: apmanager/accesspoints/architecture.py:98
+msgid "Section"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:113
 msgid "Default Value"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:134
+#: apmanager/accesspoints/architecture.py:117
+#: apmanager/templates/accesspoints/commands/view.html:12
+#: apmanager/templates/accesspoints/commands/viewexec.html:11
+msgid "Parameter"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:140
 msgid "Mode"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:169
+#: apmanager/accesspoints/architecture.py:146
+msgid "Protocol"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:178
 msgid "The highest priority protocol is tried first for each mode"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:193
+#: apmanager/accesspoints/architecture.py:202
 msgid "Parent"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:202
+#: apmanager/accesspoints/architecture.py:211
 #: apmanager/templates/accesspoints/ap.html:14
 msgid "Architecture"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:209
+#: apmanager/accesspoints/architecture.py:218
 msgid "Optional"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:228
+#: apmanager/accesspoints/architecture.py:233
+msgid "Protocol Parameter"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:234
+msgid "Protocol Parameters"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:239
 msgid "Source"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:233
-#: apmanager/accesspoints/architecture.py:256
+#: apmanager/accesspoints/architecture.py:244
+#: apmanager/accesspoints/architecture.py:269
 #: apmanager/templates/accesspoints/commands/view.html:12
 #: apmanager/templates/accesspoints/commands/viewexec.html:11
 msgid "Value"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:276
+#: apmanager/accesspoints/architecture.py:255
+msgid "Architecture Parameter"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:256
+msgid "Architecture Parameters"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:280
+msgid "AP Parameter"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:281
+msgid "AP Parameters"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:291
 msgid "Script Template"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:283
+#: apmanager/accesspoints/architecture.py:298
 #, python-format
 msgid "%(section)s for %(arch)s"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:310
+#: apmanager/accesspoints/architecture.py:307
+msgid "Initialization Section"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:308
+msgid "Initialization Sections"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:321
+msgid "Initialization Result"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:322
+msgid "Initialization Results"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:331
 msgid "Parameters"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:312
+#: apmanager/accesspoints/architecture.py:333
 msgid "A comma separated list of parameters that the command takes"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:379
+#: apmanager/accesspoints/architecture.py:337
+msgid "Command Definition"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:338
+msgid "Command Definitions"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:404
 msgid "Template"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:17
+#: apmanager/accesspoints/architecture.py:416
+msgid "Command Implementation"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:417
+msgid "Command Implementations"
+msgstr ""
+
+#: apmanager/accesspoints/models.py:18
 msgid "Host Name"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:19
+#: apmanager/accesspoints/models.py:20
 msgid "IP address of the access point"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:21
+#: apmanager/accesspoints/models.py:22
 msgid "MAC address"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:23
+#: apmanager/accesspoints/models.py:24
 msgid "Short description / Location"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:127
+#: apmanager/accesspoints/models.py:29
+#: apmanager/templates/accesspoints/init_overview.html:12
+msgid "Access Point"
+msgstr ""
+
+#: apmanager/accesspoints/models.py:30
+msgid "Access Points"
+msgstr ""
+
+#: apmanager/accesspoints/models.py:130
 msgid "Name of the Group"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:129
+#: apmanager/accesspoints/models.py:132
 msgid "Access Points in this AP group"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:135
+#: apmanager/accesspoints/models.py:136
+msgid "AP Group"
+msgstr ""
+
+#: apmanager/accesspoints/models.py:137
+msgid "AP Groups"
+msgstr ""
+
+#: apmanager/accesspoints/models.py:140
 #, python-format
 msgid "Group: %s"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:158
+#: apmanager/accesspoints/models.py:163
 msgid "IP address of the client"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:160
+#: apmanager/accesspoints/models.py:165
 msgid "Client MAC address"
 msgstr ""
 
@@ -293,10 +409,6 @@ msgstr ""
 msgid "Select all"
 msgstr ""
 
-#: apmanager/templates/accesspoints/init_overview.html:12
-msgid "Access Point"
-msgstr ""
-
 #: apmanager/templates/accesspoints/init_overview.html:13
 msgid "Success"
 msgstr ""
@@ -348,10 +460,6 @@ msgstr ""
 msgid "Select an AP"
 msgstr ""
 
-#: apmanager/templates/accesspoints/commands/create.html:38
-msgid "Command"
-msgstr ""
-
 #: apmanager/templates/accesspoints/commands/edit.html:11
 #, python-format
 msgid "Executing %(command)s on %(target)s"
@@ -366,7 +474,7 @@ msgid "Target list: "
 msgstr ""
 
 #: apmanager/templates/accesspoints/commands/edit.html:26
-msgid "Target list if empty"
+msgid "Target list is empty"
 msgstr ""
 
 #: apmanager/templates/accesspoints/commands/home.html:9
@@ -379,11 +487,6 @@ msgstr ""
 
 #: apmanager/templates/accesspoints/commands/links.html:5
 msgid "All"
-msgstr ""
-
-#: apmanager/templates/accesspoints/commands/view.html:12
-#: apmanager/templates/accesspoints/commands/viewexec.html:11
-msgid "Parameter"
 msgstr ""
 
 #: apmanager/templates/accesspoints/commands/view.html:19

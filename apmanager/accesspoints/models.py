@@ -27,6 +27,8 @@ class AccessPoint ( models.Model ):
 
     class Meta:
         ordering = ('name','ipv4Address',)
+        verbose_name = _("Access Point")
+        verbose_name_plural = _("Access Points")
 
     def get_absolute_url(self):
         return reverse('apmanager.accesspoints.views.ap.view_ap', args=(self.id,))
@@ -79,7 +81,7 @@ class AccessPoint ( models.Model ):
             apinit, created = self.archinitresult_set.get_or_create(
                 section=init_section,
                 status=-1,
-                output=u"Initialization has not been run",
+                output=_u(u"Initialization has not been run"),
                 )
 
             # Execute the section
@@ -133,6 +135,8 @@ class APGroup ( models.Model ):
 
     class Meta:
         ordering = ('name',)
+        verbose_name = _("AP Group")
+        verbose_name_plural = _("AP Groups")
     
     def __unicode__(self):
         return _(u"Group: %s") % (self.name)

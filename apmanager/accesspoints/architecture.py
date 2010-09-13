@@ -94,6 +94,9 @@ class Section (models.Model):
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        verbose_name = _(u"Section")
+
 class Parameter (models.Model):
     name = models.CharField(
         primary_key = True,
@@ -109,6 +112,9 @@ class Parameter (models.Model):
         max_length = 255,
         verbose_name = _(u"Default Value"),
         null = True, blank=True, )
+
+    class Meta:
+        verbose_name = _(u"Parameter")
 
     def __unicode__(self):
         return self.scoped_name
@@ -135,6 +141,9 @@ class Protocol (models.Model):
         max_length = 255,
         blank = True, null = True,
         choices = CONTROL_MODES, )
+
+    class Meta:
+        verbose_name = _(u"Protocol")
 
     def __unicode__(self):
         return self.modname
@@ -221,6 +230,8 @@ class ProtocolParameter (models.Model):
         unique_together = (
             ('parameter', 'protocol'),
         )
+        verbose_name = _(u"Protocol Parameter")
+        verbose_name_plural = _(u"Protocol Parameters")
 
 class ArchParameter (models.Model):
     parameter = models.ForeignKey(Parameter)
@@ -241,6 +252,8 @@ class ArchParameter (models.Model):
         unique_together = (
             ('parameter', 'arch'),
         )
+        verbose_name = _(u"Architecture Parameter")
+        verbose_name_plural = _(u"Architecture Parameters")
 
     def update_dict(self, d):
         if self.value_type in SOURCE_TYPE_ACTIONS:
@@ -264,6 +277,8 @@ class APParameter (models.Model):
         unique_together = (
             ('parameter', 'ap'),
         )
+        verbose_name = _(u"AP Parameter")
+        verbose_name_plural = _(u"AP Parameters")
 
     def update_dict(self, d):
         d[self.parameter.scoped_name] = self.value
@@ -289,6 +304,8 @@ class InitSection (models.Model):
         unique_together = (
             ('section', 'architecture',),
         )
+        verbose_name = _(u"Initialization Section")
+        verbose_name_plural = _(u"Initialization Sections")
 
 class ArchInitResult (models.Model):
     section = models.ForeignKey(InitSection)
@@ -299,6 +316,10 @@ class ArchInitResult (models.Model):
     output = models.TextField(
         null=True, blank=True,
         )
+
+    class Meta:
+        verbose_name = _(u"Initialization Result")
+        verbose_name_plural = _(u"Initialization Results")
 
 class CommandDefinition (models.Model):
     name = models.CharField(
@@ -311,7 +332,11 @@ class CommandDefinition (models.Model):
         blank = True,
         help_text = _(u"A comma separated list of parameters that the command takes"),
         )
-    
+
+    class Meta:
+        verbose_name = _(u"Command Definition")
+        verbose_name_plural = _(u"Command Definitions")
+
     def __unicode__(self):
         return u"%(name)s(%(parameters)s)" % {"name":self.name, "parameters":self.parameters}
 
@@ -388,6 +413,8 @@ class CommandImplementation (models.Model):
         unique_together = (
             ('command', 'architecture'),
             )
+        verbose_name = _(u"Command Implementation")
+        verbose_name_plural = _(u"Command Implementations")
 
 
 

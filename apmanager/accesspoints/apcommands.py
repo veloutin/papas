@@ -35,6 +35,9 @@ class Command ( models.Model ):
     script = models.FileField ( upload_to=settings.UPLOAD_ROOT, blank=True )
     script_text = models.TextField( blank=True)
 
+    class Meta:
+        verbose_name = _(u"Command")
+
     def save(self):
         if self.script_text:
            self.script = ""
@@ -111,6 +114,11 @@ class CommandExec ( models.Model ):
     group = models.ForeignKey(APGroup,null=True)
     last_run = models.DateTimeField(null=True)
 
+    class Meta:
+        verbose_name = _(u"Command Execution")
+        verbose_name_plural = _(u"Command Executions")
+        
+
     def get_absolute_url(self):
         return reverse("apmanager.accesspoints.views.apcommands.view_command",
             args=(self.id,),
@@ -169,6 +177,10 @@ class CommandExecResult ( models.Model ):
     created = models.DateTimeField()
     started = models.DateTimeField(null=True)
     ended = models.DateTimeField(null=True)
+
+    class Meta:
+        verbose_name = _(u"Command Execution Result")
+        verbose_name_plural = _(u"Command Execution Results")
 
     def get_absolute_url(self):
         return reverse("apmanager.accesspoints.views.apcommands.view_exec",

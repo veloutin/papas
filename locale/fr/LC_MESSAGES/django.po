@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-12 21:22-0400\n"
+"POT-Creation-Date: 2010-09-13 08:43-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,24 +16,53 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: apmanager/accesspoints/apcommands.py:180
+#: apmanager/settings.py:32
+msgid "French"
+msgstr "Français"
+
+#: apmanager/settings.py:33
+msgid "English"
+msgstr "Anglais"
+
+#: apmanager/accesspoints/apcommands.py:38
+#: apmanager/templates/accesspoints/commands/create.html:38
+msgid "Command"
+msgstr "Commande"
+
+#: apmanager/accesspoints/apcommands.py:117
+msgid "Command Execution"
+msgstr "Exécution de commande"
+
+#: apmanager/accesspoints/apcommands.py:118
+msgid "Command Executions"
+msgstr "Exécutions de commandes"
+
+#: apmanager/accesspoints/apcommands.py:181
+msgid "Command Execution Result"
+msgstr "Résultat d'exécution de commande"
+
+#: apmanager/accesspoints/apcommands.py:182
+msgid "Command Execution Results"
+msgstr "Résultats d'exécution de commandes"
+
+#: apmanager/accesspoints/apcommands.py:192
 msgid "AccessPoint"
 msgstr "Borne sans-fil"
 
-#: apmanager/accesspoints/apcommands.py:181
-#: apmanager/accesspoints/architecture.py:173
+#: apmanager/accesspoints/apcommands.py:193
+#: apmanager/accesspoints/architecture.py:182
 msgid "Status"
-msgstr "Status"
+msgstr "Statut"
 
-#: apmanager/accesspoints/apcommands.py:198
+#: apmanager/accesspoints/apcommands.py:210
 msgid "OK"
 msgstr "Ok"
 
-#: apmanager/accesspoints/apcommands.py:198
+#: apmanager/accesspoints/apcommands.py:210
 msgid "Failed"
 msgstr "Échoué"
 
-#: apmanager/accesspoints/apcommands.py:201
+#: apmanager/accesspoints/apcommands.py:213
 #: apmanager/templates/accesspoints/init_overview.html:26
 msgid "Details"
 msgstr "Détails"
@@ -103,104 +132,193 @@ msgid "Error occured"
 msgstr "Une erreur est survenue"
 
 #: apmanager/accesspoints/architecture.py:92
-#: apmanager/accesspoints/architecture.py:101
-#: apmanager/accesspoints/architecture.py:126
-#: apmanager/accesspoints/architecture.py:196
-#: apmanager/accesspoints/architecture.py:306
+#: apmanager/accesspoints/architecture.py:104
+#: apmanager/accesspoints/architecture.py:132
+#: apmanager/accesspoints/architecture.py:205
+#: apmanager/accesspoints/architecture.py:327
 msgid "Name"
 msgstr "Nom"
 
-#: apmanager/accesspoints/architecture.py:110
+#: apmanager/accesspoints/architecture.py:98
+msgid "Section"
+msgstr "Section"
+
+#: apmanager/accesspoints/architecture.py:113
 msgid "Default Value"
 msgstr "Valeur par défaut"
 
-#: apmanager/accesspoints/architecture.py:134
+#: apmanager/accesspoints/architecture.py:117
+#: apmanager/templates/accesspoints/commands/view.html:12
+#: apmanager/templates/accesspoints/commands/viewexec.html:11
+msgid "Parameter"
+msgstr "Paramètre"
+
+#: apmanager/accesspoints/architecture.py:140
 msgid "Mode"
 msgstr "Mode"
 
-#: apmanager/accesspoints/architecture.py:169
-msgid "The highest priority protocol is tried first for each mode"
-msgstr "Le protocole ayant la plus grande priorité est essayé en premier pour chaque mode"
+#: apmanager/accesspoints/architecture.py:146
+msgid "Protocol"
+msgstr "Protocole"
 
-#: apmanager/accesspoints/architecture.py:193
+#: apmanager/accesspoints/architecture.py:178
+msgid "The highest priority protocol is tried first for each mode"
+msgstr ""
+"Le protocole ayant la plus grande priorité est essayé en premier pour chaque "
+"mode"
+
+#: apmanager/accesspoints/architecture.py:202
 msgid "Parent"
 msgstr "Parent"
 
-#: apmanager/accesspoints/architecture.py:202
+#: apmanager/accesspoints/architecture.py:211
 #: apmanager/templates/accesspoints/ap.html:14
 msgid "Architecture"
 msgstr "Architecture"
 
-#: apmanager/accesspoints/architecture.py:209
+#: apmanager/accesspoints/architecture.py:218
 msgid "Optional"
 msgstr "Optionel"
 
-#: apmanager/accesspoints/architecture.py:228
+#: apmanager/accesspoints/architecture.py:233
+msgid "Protocol Parameter"
+msgstr "Paramètre de protocole"
+
+#: apmanager/accesspoints/architecture.py:234
+msgid "Protocol Parameters"
+msgstr "Paramètres de protocole"
+
+#: apmanager/accesspoints/architecture.py:239
 msgid "Source"
 msgstr "Source"
 
-#: apmanager/accesspoints/architecture.py:233
-#: apmanager/accesspoints/architecture.py:256
+#: apmanager/accesspoints/architecture.py:244
+#: apmanager/accesspoints/architecture.py:269
 #: apmanager/templates/accesspoints/commands/view.html:12
 #: apmanager/templates/accesspoints/commands/viewexec.html:11
 msgid "Value"
 msgstr "Valeur"
 
-#: apmanager/accesspoints/architecture.py:276
+#: apmanager/accesspoints/architecture.py:255
+msgid "Architecture Parameter"
+msgstr "Paramètre d'architecture"
+
+#: apmanager/accesspoints/architecture.py:256
+msgid "Architecture Parameters"
+msgstr "Paramètres d'architecture"
+
+#: apmanager/accesspoints/architecture.py:280
+msgid "AP Parameter"
+msgstr "Paramètre de borne"
+
+#: apmanager/accesspoints/architecture.py:281
+msgid "AP Parameters"
+msgstr "Paramètres de bornes"
+
+#: apmanager/accesspoints/architecture.py:291
 msgid "Script Template"
 msgstr "Gabarit de script"
 
-#: apmanager/accesspoints/architecture.py:283
+#: apmanager/accesspoints/architecture.py:298
 #, python-format
 msgid "%(section)s for %(arch)s"
 msgstr "%(section)s pour %(arch)s"
 
-#: apmanager/accesspoints/architecture.py:310
+#: apmanager/accesspoints/architecture.py:307
+msgid "Initialization Section"
+msgstr "Section d'initialisation"
+
+#: apmanager/accesspoints/architecture.py:308
+msgid "Initialization Sections"
+msgstr "Sections d'initialisation"
+
+#: apmanager/accesspoints/architecture.py:321
+msgid "Initialization Result"
+msgstr "Résultat d'initialisation"
+
+#: apmanager/accesspoints/architecture.py:322
+msgid "Initialization Results"
+msgstr "Résultats d'initialisation"
+
+#: apmanager/accesspoints/architecture.py:331
 msgid "Parameters"
 msgstr "Paramètres"
 
-#: apmanager/accesspoints/architecture.py:312
+#: apmanager/accesspoints/architecture.py:333
 msgid "A comma separated list of parameters that the command takes"
 msgstr "Liste séparée par des virgules de paramètres acceptés par la commande"
 
-#: apmanager/accesspoints/architecture.py:379
+#: apmanager/accesspoints/architecture.py:337
+msgid "Command Definition"
+msgstr "Définition de commande"
+
+#: apmanager/accesspoints/architecture.py:338
+msgid "Command Definitions"
+msgstr "Définitions de commandes"
+
+#: apmanager/accesspoints/architecture.py:404
 msgid "Template"
 msgstr "Gabarit"
 
-#: apmanager/accesspoints/models.py:17
+#: apmanager/accesspoints/architecture.py:416
+msgid "Command Implementation"
+msgstr "Implémentation de commande"
+
+#: apmanager/accesspoints/architecture.py:417
+msgid "Command Implementations"
+msgstr "Implémentations de commandes"
+
+#: apmanager/accesspoints/models.py:18
 msgid "Host Name"
 msgstr "Nom d'hôte"
 
-#: apmanager/accesspoints/models.py:19
+#: apmanager/accesspoints/models.py:20
 msgid "IP address of the access point"
 msgstr "Adresse IP de la borne sans-fil"
 
-#: apmanager/accesspoints/models.py:21
+#: apmanager/accesspoints/models.py:22
 msgid "MAC address"
 msgstr "Adresse MAC"
 
-#: apmanager/accesspoints/models.py:23
+#: apmanager/accesspoints/models.py:24
 msgid "Short description / Location"
 msgstr "Description courte / Emplacement"
 
-#: apmanager/accesspoints/models.py:127
+#: apmanager/accesspoints/models.py:29
+#: apmanager/templates/accesspoints/init_overview.html:12
+msgid "Access Point"
+msgstr "Borne sans-fil"
+
+#: apmanager/accesspoints/models.py:30
+msgid "Access Points"
+msgstr "Bornes sans-fil"
+
+#: apmanager/accesspoints/models.py:130
 msgid "Name of the Group"
 msgstr "Nom du groupe"
 
-#: apmanager/accesspoints/models.py:129
+#: apmanager/accesspoints/models.py:132
 msgid "Access Points in this AP group"
 msgstr "Bornes sans-fil dans ce groupe"
 
-#: apmanager/accesspoints/models.py:135
+#: apmanager/accesspoints/models.py:136
+msgid "AP Group"
+msgstr "Groupe de bornes"
+
+#: apmanager/accesspoints/models.py:137
+msgid "AP Groups"
+msgstr "Groupes de bornes"
+
+#: apmanager/accesspoints/models.py:140
 #, python-format
 msgid "Group: %s"
 msgstr "Groupe: %s"
 
-#: apmanager/accesspoints/models.py:158
+#: apmanager/accesspoints/models.py:163
 msgid "IP address of the client"
 msgstr "Adresse IP du client"
 
-#: apmanager/accesspoints/models.py:160
+#: apmanager/accesspoints/models.py:165
 msgid "Client MAC address"
 msgstr "Adresse MAC du client"
 
@@ -237,7 +355,8 @@ msgstr "Interface administrateur"
 #: apmanager/templates/redirect.html:12
 #, python-format
 msgid "You will be redirected <a href=\"%(url)s\">here</a> in %(time)s seconds"
-msgstr "Vous serez redirigés <a href=\"%(url)s\">ici</a> dans %(time)s secondes"
+msgstr ""
+"Vous serez redirigés <a href=\"%(url)s\">ici</a> dans %(time)s secondes"
 
 #: apmanager/templates/accesspoints/ap.html:11
 msgid "IP"
@@ -293,10 +412,6 @@ msgstr "Vue d'ensemble de l'initialisation"
 msgid "Select all"
 msgstr "Tout sélectionner"
 
-#: apmanager/templates/accesspoints/init_overview.html:12
-msgid "Access Point"
-msgstr "Borne sans-fil"
-
 #: apmanager/templates/accesspoints/init_overview.html:13
 msgid "Success"
 msgstr "Succès"
@@ -348,10 +463,6 @@ msgstr "ou"
 msgid "Select an AP"
 msgstr "Choisir une borne"
 
-#: apmanager/templates/accesspoints/commands/create.html:38
-msgid "Command"
-msgstr "Commande"
-
 #: apmanager/templates/accesspoints/commands/edit.html:11
 #, python-format
 msgid "Executing %(command)s on %(target)s"
@@ -380,11 +491,6 @@ msgstr "Commandes exécutées"
 #: apmanager/templates/accesspoints/commands/links.html:5
 msgid "All"
 msgstr "Toutes"
-
-#: apmanager/templates/accesspoints/commands/view.html:12
-#: apmanager/templates/accesspoints/commands/viewexec.html:11
-msgid "Parameter"
-msgstr "Paramètres"
 
 #: apmanager/templates/accesspoints/commands/view.html:19
 msgid "Results"
@@ -492,7 +598,9 @@ msgstr "Erreur de programmation"
 #: apmanager/templates/genericsql/report_error.html:7
 msgid ""
 "This error might have been caused by a malformed SQL query or bad parameters"
-msgstr "Cette erreur peut avoir été causée par une requête SQL mal formée ou de mauvais paramètres"
+msgstr ""
+"Cette erreur peut avoir été causée par une requête SQL mal formée ou de "
+"mauvais paramètres"
 
 #: apmanager/templates/genericsql/report_list.html:6
 msgid "Available Reports:"
@@ -530,7 +638,9 @@ msgstr "Connexion"
 
 #: apmanager/templates/registration/login.html:14
 msgid "Your username and/or password didn't match. Please try again."
-msgstr "Votre nom d'utilisateur et/ou votre mot de passe sont invalides. Essayer à nouveau."
+msgstr ""
+"Votre nom d'utilisateur et/ou votre mot de passe sont invalides. Essayer à "
+"nouveau."
 
 #: apmanager/templates/registration/login.html:19
 msgid "Username:"
