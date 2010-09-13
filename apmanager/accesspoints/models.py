@@ -55,6 +55,49 @@ class AccessPoint ( models.Model ):
         LOG.debug("refreshing client list for %s", str(self))
         LOG.error("Not implemented yet!")
 
+    def schedule_init(self):
+        if settings.DEBUG:
+            self.run_init()
+        else:
+            # TODO Add a way to tell that it's still running
+            file(os.path.join(settings.AP_INIT_WATCH_DIR, str(self.id)), 'w').close()
+
+    def run_init(self):
+        from lib6ko.run import Executer
+        from lib6ko.protocol import ScriptError
+
+        #Make params dict
+        params = self.get_param_dict()
+
+        executer = Executer(Protocol.objects.all())
+
+        # Go through all init sections
+        #XXX Should there be an order?
+        for init_section in self.architecture.initsection_set.all():
+            apinit, created = self.archinitresult_set.get_or_create(
+                section=init_section,
+                status=-1,
+                output=u"Initialization has not been run",
+                )
+
+            # Execute the section
+            try:
+                apinit.output = executer.execute_template(
+                    init_section.compile_template(),
+                    self,
+                    params,
+                    )
+                apinit.status = 0
+            except ScriptError, e:
+                apinit.output = e.traceback
+                apinit.status = -1
+            except Exception, e:
+                apinit.output = traceback.format_exc()
+                apinit.status = -1
+
+            apinit.save()
+        return
+
     def get_param_dict(self):
         res = {}
 

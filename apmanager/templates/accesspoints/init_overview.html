@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block body %}
+<h2>{% trans "Access Point Initialization Overview" %}</h2>
+
+<form method="POST">
+<table>
+<thead>
+<tr>
+    <th><input type="checkbox" value="1" name="ap_all" title="{% trans "Select all" %}"/></th>
+    <th>{% trans "Access Point" %}</th>
+    <th>{% trans "Success" %}</th>
+    <th>{% trans "Missing" %}</th>
+    <th>{% trans "Error" %}</th>
+    <th></th>
+</tr>
+</thead>
+{% for res in ap_list %}
+<tr class="{% if res.error  %}error{% else %}{% if res.missing %}missing{% else %}success{% endif %}{% endif %}">
+    <td><input type="checkbox" name="ap_id" value="{{ res.ap.id }}" /></td>
+    <td><a href="{{ res.ap.get_absolute_url }}">{{ res.ap }}</a></td>
+    <td>{{ res.success }}</td>
+    <td>{{ res.missing }}</td>
+    <td>{{ res.error }}</td>
+    <td><a href="{% url apmanager.accesspoints.views.ap.view_ap_init res.ap.id %}">{% trans "Details" %}</a></td>
+</tr>
+{% endfor %}
+</table>
+<button name="init" value="1">{% trans "Initialize selected access points" %}</button>
+</form>
+{% endblock body %}

@@ -277,7 +277,7 @@ class InitSection (models.Model):
     architecture = models.ForeignKey(Architecture)
 
     def compile_template(self):
-        return Template(self.template)
+        return compile_template(self.template)
 
     def __unicode__(self):
         return _(u"%(section)s for %(arch)s") % dict(
@@ -383,24 +383,29 @@ class CommandImplementation (models.Model):
         return u"{0.command} on {0.architecture}".format(self)
 
     def compile_template(self):
-        # Make sure we have the {% load commands %} in there
-        load_tag = "{{% load {0} %}}".format(TAG_LIBRARY)
-        if not load_tag in self.template:
-            #If a extends tag exists, we need to insert after it
-            match = TAG_EXTENDS_RE.search(self.template)
-            if match:
-                end = match.end()
-                return Template(load_tag.join([
-                    self.template[:end],
-                    self.template[end:],
-                    ])
-                )
-            else:
-                return Template(load_tag + self.template)
-            
-        return Template(self.template)
-
+        return compile_template(self.template)
     class Meta:
         unique_together = (
             ('command', 'architecture'),
             )
+
+
+
+def compile_template(raw_text):
+    # Make sure we have the {% load commands %} in there
+    load_tag = "{{% load {0} %}}".format(TAG_LIBRARY)
+    if not load_tag in raw_text:
+        #If a extends tag exists, we need to insert after it
+        match = TAG_EXTENDS_RE.search(raw_text)
+        if match:
+            end = match.end()
+            return Template(load_tag.join([
+                raw_text[:end],
+                raw_text[end:],
+                ])
+            )
+        else:
+            return Template(load_tag + raw_text)
+        
+    return Template(raw_text)
+    

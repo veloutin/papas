@@ -3,7 +3,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
 @login_required
@@ -65,17 +65,20 @@ def get_init_status(arch_init_list, ap_init_list):
     success = []
     error = []
     missing = []
-        
+    
+    #Load the ap's init sections in a dict by (unique) section name
     ap_init = dict(
         (
-            (init_sect.section.id, init_sect)
+            (init_sect.section.section.name, init_sect)
             for init_sect in ap_init_list
         ),
     )
+
+    #Find out what sections of the architecture init are missing, or in error
     for ins in arch_init_list:
         if not ins.section_id in ap_init:
             missing.append(ins)
-        elif ap_init[ins.section_id].result != 0:
+        elif ap_init[ins.section_id].status != 0:
             error.append(ap_init[ins.section_id])
         else:
             success.append(ap_init[ins.section_id])
@@ -89,7 +92,20 @@ def get_init_status(arch_init_list, ap_init_list):
 @login_required
 def ap_init_overview(request):
     if request.method == "POST":
-        print request.POST.items()
+        if request.POST.has_key("ap_all"):
+            aps = AccessPoint.objects.all()
+        elif request.POST.has_key("ap_id"):
+            aps = AccessPoint.objects.filter(id__in=request.POST.getlist("ap_id"))
+        else:
+            return HttpResponseRedirect(reverse(ap_init_overview))
+
+        for ap in aps:
+            ap.schedule_init()
+            return render_to_response('redirect.html',
+                {'url':reverse(ap_init_overview),
+                 'time':60
+                },
+                context_instance=RequestContext(request))
     aps = AccessPoint.objects.all()
     arch_init_sections = {}
     res = []
@@ -134,12 +150,10 @@ def view_ap_init(request, ap_id):
         )
 
     if request.method=='POST':
-        ap.schedule_refresh()
+        ap.schedule_init()
         return render_to_response('redirect.html',
-            {'url':reverse(view_ap,kwargs={'ap_id':ap.id}),
-             'time':10,
-             'show_init':True,
-
+            {'url':reverse(view_ap_init,kwargs={'ap_id':ap.id}),
+             'time':30,
             },
             context_instance=RequestContext(request))
     return render_to_response('accesspoints/ap.html',
