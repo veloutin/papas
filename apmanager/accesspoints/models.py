@@ -6,6 +6,8 @@ from django.db import models
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _u
+from django.template import Context
 
 from apmanager.accesspoints.architecture import *
 
@@ -86,6 +88,7 @@ class AccessPoint ( models.Model ):
                     init_section.compile_template(),
                     self,
                     params,
+                    context_factory=Context,
                     )
                 apinit.status = 0
             except ScriptError, e:

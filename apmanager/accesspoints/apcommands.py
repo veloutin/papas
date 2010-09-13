@@ -6,6 +6,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django import forms
 from django.conf import settings
+from django.template import Context
 
 from apmanager.accesspoints.models import (
     AccessPoint,
@@ -252,6 +253,7 @@ class CommandExecResult ( models.Model ):
                 impl.compile_template(),
                 self.accesspoint,
                 params,
+                context_factory=Context,
                 )
             self.result = 0
         except ScriptError, e:

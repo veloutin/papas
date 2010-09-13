@@ -9,8 +9,6 @@ from itertools import imap, chain, izip
 from cStringIO import StringIO
 from copy import deepcopy
 
-from django.template import Context
-
 from lib6ko.templatetags import CommandNodeBase, ConsoleNodeBase, SNMPNodeBase
 from .protocol import (
     TemporaryFailure,
@@ -164,7 +162,7 @@ class Executer (object):
         self._rendered_templates[node_id] = output
         return self.TBLOCK.format(node_id)
 
-    def execute_template(self, template, ap, parameters={}):
+    def execute_template(self, template, ap, parameters={}, context_factory=lambda p:p):
         #Get protocols by mode
         self.parameters = params = ScopedDict(ap=ap, param=parameters)
 
@@ -177,7 +175,7 @@ class Executer (object):
         #    modelist.append(pro_sup.protocol)
 
         #Prerender the template
-        text = self.prerender_template(template, Context(parameters))
+        text = self.prerender_template(template, context_factory(parameters))
 
         return self._execute_text(text)
 
