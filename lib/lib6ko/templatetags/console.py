@@ -4,6 +4,7 @@ from . import ConsoleNodeBase
 
 class ConsoleNode(ConsoleNodeBase):
     def __init__(self):
+        super(ConsoleNode, self).__init__()
         self._owns_connection = False
 
     def setUp(self):
