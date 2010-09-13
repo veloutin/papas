@@ -53,18 +53,22 @@ class AccessPoint ( models.Model ):
             self.ipv4Address,self.macAddress,self.description)])
 
     def schedule_refresh(self):
-        file(os.path.join(settings.AP_REFRESH_WATCH_DIR,str(self.id)),'w').close()
+        # Use the daemon if allowed by settings for asynchronous execution
+        if settings.USE_DAEMON:
+            file(os.path.join(settings.AP_REFRESH_WATCH_DIR,str(self.id)),'w').close()
+        else:
+            self.refresh_clients()
         
     def refresh_clients(self):
         LOG.debug("refreshing client list for %s", str(self))
         LOG.error("Not implemented yet!")
 
     def schedule_init(self):
-        if settings.DEBUG:
-            self.run_init()
-        else:
-            # TODO Add a way to tell that it's still running
+        # TODO Add a way to tell that it's still running
+        if settings.USE_DAEMON:
             file(os.path.join(settings.AP_INIT_WATCH_DIR, str(self.id)), 'w').close()
+        else:
+            self.run_init()
 
     def run_init(self):
         from lib6ko.run import Executer

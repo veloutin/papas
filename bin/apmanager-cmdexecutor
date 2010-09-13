@@ -14,61 +14,71 @@ from apmanager.accesspoints.models import AccessPoint
 from apmanager import utils
 from threading import Thread
 
+def handle_command_exec(cmd_id):
+    LOG.info('Command execution request for: %s', cmd_id)
+    try:
+        a = CommandExecResult.objects.get(pk=cmd_id)
+        a.execute() 
+        LOG.debug('Success')
+    except Exception, e:
+        LOG.error("Command Exec Failed with error: %s", str(e))
+    
+def handle_ap_refresh(ap_id):
+    LOG.info('AccessPoint Refresh request for: %s', ap_id)
+    try:
+        a = AccessPoint.objects.get(pk=ap_id)
+        a.refresh_clients()
+        LOG.debug('Success')
+    except Exception, e:
+        LOG.error("AP Refresh failed with error: %s", str(e))
+    
+def handle_ap_init(ap_id):
+    LOG.info('AccessPoint Init request for: %s', ap_id)
+    try:
+        a = AccessPoint.objects.get(pk=ap_id)
+        a.run_init()
+        LOG.debug('Success')
+    except Exception, e:
+        LOG.error("AP Refresh failed with error: %s", str(e))
+
 def Monitor(path):
     class PCreate(ProcessEvent):
         ACTIONS = (
-            (settings.COMMAND_WATCH_DIR, 'command'),
-            (settings.AP_REFRESH_WATCH_DIR, 'ap'),
+            (settings.COMMAND_WATCH_DIR, handle_command_exec),
+            (settings.AP_REFRESH_WATCH_DIR, handle_ap_refresh),
+            (settings.AP_INIT_WATCH_DIR, handle_ap_init),
         )
+
         def dispatch_process(self, func, event):
             """ Event dispatching function """
             LOG.debug('dispatch_process(%s, %s)', func, event.pathname)
+
             for action in self.ACTIONS:
-                if os.path.samefile(event.path,action[0]):
-                    tocall = 'process_'+action[1]+'_'+func
-                    if hasattr(self,tocall) and callable(getattr(self,tocall)):
-                        return getattr(self,tocall)(event)
+                if os.path.samefile(event.path, action[0]):
+                    #TODO Pool processes
+                    pid = os.fork()
+                    if not pid:
+                        action[1](event.name)
+                        try:
+                            os.unlink(event.pathname)
+                        except OSError:
+                            LOG.warn("Unable to delete {0}".format(event.pathname))
+                        sys.exit(0)
+                    t = Thread(target=os.waitpid,args=(pid,0))
+                    t.start()
+                    return
 
             LOG.debug("Dispatcher :: Unhandled Event")
             return None
         
-        def process_command_IN_CREATE(self,event):
-            LOG.debug('Command execution request for: %s', event.name)
-            f = os.path.join(event.path, event.name)
-            if os.path.isfile(f):
-                os.unlink(f)
-            try:
-                a = CommandExecResult.objects.get(pk=event.name)
-                a.execute() 
-            except Exception, e:
-                LOG.error("Command Exec Failed with error: %s", str(e))
-
-        def process_ap_IN_CLOSE(self,event):
-            LOG.debug('AccessPoint Refresh request for: %s', event.name)
-            try:
-                a = AccessPoint.objects.get(pk=event.name)
-                a.refresh_clients()
-            except Exception, e:
-                LOG.error("AP Refresh failed with error: %s", str(e))
-            
         def process_IN_CREATE(self, event):
             LOG.debug('IN_CREATE event received : %s', event.pathname)
-            pid = os.fork()
-            if not pid:
-                self.dispatch_process('IN_CREATE',event)
-                sys.exit(0)
-            t = Thread(target=os.waitpid,args=(pid,0))
-            t.start()
+            self.dispatch_process('IN_CREATE',event)
             return 
 
         def process_IN_CLOSE(self,event):
             LOG.debug('IN_CLOSE event received : %s', event.pathname)
-            pid = os.fork()
-            if not pid:
-                self.dispatch_process('IN_CLOSE',event)
-                sys.exit(0)
-            t = Thread(target=os.waitpid,args=(pid,0))
-            t.start()
+            self.dispatch_process('IN_CLOSE',event)
             return 
 
     wm = WatchManager()
@@ -107,5 +117,6 @@ if __name__ == '__main__':
     LOG.info("using default path: %s", settings.WATCH_DIR)
     LOG.debug("command watch dir: %s", settings.COMMAND_WATCH_DIR)
     LOG.debug("ap watch dir: %s", settings.AP_REFRESH_WATCH_DIR)
+    LOG.debug("ap init watch dir: %s", settings.AP_INIT_WATCH_DIR)
 
     Monitor(settings.WATCH_DIR)

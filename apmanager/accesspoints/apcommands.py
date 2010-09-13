@@ -226,11 +226,8 @@ class CommandExecResult ( models.Model ):
         self.output = ''
         self.save()
 
-        #In debug mode, execute now instead of with the daemon
-        #FIXME use a separate setting
-        if settings.DEBUG:
-            self.execute()
-        else:
+        # Use the daemon if allowed by settings for asynchronous execution
+        if settings.USE_DAEMON:
             #write a new file with this commandexec's id in the watched dir
             file(
                 os.path.join(
@@ -239,6 +236,8 @@ class CommandExecResult ( models.Model ):
                     ),
                 'w',
                 ).close()
+        else:
+            self.execute()
         
     def execute(self):
         #Make params file
