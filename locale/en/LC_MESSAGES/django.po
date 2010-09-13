@@ -1,0 +1,636 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-09-12 21:22-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: apmanager/accesspoints/apcommands.py:180
+msgid "AccessPoint"
+msgstr ""
+
+#: apmanager/accesspoints/apcommands.py:181
+#: apmanager/accesspoints/architecture.py:173
+msgid "Status"
+msgstr ""
+
+#: apmanager/accesspoints/apcommands.py:198
+msgid "OK"
+msgstr ""
+
+#: apmanager/accesspoints/apcommands.py:198
+msgid "Failed"
+msgstr ""
+
+#: apmanager/accesspoints/apcommands.py:201
+#: apmanager/templates/accesspoints/init_overview.html:26
+msgid "Details"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:39
+msgid "Console"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:40
+msgid "SNMP"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:44
+msgid "String"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:45
+msgid "Integer"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:46
+msgid "Boolean"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:47
+msgid "Text"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:48
+msgid "Password"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:51
+msgid "IP Address"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:55
+msgid "Not Set"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:56
+msgid "Inherited"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:57
+msgid "Set"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:79
+msgid "Unknown"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:80
+msgid "Not Verified"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:81
+msgid "Not Supported"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:82
+msgid "Supported"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:83
+msgid "Error occured"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:92
+#: apmanager/accesspoints/architecture.py:101
+#: apmanager/accesspoints/architecture.py:126
+#: apmanager/accesspoints/architecture.py:196
+#: apmanager/accesspoints/architecture.py:306
+msgid "Name"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:110
+msgid "Default Value"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:134
+msgid "Mode"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:169
+msgid "The highest priority protocol is tried first for each mode"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:193
+msgid "Parent"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:202
+#: apmanager/templates/accesspoints/ap.html:14
+msgid "Architecture"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:209
+msgid "Optional"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:228
+msgid "Source"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:233
+#: apmanager/accesspoints/architecture.py:256
+#: apmanager/templates/accesspoints/commands/view.html:12
+#: apmanager/templates/accesspoints/commands/viewexec.html:11
+msgid "Value"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:276
+msgid "Script Template"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:283
+#, python-format
+msgid "%(section)s for %(arch)s"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:310
+msgid "Parameters"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:312
+msgid "A comma separated list of parameters that the command takes"
+msgstr ""
+
+#: apmanager/accesspoints/architecture.py:379
+msgid "Template"
+msgstr ""
+
+#: apmanager/accesspoints/models.py:17
+msgid "Host Name"
+msgstr ""
+
+#: apmanager/accesspoints/models.py:19
+msgid "IP address of the access point"
+msgstr ""
+
+#: apmanager/accesspoints/models.py:21
+msgid "MAC address"
+msgstr ""
+
+#: apmanager/accesspoints/models.py:23
+msgid "Short description / Location"
+msgstr ""
+
+#: apmanager/accesspoints/models.py:127
+msgid "Name of the Group"
+msgstr ""
+
+#: apmanager/accesspoints/models.py:129
+msgid "Access Points in this AP group"
+msgstr ""
+
+#: apmanager/accesspoints/models.py:135
+#, python-format
+msgid "Group: %s"
+msgstr ""
+
+#: apmanager/accesspoints/models.py:158
+msgid "IP address of the client"
+msgstr ""
+
+#: apmanager/accesspoints/models.py:160
+msgid "Client MAC address"
+msgstr ""
+
+#: apmanager/accesspoints/views/apcommands.py:26
+msgid "List of all command executions"
+msgstr ""
+
+#: apmanager/accesspoints/views/apcommands.py:29
+msgid "List of recent command executions"
+msgstr ""
+
+#: apmanager/accesspoints/views/apgroup.py:16
+#: apmanager/templates/accesspoints/groups/links.html:2
+msgid "Groups List"
+msgstr ""
+
+#: apmanager/genericsql/models.py:160
+msgid "Agregate function to perform"
+msgstr ""
+
+#: apmanager/templates/base.html:8 apmanager/templates/base.html.py:21
+#: apmanager/templates/admin/base.html:23
+msgid "6ko Access Point Manager"
+msgstr ""
+
+#: apmanager/templates/base.html:30 apmanager/templates/admin/base.html:54
+msgid "Home"
+msgstr ""
+
+#: apmanager/templates/base.html:35
+msgid "Admin Interface"
+msgstr ""
+
+#: apmanager/templates/redirect.html:12
+#, python-format
+msgid "You will be redirected <a href=\"%(url)s\">here</a> in %(time)s seconds"
+msgstr ""
+
+#: apmanager/templates/accesspoints/ap.html:11
+msgid "IP"
+msgstr ""
+
+#: apmanager/templates/accesspoints/ap.html:12
+msgid "MAC"
+msgstr ""
+
+#: apmanager/templates/accesspoints/ap.html:13
+msgid "Description"
+msgstr ""
+
+#: apmanager/templates/accesspoints/ap.html:17
+msgid "Initialization Status"
+msgstr ""
+
+#: apmanager/templates/accesspoints/ap.html:18
+msgid "Run initialization"
+msgstr ""
+
+#: apmanager/templates/accesspoints/ap.html:21
+#, python-format
+msgid "%(count)s section(s) missing"
+msgstr ""
+
+#: apmanager/templates/accesspoints/ap.html:29
+#, python-format
+msgid "%(errorcount)s sections failed"
+msgstr ""
+
+#: apmanager/templates/accesspoints/ap.html:38
+#, python-format
+msgid "%(count)s sections succeeded"
+msgstr ""
+
+#: apmanager/templates/accesspoints/ap.html:48
+msgid "Clients"
+msgstr ""
+
+#: apmanager/templates/accesspoints/ap.html:59
+#: apmanager/templates/accesspoints/list.html:20
+#: apmanager/templates/accesspoints/commands/view.html:28
+#: apmanager/templates/accesspoints/commands/viewexec.html:32
+msgid "Refresh"
+msgstr ""
+
+#: apmanager/templates/accesspoints/init_overview.html:5
+msgid "Access Point Initialization Overview"
+msgstr ""
+
+#: apmanager/templates/accesspoints/init_overview.html:11
+msgid "Select all"
+msgstr ""
+
+#: apmanager/templates/accesspoints/init_overview.html:12
+msgid "Access Point"
+msgstr ""
+
+#: apmanager/templates/accesspoints/init_overview.html:13
+msgid "Success"
+msgstr ""
+
+#: apmanager/templates/accesspoints/init_overview.html:14
+msgid "Missing"
+msgstr ""
+
+#: apmanager/templates/accesspoints/init_overview.html:15
+msgid "Error"
+msgstr ""
+
+#: apmanager/templates/accesspoints/init_overview.html:30
+msgid "Initialize selected access points"
+msgstr ""
+
+#: apmanager/templates/accesspoints/ap/links.html:3
+msgid "Access Point List"
+msgstr ""
+
+#: apmanager/templates/accesspoints/ap/links.html:5
+msgid "Initialization Overview"
+msgstr ""
+
+#: apmanager/templates/accesspoints/ap/links.html:6
+msgid "Nagios Configuration"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/create.html:11
+#: apmanager/templates/accesspoints/commands/links.html:3
+msgid "Run a Command"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/create.html:16
+#: apmanager/templates/accesspoints/commands/view.html:13
+#: apmanager/templates/accesspoints/commands/viewexec.html:12
+msgid "Target:"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/create.html:19
+msgid "Select a Group"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/create.html:26
+msgid "or"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/create.html:31
+msgid "Select an AP"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/create.html:38
+msgid "Command"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/edit.html:11
+#, python-format
+msgid "Executing %(command)s on %(target)s"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/edit.html:12
+msgid "Choose the command parameters"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/edit.html:19
+msgid "Target list: "
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/edit.html:26
+msgid "Target list if empty"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/home.html:9
+msgid "Commands"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/links.html:4
+msgid "Executed Commands"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/links.html:5
+msgid "All"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/view.html:12
+#: apmanager/templates/accesspoints/commands/viewexec.html:11
+msgid "Parameter"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/view.html:19
+msgid "Results"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/view.html:31
+#: apmanager/templates/accesspoints/commands/viewexec.html:38
+msgid "Run"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/viewexec.html:17
+#, python-format
+msgid "Created on: %(created)s"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/viewexec.html:19
+#, python-format
+msgid "Started on: %(started)s"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/viewexec.html:22
+msgid "Result:"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/viewexec.html:23
+msgid "Finished: "
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/viewexec.html:25
+msgid "Output:"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/viewexec.html:28
+msgid "Run Again"
+msgstr ""
+
+#: apmanager/templates/admin/base.html:26
+msgid "Welcome,"
+msgstr ""
+
+#: apmanager/templates/admin/base.html:31
+msgid "Documentation"
+msgstr ""
+
+#: apmanager/templates/admin/base.html:39
+msgid "Change password"
+msgstr ""
+
+#: apmanager/templates/admin/base.html:46
+msgid "Log out"
+msgstr ""
+
+#: apmanager/templates/genericsql/access_denied.html:7
+msgid "Access Denied"
+msgstr ""
+
+#: apmanager/templates/genericsql/access_denied.html:7
+msgid "You are not allowed to access this page"
+msgstr ""
+
+#: apmanager/templates/genericsql/links.html:2
+msgid "Reports"
+msgstr ""
+
+#: apmanager/templates/genericsql/report.html:47
+#: apmanager/templates/multireport/report_list.html:27
+msgid "Printed on :"
+msgstr ""
+
+#: apmanager/templates/genericsql/report.html:51
+#: apmanager/templates/genericsql/report.html:53
+#: apmanager/templates/multireport/report_list.html:29
+msgid "Print"
+msgstr ""
+
+#: apmanager/templates/genericsql/report.html:51
+#: apmanager/templates/genericsql/report.html:53
+msgid "CSV Export"
+msgstr ""
+
+#: apmanager/templates/genericsql/report.html:55
+#: apmanager/templates/genericsql/report_iframe.html:40
+msgid "Toggle Panel"
+msgstr ""
+
+#: apmanager/templates/genericsql/report.html:64
+#: apmanager/templates/multireport/report_list.html:39
+#, python-format
+msgid "For any questions concerning this report, see %(report.owner)s."
+msgstr ""
+
+#: apmanager/templates/genericsql/report.html:66
+#: apmanager/templates/multireport/report_list.html:41
+msgid "Modify Report"
+msgstr ""
+
+#: apmanager/templates/genericsql/report_data.table.inner.html:24
+msgid "No results to display"
+msgstr ""
+
+#: apmanager/templates/genericsql/report_error.html:7
+msgid "Programming Error"
+msgstr ""
+
+#: apmanager/templates/genericsql/report_error.html:7
+msgid ""
+"This error might have been caused by a malformed SQL query or bad parameters"
+msgstr ""
+
+#: apmanager/templates/genericsql/report_list.html:6
+msgid "Available Reports:"
+msgstr ""
+
+#: apmanager/templates/genericsql/report_list.html:21
+msgid "No reports available"
+msgstr ""
+
+#: apmanager/templates/genericsql/report_list.html:22
+msgid "Create a new report"
+msgstr ""
+
+#: apmanager/templates/genericsql/report_list.html:26
+#: apmanager/templates/multireport/multireport_list.html:15
+msgid "Report Management"
+msgstr ""
+
+#: apmanager/templates/multireport/multireport_list.html:6
+msgid "Available Multi-Reports:"
+msgstr ""
+
+#: apmanager/templates/registration/logged_out.html:5
+msgid "Logged out"
+msgstr ""
+
+#: apmanager/templates/registration/logged_out.html:7
+msgid "Back"
+msgstr ""
+
+#: apmanager/templates/registration/login.html:11
+#: apmanager/templates/registration/login.html:21
+msgid "Login"
+msgstr ""
+
+#: apmanager/templates/registration/login.html:14
+msgid "Your username and/or password didn't match. Please try again."
+msgstr ""
+
+#: apmanager/templates/registration/login.html:19
+msgid "Username:"
+msgstr ""
+
+#: apmanager/templates/registration/login.html:20
+msgid "Password:"
+msgstr ""
+
+#: lib/lib6ko/architecture.py:84
+msgid "Expecting a prompt... with timeout {0}"
+msgstr ""
+
+#: lib/lib6ko/architecture.py:116
+msgid "Executing {0}"
+msgstr ""
+
+#: lib/lib6ko/architecture.py:125
+msgid "There is still unread output: {0}"
+msgstr ""
+
+#: lib/lib6ko/architecture.py:127
+msgid "Sending command..."
+msgstr ""
+
+#: lib/lib6ko/architecture.py:156
+msgid "Unexpected script output. {0}"
+msgstr ""
+
+#: lib/lib6ko/architecture.py:160
+msgid "Unexpected script output."
+msgstr ""
+
+#: lib/lib6ko/protocol.py:40
+#, python-format
+msgid "%s is a required parameter"
+msgstr ""
+
+#: lib/lib6ko/run.py:81
+msgid "TemporaryFailure in getting protocol {0}: {1}"
+msgstr ""
+
+#: lib/lib6ko/run.py:86
+msgid "PermanentFailure in getting protocol {0}: {1}"
+msgstr ""
+
+#: lib/lib6ko/run.py:91
+msgid "Unhandled exception in protocol {0} initialization: {1}"
+msgstr ""
+
+#: lib/lib6ko/run.py:98
+msgid "Unable to get a working protocol"
+msgstr ""
+
+#: lib/lib6ko/run.py:199
+msgid "Unknown node id {0}"
+msgstr ""
+
+#: lib/lib6ko/run.py:226
+msgid "Following text will not be executed: {0}"
+msgstr ""
+
+#: lib/lib6ko/run.py:239
+#, python-format
+msgid "Attaching backend to node %s"
+msgstr ""
+
+#: lib/lib6ko/protocols/snmp.py:40
+#, python-format
+msgid "set_value takes at least 3 argument (%d given)"
+msgstr ""
+
+#: lib/lib6ko/protocols/snmp.py:42
+msgid "Invalid number of arguments, not a multiple of 3"
+msgstr ""
+
+#: lib/lib6ko/protocols/snmp.py:51
+msgid "Executing: {0}"
+msgstr ""
+
+#: lib/lib6ko/protocols/snmp.py:54
+msgid "Failed to set value"
+msgstr ""
+
+#: lib/lib6ko/protocols/snmp.py:62
+msgid "Unable to match extract value from line: {0}"
+msgstr ""
+
+#: lib/lib6ko/protocols/snmp.py:91
+msgid "Executing line: {0}"
+msgstr ""
+
+#: lib/lib6ko/protocols/snmp.py:105
+msgid "Script did not execute properly"
+msgstr ""
+
+#: lib/lib6ko/protocols/ssh.py:25 lib/lib6ko/protocols/telnet.py:22
+msgid "Attempting to connect to {0._username}@{0._host}"
+msgstr ""
+
+#: lib/lib6ko/protocols/ssh.py:40
+msgid "Spawning child..."
+msgstr ""
