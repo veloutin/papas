@@ -16,6 +16,7 @@ from .protocol import (
     TemporaryFailure,
     PermanentFailure,
     MissingParametersException,
+    ScriptError,
     ScopedDict,
     )
 
@@ -94,10 +95,7 @@ class ProtocolChain(object):
                 self._protos.remove(p)
         else:
             #We didn't manage to get any protocol
-            if len(self._protos):
-                raise TemporaryFailure(_("Unable to get a working protocol"))
-            else:
-                raise PermanentFailure(_("Unable to get a working protocol"))
+            raise ScriptError(_("Unable to get a working protocol"), u"\n".join(errorlog))
 
     @protocol.deleter
     def protocol(self):
@@ -209,6 +207,9 @@ class Executer (object):
 
     def _execute_text(self, text, node=None):
         """ Recursive execution of templates """
+        # The top level of this will not have a node, and must add the contents
+        # of all nodes that will be executed. When there is a node, the return
+        # value will be that node's output.
         res = u""
         #Split the template in text and nodes
         for part in self._partition_template_text(text):
@@ -217,12 +218,16 @@ class Executer (object):
                     res += self._execute_text(self.get_output(part), node=part)
             else:
                 if node:
-                    res += node.execute_text(part)
+                    #res += node.execute_text(part)
+                    node.execute_text(part)
                 else:
                     part = part.strip()
                     if part:
                         _LOG.debug(_("Following text will not be executed: {0}").format(part))
-        return res
+        if node:
+            return node.get_full_output()
+        else:
+            return res
 
     def prerender_template(self, template, context):
         """ Pre-Render a Template and return the resulting text """

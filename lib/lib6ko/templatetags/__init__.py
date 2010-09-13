@@ -40,6 +40,9 @@ class CommandNodeBase( object ):
     def execute_text(self, text):
         return self.protocol.execute_text(text)
 
+    def get_full_output(self):
+        return self.protocol.get_full_output()
+
 class ConsoleNodeBase( CommandNodeBase ):
     mode = "console"
 

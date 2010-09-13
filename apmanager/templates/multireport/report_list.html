@@ -24,7 +24,7 @@
 {% for sreport in report_list %}
 <h2 {% if not forloop.first %}{% endif %}>{{ sreport.title }}</h2>
 {% if printable %}
-<p>{% blocktrans %}Printed on {% now "Y-m-d \à H\hi" %}.{% endblocktrans %}</p>
+<p>{% trans "Printed on :" %}{% now "Y-m-d \à H\hi" %}.</p>
 {% else %}
 <p><a href="?imprimer" onclick="window.open(addAllParameters(document.location.href.addParameter('imprimer','',true))); return false;">{% trans "Print" %}</a></p>
 {% endif %}

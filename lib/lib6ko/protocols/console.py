@@ -64,11 +64,18 @@ class ConsoleProtocol(Protocol):
         self.child.close()
         self.child = None
     
-    def execute_text(self, text):
+    def prompt(self):
+        self.arch.console.prompt(consume=True)
+
+    def execute_text(self, text, expect_noecho=False):
         for line in text.splitlines():
-            self.arch.console.execute_command(line)
+            self.arch.console.execute_command(line, expect_noecho)
 
         return self.arch.console.consume_output()
 
+    def get_full_output(self):
+        return self.arch.console.output
+
     def send_if_no_echo(self, text):
         self.arch.console.send_password(text)
+        self.arch.console.prompt(consume=False)

@@ -44,7 +44,7 @@
 {% block body %}
 <h2>{{ report.title }}</h2>
 {% if printable %}
-<p>{% blocktrans %}Printed on {% now "Y-m-d \à H\hi" %}{% endblocktrans %}</p>
+<p>{% trans "Printed on :" %}{% now "Y-m-d \à H\hi" %}</p>
 {% else %}
     <p>
     {% if allow_sort or panel %}

@@ -78,10 +78,10 @@ class Console(object):
         self._child.logfile_send.seek(0)
         self._child.logfile_send.truncate()
 
-    def prompt(self, consume=True, timeout=0):
+    def prompt(self, consume=True, timeout=1):
         """ Get the next prompt. If consume is false, we will remember that it
         was matched, until it is consumed. """
-        _LOG.debug("Expecting a prompt...")
+        _LOG.debug(_("Expecting a prompt... with timeout {0}").format(timeout))
         # Wait for a prompt to happen to increase the chances that we have one
         # ready in the output
         self.child.expect([self.PROMPT_RE, pexpect.TIMEOUT], timeout=timeout)
@@ -99,7 +99,6 @@ class Console(object):
             if not consume:
                 self.restore_output(match.group("prompt"))
         else:
-            #Didn't match, look if we had one already matched
             _LOG.debug("Failed to get Prompt!")
             _LOG.debug("Output: {0}".format(repr(output)))
 
@@ -113,7 +112,7 @@ class Console(object):
         return False
 
     def execute_command(self, command, expect_noecho=False):
-        _LOG.info("="*40)
+        _LOG.debug("="*40)
         _LOG.info(_("Executing {0}").format(repr(command[:80])))
 
         #Allow us to find new input/output only

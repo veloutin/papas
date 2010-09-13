@@ -106,10 +106,18 @@ if DEBUG:
 else:
     WATCH_DIR='/var/lib/apmanager/watch'
 
-COMMAND_WATCH_DIR=      WATCH_DIR + '/commands/'
-AP_REFRESH_WATCH_DIR=   WATCH_DIR + '/refresh_ap/'
+COMMAND_WATCH_DIR = WATCH_DIR + '/commands'
+AP_DIR = COMMAND_WATCH_DIR + '/ap'
+AP_REFRESH_WATCH_DIR = AP_DIR + '/refresh'
+AP_INIT_WATCH_DIR = AP_DIR + '/init'
 
 if DEBUG:
-    for dpath in ( WATCH_DIR, COMMAND_WATCH_DIR, AP_REFRESH_WATCH_DIR ):
+    for dpath in ( 
+        WATCH_DIR, 
+            AP_DIR,
+                AP_REFRESH_WATCH_DIR,
+                AP_INIT_WATCH_DIR,
+            COMMAND_WATCH_DIR,
+        ):
         if not os.path.isdir(dpath): os.mkdir(dpath)
 

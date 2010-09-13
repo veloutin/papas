@@ -23,13 +23,15 @@ class RootConsoleNode(ConsoleNodeBase):
             default=self.protocol.priv_password,
             )
         if priv_cmd:
-            self.protocol.execute_text(priv_cmd)
+            self.protocol.execute_text(priv_cmd, expect_noecho=True)
             self.protocol.send_if_no_echo(priv_password)
+            self.protocol.prompt()
 
     def tearDown(self):
         unpriv_cmd = self.protocol.require_param(_P.CONSOLE_PRIV_END)
         if unpriv_cmd:
             self.protocol.execute_text(unpriv_cmd)
+            self.protocol.prompt()
 
 class AllowOutputNode(ConsoleNodeBase):
     def setUp(self):
