@@ -20,7 +20,6 @@ from apmanager.accesspoints.architecture import (
     )
 
 from datetime import datetime
-from apmanager import settings
 from tempfile import mkstemp
 import commands
 import os,sys
@@ -203,12 +202,22 @@ class CommandExecResult ( models.Model ):
         return None
 
     def to_table_row(self):
+        status = _("Unknown")
+        if self.started is None:
+            status = _("Not started")
+        elif self.ended is None:
+            status = _("Not ended")
+        elif self.result == 0:
+            status = _("OK")
+        else:
+            status = _("Failed")
+            
         return "".join(["<td>%s</td>" % i for i in (
             '<a href="%s">%s</a>' % (
                 self.accesspoint.get_absolute_url(),
                 self.accesspoint.name,
                 ),
-            self.result == 0 and _("OK") or _("Failed"),
+            status,
             '<a href="%s">%s</a>' % (
                 self.get_absolute_url(),
                 _("Details"),

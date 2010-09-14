@@ -63,10 +63,13 @@ def _source_inherit_action(dict_, key, value=None):
 def _source_notset_action(dict_, key, value=None):
     del dict_[key]
 
+SOURCE_TYPE_NOTSET = "notset"
+SOURCE_TYPE_SET = "set"
+SOURCE_TYPE_INHERIT = "inherit"
 SOURCE_TYPE_ACTIONS = {
-    "notset" : _source_notset_action,
-    "set" : _source_set_action,
-    "inherit" : _source_inherit_action,
+    SOURCE_TYPE_NOTSET : _source_notset_action,
+    SOURCE_TYPE_SET : _source_set_action,
+    SOURCE_TYPE_INHERIT : _source_inherit_action,
     None : _source_set_action,
 }
 
