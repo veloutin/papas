@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-13 08:43-0400\n"
+"POT-Creation-Date: 2010-09-13 11:57-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,53 +16,66 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: apmanager/settings.py:32
+#: apmanager/settings.py:33
 msgid "French"
 msgstr ""
 
-#: apmanager/settings.py:33
+#: apmanager/settings.py:34
 msgid "English"
 msgstr ""
 
-#: apmanager/accesspoints/apcommands.py:38
+#: apmanager/accesspoints/apcommands.py:39
 #: apmanager/templates/accesspoints/commands/create.html:38
 msgid "Command"
 msgstr ""
 
-#: apmanager/accesspoints/apcommands.py:117
+#: apmanager/accesspoints/apcommands.py:118
 msgid "Command Execution"
 msgstr ""
 
-#: apmanager/accesspoints/apcommands.py:118
+#: apmanager/accesspoints/apcommands.py:119
 msgid "Command Executions"
 msgstr ""
 
-#: apmanager/accesspoints/apcommands.py:181
+#: apmanager/accesspoints/apcommands.py:182
 msgid "Command Execution Result"
 msgstr ""
 
-#: apmanager/accesspoints/apcommands.py:182
+#: apmanager/accesspoints/apcommands.py:183
 msgid "Command Execution Results"
 msgstr ""
 
-#: apmanager/accesspoints/apcommands.py:192
+#: apmanager/accesspoints/apcommands.py:193
 msgid "AccessPoint"
 msgstr ""
 
-#: apmanager/accesspoints/apcommands.py:193
-#: apmanager/accesspoints/architecture.py:182
+#: apmanager/accesspoints/apcommands.py:194
+#: apmanager/accesspoints/architecture.py:185
 msgid "Status"
 msgstr ""
 
+#: apmanager/accesspoints/apcommands.py:206
+#: apmanager/accesspoints/architecture.py:82
+msgid "Unknown"
+msgstr ""
+
+#: apmanager/accesspoints/apcommands.py:208
+msgid "Not started"
+msgstr ""
+
 #: apmanager/accesspoints/apcommands.py:210
+msgid "Not ended"
+msgstr ""
+
+#: apmanager/accesspoints/apcommands.py:212
 msgid "OK"
 msgstr ""
 
-#: apmanager/accesspoints/apcommands.py:210
+#: apmanager/accesspoints/apcommands.py:214
 msgid "Failed"
 msgstr ""
 
-#: apmanager/accesspoints/apcommands.py:213
+#: apmanager/accesspoints/apcommands.py:224
 #: apmanager/templates/accesspoints/init_overview.html:26
 msgid "Details"
 msgstr ""
@@ -111,212 +124,208 @@ msgstr ""
 msgid "Set"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:79
-msgid "Unknown"
-msgstr ""
-
-#: apmanager/accesspoints/architecture.py:80
+#: apmanager/accesspoints/architecture.py:83
 msgid "Not Verified"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:81
+#: apmanager/accesspoints/architecture.py:84
 msgid "Not Supported"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:82
+#: apmanager/accesspoints/architecture.py:85
 msgid "Supported"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:83
+#: apmanager/accesspoints/architecture.py:86
 msgid "Error occured"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:92
-#: apmanager/accesspoints/architecture.py:104
-#: apmanager/accesspoints/architecture.py:132
-#: apmanager/accesspoints/architecture.py:205
-#: apmanager/accesspoints/architecture.py:327
+#: apmanager/accesspoints/architecture.py:95
+#: apmanager/accesspoints/architecture.py:107
+#: apmanager/accesspoints/architecture.py:135
+#: apmanager/accesspoints/architecture.py:208
+#: apmanager/accesspoints/architecture.py:330
 msgid "Name"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:98
+#: apmanager/accesspoints/architecture.py:101
 msgid "Section"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:113
+#: apmanager/accesspoints/architecture.py:116
 msgid "Default Value"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:117
+#: apmanager/accesspoints/architecture.py:120
 #: apmanager/templates/accesspoints/commands/view.html:12
 #: apmanager/templates/accesspoints/commands/viewexec.html:11
 msgid "Parameter"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:140
+#: apmanager/accesspoints/architecture.py:143
 msgid "Mode"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:146
+#: apmanager/accesspoints/architecture.py:149
 msgid "Protocol"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:178
+#: apmanager/accesspoints/architecture.py:181
 msgid "The highest priority protocol is tried first for each mode"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:202
+#: apmanager/accesspoints/architecture.py:205
 msgid "Parent"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:211
+#: apmanager/accesspoints/architecture.py:214
 #: apmanager/templates/accesspoints/ap.html:14
 msgid "Architecture"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:218
+#: apmanager/accesspoints/architecture.py:221
 msgid "Optional"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:233
+#: apmanager/accesspoints/architecture.py:236
 msgid "Protocol Parameter"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:234
+#: apmanager/accesspoints/architecture.py:237
 msgid "Protocol Parameters"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:239
+#: apmanager/accesspoints/architecture.py:242
 msgid "Source"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:244
-#: apmanager/accesspoints/architecture.py:269
+#: apmanager/accesspoints/architecture.py:247
+#: apmanager/accesspoints/architecture.py:272
 #: apmanager/templates/accesspoints/commands/view.html:12
 #: apmanager/templates/accesspoints/commands/viewexec.html:11
 msgid "Value"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:255
+#: apmanager/accesspoints/architecture.py:258
 msgid "Architecture Parameter"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:256
+#: apmanager/accesspoints/architecture.py:259
 msgid "Architecture Parameters"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:280
+#: apmanager/accesspoints/architecture.py:283
 msgid "AP Parameter"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:281
+#: apmanager/accesspoints/architecture.py:284
 msgid "AP Parameters"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:291
+#: apmanager/accesspoints/architecture.py:294
 msgid "Script Template"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:298
+#: apmanager/accesspoints/architecture.py:301
 #, python-format
 msgid "%(section)s for %(arch)s"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:307
+#: apmanager/accesspoints/architecture.py:310
 msgid "Initialization Section"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:308
+#: apmanager/accesspoints/architecture.py:311
 msgid "Initialization Sections"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:321
+#: apmanager/accesspoints/architecture.py:324
 msgid "Initialization Result"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:322
+#: apmanager/accesspoints/architecture.py:325
 msgid "Initialization Results"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:331
+#: apmanager/accesspoints/architecture.py:334
 msgid "Parameters"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:333
+#: apmanager/accesspoints/architecture.py:336
 msgid "A comma separated list of parameters that the command takes"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:337
+#: apmanager/accesspoints/architecture.py:340
 msgid "Command Definition"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:338
+#: apmanager/accesspoints/architecture.py:341
 msgid "Command Definitions"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:404
+#: apmanager/accesspoints/architecture.py:407
 msgid "Template"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:416
+#: apmanager/accesspoints/architecture.py:419
 msgid "Command Implementation"
 msgstr ""
 
-#: apmanager/accesspoints/architecture.py:417
+#: apmanager/accesspoints/architecture.py:420
 msgid "Command Implementations"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:18
+#: apmanager/accesspoints/models.py:19
 msgid "Host Name"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:20
+#: apmanager/accesspoints/models.py:21
 msgid "IP address of the access point"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:22
+#: apmanager/accesspoints/models.py:23
 msgid "MAC address"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:24
+#: apmanager/accesspoints/models.py:25
 msgid "Short description / Location"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:29
+#: apmanager/accesspoints/models.py:30
 #: apmanager/templates/accesspoints/init_overview.html:12
 msgid "Access Point"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:30
+#: apmanager/accesspoints/models.py:31
 msgid "Access Points"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:130
+#: apmanager/accesspoints/models.py:136
 msgid "Name of the Group"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:132
+#: apmanager/accesspoints/models.py:138
 msgid "Access Points in this AP group"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:136
+#: apmanager/accesspoints/models.py:142
 msgid "AP Group"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:137
+#: apmanager/accesspoints/models.py:143
 msgid "AP Groups"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:140
+#: apmanager/accesspoints/models.py:146
 #, python-format
 msgid "Group: %s"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:163
+#: apmanager/accesspoints/models.py:169
 msgid "IP address of the client"
 msgstr ""
 
-#: apmanager/accesspoints/models.py:165
+#: apmanager/accesspoints/models.py:171
 msgid "Client MAC address"
 msgstr ""
 
@@ -340,7 +349,7 @@ msgstr ""
 #: apmanager/templates/base.html:8 apmanager/templates/base.html.py:21
 #: apmanager/templates/admin/base.html:23
 msgid "6ko Access Point Manager"
-msgstr ""
+msgstr "Access Point Manager"
 
 #: apmanager/templates/base.html:30 apmanager/templates/admin/base.html:54
 msgid "Home"
@@ -375,30 +384,32 @@ msgstr ""
 msgid "Run initialization"
 msgstr ""
 
-#: apmanager/templates/accesspoints/ap.html:21
+#: apmanager/templates/accesspoints/ap.html:19
+#: apmanager/templates/accesspoints/ap.html:60
+#: apmanager/templates/accesspoints/init_overview.html:32
+#: apmanager/templates/accesspoints/list.html:20
+#: apmanager/templates/accesspoints/commands/view.html:28
+#: apmanager/templates/accesspoints/commands/viewexec.html:33
+msgid "Refresh"
+msgstr ""
+
+#: apmanager/templates/accesspoints/ap.html:22
 #, python-format
 msgid "%(count)s section(s) missing"
 msgstr ""
 
-#: apmanager/templates/accesspoints/ap.html:29
+#: apmanager/templates/accesspoints/ap.html:30
 #, python-format
 msgid "%(errorcount)s sections failed"
 msgstr ""
 
-#: apmanager/templates/accesspoints/ap.html:38
+#: apmanager/templates/accesspoints/ap.html:39
 #, python-format
 msgid "%(count)s sections succeeded"
 msgstr ""
 
-#: apmanager/templates/accesspoints/ap.html:48
+#: apmanager/templates/accesspoints/ap.html:49
 msgid "Clients"
-msgstr ""
-
-#: apmanager/templates/accesspoints/ap.html:59
-#: apmanager/templates/accesspoints/list.html:20
-#: apmanager/templates/accesspoints/commands/view.html:28
-#: apmanager/templates/accesspoints/commands/viewexec.html:32
-msgid "Refresh"
 msgstr ""
 
 #: apmanager/templates/accesspoints/init_overview.html:5
@@ -494,7 +505,7 @@ msgid "Results"
 msgstr ""
 
 #: apmanager/templates/accesspoints/commands/view.html:31
-#: apmanager/templates/accesspoints/commands/viewexec.html:38
+#: apmanager/templates/accesspoints/commands/viewexec.html:39
 msgid "Run"
 msgstr ""
 
@@ -522,6 +533,10 @@ msgstr ""
 
 #: apmanager/templates/accesspoints/commands/viewexec.html:28
 msgid "Run Again"
+msgstr ""
+
+#: apmanager/templates/accesspoints/commands/viewexec.html:31
+msgid "Command has not finished running"
 msgstr ""
 
 #: apmanager/templates/admin/base.html:26
@@ -672,31 +687,31 @@ msgstr ""
 msgid "%s is a required parameter"
 msgstr ""
 
-#: lib/lib6ko/run.py:81
+#: lib/lib6ko/run.py:79
 msgid "TemporaryFailure in getting protocol {0}: {1}"
 msgstr ""
 
-#: lib/lib6ko/run.py:86
+#: lib/lib6ko/run.py:84
 msgid "PermanentFailure in getting protocol {0}: {1}"
 msgstr ""
 
-#: lib/lib6ko/run.py:91
+#: lib/lib6ko/run.py:89
 msgid "Unhandled exception in protocol {0} initialization: {1}"
 msgstr ""
 
-#: lib/lib6ko/run.py:98
+#: lib/lib6ko/run.py:96
 msgid "Unable to get a working protocol"
 msgstr ""
 
-#: lib/lib6ko/run.py:199
+#: lib/lib6ko/run.py:197
 msgid "Unknown node id {0}"
 msgstr ""
 
-#: lib/lib6ko/run.py:226
+#: lib/lib6ko/run.py:224
 msgid "Following text will not be executed: {0}"
 msgstr ""
 
-#: lib/lib6ko/run.py:239
+#: lib/lib6ko/run.py:237
 #, python-format
 msgid "Attaching backend to node %s"
 msgstr ""

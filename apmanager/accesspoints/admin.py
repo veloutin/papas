@@ -30,12 +30,6 @@ class APGroupAdmin(admin.ModelAdmin):
     list_display = ('name', )
     filter_vertical = ('accessPoints', )
 
-class CommandAdmin(admin.ModelAdmin):
-    form = myforms.CommandForm
-    inlines = [
-        CommandParameterInline,
-    ]
-
 class ArchitectureAdmin(admin.ModelAdmin):
     inlines = [
         ArchValueInline,
@@ -71,7 +65,6 @@ mset = dict(
 
 admin.site.register(mset.pop("APGroup"), APGroupAdmin)
 admin.site.register(mset.pop("AccessPoint"), AccessPointAdmin)
-admin.site.register(mset.pop("Command"), CommandAdmin)
 admin.site.register(mset.pop("CommandDefinition"), CommandDefinitionAdmin)
 admin.site.register(mset.pop("Architecture"), ArchitectureAdmin)
 admin.site.register(mset.pop("InitSection"), InitSectionAdmin)
@@ -83,8 +76,10 @@ del mset["APProtocolSupport"]
 del mset["ArchParameter"]
 del mset["APClient"]
 del mset["UsedParameter"]
+del mset["Command"]
 del mset["CommandExecResult"]
 del mset["CommandParameter"]
+del mset["CommandImplementation"]
 
 #Show every other model in admin
 for remaining in mset.itervalues():

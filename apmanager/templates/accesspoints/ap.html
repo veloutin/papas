@@ -16,6 +16,7 @@
 {% if init_status %}
 <h3>{% trans "Initialization Status" %}</h3>
 <form method="POST"><button name="init" value="1">{% trans "Run initialization" %}</button></form>
+<form method="GET"><button>{% trans "Refresh" %}</button></form>
 {# Missing #}
 {% if init_status.missing %}
     <h4>{%blocktrans with init_status.missing|length as count %}{{ count }} section(s) missing{% endblocktrans %}</h4>

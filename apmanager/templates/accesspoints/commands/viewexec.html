@@ -28,6 +28,7 @@
             <input type="submit" name="rerun_btn" value="{% trans "Run Again" %}"/>
         </form>
     {% else %}
+    <p>{% trans "Command has not finished running" %}</p>
     <form method="GET">
         <input type="submit" name="refresh_btn" value="{% trans "Refresh" %}"/>
     </form>

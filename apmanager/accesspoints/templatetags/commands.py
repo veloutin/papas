@@ -9,6 +9,13 @@ from lib6ko.templatetags.console import (
     AllowOutputNode,
     )
 
+from apmanager.accesspoints.models import (
+    SOURCE_TYPE_NOTSET,
+    SOURCE_TYPE_INHERIT,
+    )
+
+from apmanager.accesspoints.models import Parameter
+
 register = template.Library()
 
 CONSOLE_TAG="console"
@@ -21,12 +28,44 @@ PARAM_TAG="param"
 ######################################################################
 # Parameter
 ######################################################################
-class ParameterNode(CommandNodeBase, template.Node):
+class DjParameterNode(CommandNodeBase, template.Node):
     def __init__(self, parameter):
+        CommandNodeBase.__init__(self)
         self.parameter = parameter
 
     def render(self, ctx):
-        return self.parameter.resolve(ctx)
+        paramname = self.parameter.resolve(ctx)
+        ap = ctx.get("ap", None)
+        if ap:
+            # First we lookup the AP if possible
+            param = ap.apparameter_set.filter(parameter__name=paramname)
+            if len(param):
+                return param[0].value
+
+            # Then we look up the ap's architecture, and then it's parent, etc
+            arch = ap.architecture
+            while arch is not None:
+                param = arch.options_set.filter(parameter__name=paramname)
+                if len(param):
+                    if param[0].value_type == SOURCE_TYPE_NOTSET:
+                        # Do not use the value if "NOTSET"
+                        break
+                    elif param[0].value_type == SOURCE_TYPE_INHERIT:
+                        # Go see parent
+                        continue
+                    else:
+                        # Otherwise return it
+                        return paramp[0].value
+
+                arch = arch.parent
+
+        # Then we look up in parameters globally
+        param = Parameter.objects.filter(name=paramname, default_value__isnull=False)
+        if param:
+            return param[0].default_value
+        
+        # Otherwise... not found!
+        return u""
 
 @register.tag(PARAM_TAG)
 def do_paramnode(parser, token):
@@ -37,14 +76,15 @@ def do_paramnode(parser, token):
             '{tag} requires one parameter'.format(tag=PARAM_TAG),
             )
 
-    return ParameterNode(parser.compile_filter(args[1]))
+    return DjParameterNode(parser.compile_filter(args[1]))
 
 
 ######################################################################
 # Console
 ######################################################################
-class ConsoleNode(ConsoleNode, template.Node):
+class DjConsoleNode(ConsoleNode, template.Node):
     def __init__(self, nodelist):
+        ConsoleNode.__init__(self)
         self.nodelist = nodelist
 
     def do_render(self, ctx):
@@ -61,13 +101,14 @@ def do_console(parser, token):
                 ),
             )
     parser.delete_first_token()
-    return ConsoleNode(nodelist)
+    return DjConsoleNode(nodelist)
 
 ######################################################################
 # Allow Output Node
 ######################################################################
-class OutputNode(AllowOutputNode, template.Node):
+class DjOutputNode(AllowOutputNode, template.Node):
     def __init__(self, nodelist):
+        AllowOutputNode.__init__(self)
         self.nodelist = nodelist
 
     def do_render(self, ctx):
@@ -82,14 +123,15 @@ def do_root(parser, token):
             break
     else:
         raise template.TemplateSyntaxError("%s cannot exist outside of a %s tag" % (OUTPUT_TAG, CONSOLE_TAG))
-    return OutputNode(nodelist)
+    return DjOutputNode(nodelist)
 
 
 ######################################################################
 # Root
 ######################################################################
-class PrilegedNode(RootConsoleNode, template.Node):
+class DjPrilegedNode(RootConsoleNode, template.Node):
     def __init__(self, nodelist):
+        RootConsoleNode.__init__(self)
         self.nodelist = nodelist
 
     def do_render(self, ctx):
@@ -104,14 +146,15 @@ def do_root(parser, token):
             break
     else:
         raise template.TemplateSyntaxError("%s cannot exist outside of a %s tag" % (PRIVILEGED_TAG, CONSOLE_TAG))
-    return PrilegedNode(nodelist)
+    return DjPrilegedNode(nodelist)
 
 
 ######################################################################
 # SNMP
 ######################################################################
-class SnmpNode(SNMPNodeBase, template.Node):
+class DjSnmpNode(SNMPNodeBase, template.Node):
     def __init__(self, nodelist):
+        SNMPNodeBase.__init__(self)
         self.nodelist = nodelist
 
     @classmethod
@@ -134,6 +177,6 @@ def do_snmp(parser, token):
     if nodelist.get_nodes_by_type(CommandNodeBase):
         raise template.TemplateSyntaxError("%s cannot exist inside a %s tag" % (CONSOLE_TAG, SNMP_TAG))
     parser.delete_first_token()
-    return SnmpNode(nodelist)
+    return DjSnmpNode(nodelist)
 
 
