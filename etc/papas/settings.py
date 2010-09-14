@@ -130,7 +130,7 @@ else:
     WATCH_DIR='/var/lib/apmanager/watch'
 
 COMMAND_WATCH_DIR = WATCH_DIR + '/commands'
-AP_DIR = COMMAND_WATCH_DIR + '/ap'
+AP_DIR = WATCH_DIR + '/ap'
 AP_REFRESH_WATCH_DIR = AP_DIR + '/refresh'
 AP_INIT_WATCH_DIR = AP_DIR + '/init'
 

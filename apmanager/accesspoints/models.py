@@ -16,11 +16,13 @@ class AccessPoint ( models.Model ):
         Represents an Access Point, with name, IP, MAC and description.
     """
     name = models.CharField( max_length=100,
+        verbose_name = _(u"Name"),
         help_text=_(u"Host Name") )
     ipv4Address = models.IPAddressField( unique=True,
+        verbose_name = _(u"IPv4 Address"),
         help_text=_(u"IP address of the access point") )
     macAddress = models.CharField( max_length=17, null=True, blank=True,
-        help_text=_(u"MAC address") )
+        verbose_name=_(u"MAC address") )
     description = models.CharField( max_length=255,
         help_text=_(u"Short description / Location") )
     architecture = models.ForeignKey('Architecture')

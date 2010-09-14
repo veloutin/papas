@@ -40,7 +40,7 @@ def append_to_data_files(data_files_list, regexp, data_path, destination):
             data_files_list.append((root, file_list))
 
 append_to_data_files(data_files_list, re.compile(r".*"), 'apmanager/templates', '/usr/share/papas/templates')
-append_to_data_files(data_files_list, re.compile(r".*"), 'var/apmanager', '/var/lib/papas/')
+append_to_data_files(data_files_list, re.compile(r"(?<!\.placeholder)$"), 'var', '/var/lib/papas/')
 append_to_data_files(data_files_list, re.compile(r".*"), 'etc', '/etc')
 append_to_data_files(data_files_list, re.compile(r".*"), 'locale', '/usr/share/papas/locale')
 

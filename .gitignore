@@ -1,0 +1,7 @@
+build/*
+*.sqlite
+*.pyc
+debian/papas/*
+debian/files
+debian/papas.*
+debian/python-module-stampdir/*
