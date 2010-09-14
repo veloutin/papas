@@ -1,17 +1,16 @@
-Source: apmanager
+Source: papas
 Section: python
 Priority: extra
 Maintainer: Revolution Linux <info@revolutionlinux.com>
-Build-Depends: debhelper (>= 5), python-central (>= 0.5.6), python-all-dev (>= 2.3.5-11), cdbs (>= 0.4.49)
-XS-Python-Version: >= 2.4
+Build-Depends: debhelper (>= 5), python-central (>= 0.5.6), python-django (>= 1.1), python (>=2.5)
 Standards-Version: 3.7.2
+XS-Python-Version: 2.6
 
-Package: apmanager
-Architecture: any
-Depends: python-django (>= 0.96 ), python-django (<< 1.0), python-pyinotify (>= 0.7), python-pyinotify (<< 0.8), python-mysqldb,  ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
-Provides: ${python:Provides}
+Package: papas
+Architecture: all
+Depends: python (>= 2.5), python-django (>= 1.1), python-pyinotify (>= 0.8), python-pexpect (>= 2.3)
 XB-Python-Version: ${python:Versions}
-Recommends: apache2, libapache2-mod-python
+Recommends: apache2, libapache2-mod-wsgi
 Description: Django application to manage wifi hotspots
  Django application to manage wifi hotspots. Uses django to provide a nice admin interface,
  complemented with a lightweight public interface.

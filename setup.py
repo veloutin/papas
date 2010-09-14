@@ -9,9 +9,11 @@
 # -------------------------------------------------------------------------
 
 import sys, os, shutil, getopt, re
+
 from distutils.core import setup, Extension
 from distutils.command import build_py
 
+from django.core.management.commands import compilemessages
 
 #init_dir = '/etc/init.d'
 etc_dir = '/etc/apmanager' 
@@ -37,9 +39,10 @@ def append_to_data_files(data_files_list, regexp, data_path, destination):
             # Associate this directory in the data_files_list
             data_files_list.append((root, file_list))
 
-append_to_data_files(data_files_list, re.compile(r".*"), 'apmanager/templates', '/usr/share/apmanager/')
-append_to_data_files(data_files_list, re.compile(r".*"), 'var/apmanager', '/var/lib/apmanager/')
+append_to_data_files(data_files_list, re.compile(r".*"), 'apmanager/templates', '/usr/share/papas/templates')
+append_to_data_files(data_files_list, re.compile(r".*"), 'var/apmanager', '/var/lib/papas/')
 append_to_data_files(data_files_list, re.compile(r".*"), 'etc', '/etc')
+append_to_data_files(data_files_list, re.compile(r".*"), 'locale', '/usr/share/papas/locale')
 
 
 # print '!!!', data_files_list
@@ -57,25 +60,35 @@ append_to_data_files(data_files_list, re.compile(r".*"), 'etc', '/etc')
 #      
 #     packages_data[package_name] = ['*']
 
+class CompileI18nBuildWrapper(build_py.build_py):
+    def run(self):
+        compilemessages.Command().execute()
+        build_py.build_py.run(self)
 
-setup(#cmdclass={'build_py': VsmanageBuildPy},
-      name="apmanager",
-      version="1.0.3",
-      description="simple django app to manage wifi hotspots",
-      author="Revolution Linux",
-      author_email="info@revolutionlinux.com",
-      url="http://www.revolutionlinux.com",
-      license="Proprietary",
-      platforms=["Linux"],
-      long_description="""Django Application To manage a group of Wifi Hotspots""",
-      scripts=['bin/apmanager-cmdexecutor'],
-      packages=[
+
+setup(
+    cmdclass={
+        'build_py': CompileI18nBuildWrapper,
+        },
+    name="papas",
+    version="0.9",
+    description="simple django app to manage wifi hotspots",
+    author="Revolution Linux",
+    author_email="info@revolutionlinux.com",
+    url="http://www.revolutionlinux.com",
+    license="Proprietary",
+    platforms=["Linux"],
+    long_description="""Django Application To manage a group of Wifi Hotspots""",
+    scripts=['bin/apmanager-cmdexecutor'],
+    packages=[
         "apmanager",
         "apmanager.accesspoints",
         "apmanager.accesspoints.views",
-        "apmanager.genericsql",
-        "apmanager.multireport",
+        "apmanager.accesspoints.templatetags",
+        "lib6ko",
+        "lib6ko.protocols",
+        "lib6ko.templatetags",
     ],
-      #package_data=
-      data_files = data_files_list,
+    #package_data=
+    data_files = data_files_list,
 )
