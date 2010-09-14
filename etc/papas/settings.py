@@ -4,6 +4,10 @@ from django.utils.translation import ugettext_lazy as _
 
 DEBUG = True
 USE_DAEMON = True
+if os.environ.get("USE_DEV_PATHS", None):
+    DEV_PATHS = True
+else:
+    DEV_PATHS = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -13,7 +17,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
-DATABASE_NAME = os.path.join(os.path.dirname(__file__),'apmanager.sqlite')             # Or path to database file if using sqlite3.
+DATABASE_NAME = os.path.join(os.path.dirname(__file__),"..", "..", 'apmanager.sqlite')             # Or path to database file if using sqlite3.
 DATABASE_USER = 'apmanager'             # Not used with sqlite3.
 DATABASE_PASSWORD = 'ExGldsaj3rt0tZQU'         # Not used with sqlite3.
 DATABASE_HOST = '10.145.3.200'             # Set to empty string for localhost. Not used with sqlite3.
@@ -42,8 +46,14 @@ SITE_ID = 1
 USE_I18N = True
 
 
-#UPLOAD_ROOT = '/var/lib/apmanager/uploads/'
-UPLOAD_ROOT = '/root/var/apmanager/uploads/'
+if DEV_PATHS:
+    UPLOAD_ROOT = os.path.abspath(
+        os.path.join(os.path.dirname(__file__),
+        "uploads",
+        )
+    )
+else:
+    UPLOAD_ROOT = '/var/lib/apmanager/uploads/'
 
 #Site prefix to add to relative urls, such as apmanager/ for a site on example.com/apmanager/
 # Leave blank if installed on web root
@@ -51,7 +61,13 @@ LOGIN_URL = "/accounts/login/"
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'templates','site-media')
+if DEV_PATHS:
+    MEDIA_ROOT = os.path.abspath(
+        os.path.join(os.path.dirname(__file__),
+        "..", "..", "apmanager", 'templates','site-media'),
+        )
+else:
+    MEDIA_ROOT = "/usr/share/apmanager/templates/site-media"
 
 # URL that handles the media served from MEDIA_ROOT.
 # Example: "http://media.lawrence.com"
@@ -86,8 +102,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    "/usr/share/apmanager/",
-    os.path.join(os.path.dirname(__file__), "templates"),
+    os.path.abspath(os.path.join(MEDIA_ROOT, "..")),
 )
 
 INSTALLED_APPS = (
@@ -106,8 +121,11 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.media',
     'django.core.context_processors.request',
 )
-if DEBUG:
-    WATCH_DIR=os.path.join(os.path.dirname(__file__),"..","watch")
+
+if DEV_PATHS:
+    WATCH_DIR = os.path.abspath(
+        os.path.join(os.path.dirname(__file__),"..","..","watch"),
+        )
 else:
     WATCH_DIR='/var/lib/apmanager/watch'
 
@@ -121,11 +139,16 @@ LOCALE_PATHS = (
     '/usr/share/apmanager/locale',
     )
 
-if DEBUG:
+if DEV_PATHS:
     LOCALE_PATHS = LOCALE_PATHS + (
-        os.path.join(os.path.dirname(__file__), "..", "locale"),
+        os.path.join(os.path.dirname(__file__), "..", "..", "locale"),
         )
+    TEMPLATE_DIRS = TEMPLATE_DIRS + (
+        os.path.join(os.path.dirname(__file__), "..", "..", "apmanager"),
+        )
+
     for dpath in ( 
+        UPLOAD_ROOT,
         WATCH_DIR, 
             AP_DIR,
                 AP_REFRESH_WATCH_DIR,

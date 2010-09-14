@@ -22,10 +22,10 @@ urlpatterns = patterns('',
     (r'^commands/', include('apmanager.accesspoints.cmdurls')),
 
     # Application de rapports generiques
-    (r'^rapports/', include('apmanager.genericsql.urls')),
+    # (r'^rapports/', include('apmanager.genericsql.urls')),
    
     # Multireports
-    (r'^multireport/', include('apmanager.multireport.urls')),
+    # (r'^multireport/', include('apmanager.multireport.urls')),
 
     (r'^$', include('apmanager.accesspoints.apurls')),
 )
