@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 import os, sys
 import logging
+import logging.handlers
 
 LOG = logging.getLogger("apmanager.bin.cmdexecutor")
 
-os.environ["DJANGO_SETTINGS_MODULE"] = "apmanager.settings"
-from apmanager import settings
+CONFIG_DIR = '/etc/papas'
+sys.path.append(CONFIG_DIR)
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+import settings
 
 import pyinotify
 from pyinotify import WatchManager, Notifier, ProcessEvent
@@ -100,7 +103,7 @@ def Monitor(path):
 if __name__ == '__main__':
     if "--daemon" in sys.argv[1:]:
         utils.daemonize()
-        handler = logging.SysLogHandler()
+        handler = logging.handlers.TimedRotatingFileHandler("/var/log/papas.log", when="D", backupCount=6)
     else:
         handler = logging.StreamHandler()
 

@@ -12,7 +12,7 @@ def iter_by(iterable, count):
     gen = iter(iterable)
     try:
         while True:
-            yield [gen.next() for i in xrange(count)]
+            yield (gen.next() for i in xrange(count))
     except StopIteration:
         return
 

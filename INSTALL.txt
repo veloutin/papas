@@ -1,0 +1,11 @@
+- Install the package
+- Setup your database
+    - Install python libraries for your database (python-psycopg2, 
+        python-mysqldb, etc..).
+    - Create a database
+    - Edit /etc/papas/settings.py with the new settings
+- Run syncdb
+    - PYTHONPATH=/etc/papas DJANGO_SETTINGS_MODULE=settings django-admin syncdb
+- Give your web server rights to the watch folder
+    - chown www-data:root -R /var/lib/papas/watch
+

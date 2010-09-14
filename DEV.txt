@@ -1,0 +1,27 @@
+- How to run the daemon:
+
+    You need to have the libraries in the python path, so from the top-level
+    dir, you can run:
+    
+    PYTHONPATH=lib:.:etc USE_DEV_PATHS=yes bin/apmanager=cmdexecutor
+
+- Django-admin commands:
+
+    This is pretty much the same thing as for the daemon:
+
+    USE_DEV_PATHS=yes \
+    PYTHONPATH=lib:.:etc/papas \
+    DJANGO_SETTINGS_MODULE=settings \
+    django-admin <command and options>
+
+    You can also
+    export USE_DEV_PATHS=yes
+    export PYTHONPATH=lib:.:etc/papas
+    export DJANGO_SETTINGS_MODULE=settings
+
+    django-admin runserver
+    django-admin sycndb
+    django-admin makemessages -l fr
+    django-admin makemessages -l en
+    django-admin compilemessages
+    ...
