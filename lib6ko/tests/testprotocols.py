@@ -1,8 +1,12 @@
 import sys, os
 import unittest
 
-from lib6ko.protocol import *
+from operator import attrgetter
 
+from lib6ko.protocol import *
+from lib6ko.run import ProtocolChain
+
+from lib6ko.tests.mocks.protocols import createProtocolDescriptor
 
 class Test_ScopedDict(unittest.TestCase):
     def test_kw_create(self):
@@ -131,6 +135,74 @@ class Test_ProtocolOptions(unittest.TestCase):
             "default",
             )
 
+class TestProtocolChain(unittest.TestCase):
+    def test_ctor(self):
+        self.assertRaises(TypeError,
+            ProtocolChain,
+            None,
+            {},
+            )
 
+    def test_empty_chain(self):
+        chain = ProtocolChain([], {})
+        self.assertRaises(
+            ScriptError,
+            attrgetter("protocol"),
+            chain,
+            )
+
+        #Should do nothing, and not fail
+        del chain.protocol
+        
+    def test_failover(self):
+        proto1 = createProtocolDescriptor("Proto1",
+            failure=TemporaryFailure(""),
+            )
+        proto3 = createProtocolDescriptor("Proto3",
+            failure=PermanentFailure(""),
+            )
+        proto4 = createProtocolDescriptor("Proto4",
+            failure=Exception(""),
+            )
+        proto2 = createProtocolDescriptor("Proto2")
+        chain = ProtocolChain([proto1], {})
+
+        #Without failover, it should fail
+        self.assertRaises(
+            ScriptError,
+            attrgetter("protocol"),
+            chain,
+            )
+
+        chain = ProtocolChain([proto1, proto3, proto4, proto2], {})
+        self.assertTrue(
+            isinstance(chain.protocol, proto2.get_class()),
+            )
+            
+    def test_singlelike(self):
+        proto1 = createProtocolDescriptor("Proto1", {"a":"a"})
+        chain = ProtocolChain([proto1], {})
+        proto = chain.protocol
+        self.assertEquals(proto, chain.protocol)
+
+    def test_delproto(self):
+        proto1 = createProtocolDescriptor("Proto1", {"a":"a"})
+        chain = ProtocolChain([proto1], {})
+        #Before aquiring, delete does nothing
+        del chain.protocol
+
+        #Aquire
+        proto = chain.protocol
+        #Now we delete
+        del chain.protocol
+        #Last protocol, can't work now
+        self.assertRaises(
+            ScriptError,
+            attrgetter("protocol"),
+            chain,
+            )
+        #Del again should do nothing
+        del chain.protocol
+        
 if __name__ == '__main__':
     unittest.main()

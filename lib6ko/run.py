@@ -47,8 +47,9 @@ class ProtocolChain(object):
         self._parameters.setdefault("param", {})
 
         self._protocol = None
+        self._current_descriptor = None
         self._discared = []
-        self._protos = cls_list
+        self._protocol_descriptors = cls_list
         self._parameters = parameters
 
     @property
@@ -58,7 +59,7 @@ class ProtocolChain(object):
 
         errorlog = []
         #Initialize the next one
-        for p in self._protos[:]:
+        for p in self._protocol_descriptors[:]:
             try:
                 #Copy the param dict
                 config = deepcopy(self._parameters)
@@ -74,6 +75,7 @@ class ProtocolChain(object):
                 
                 #Initialize the protocol
                 self._protocol = p.get_class()(config)
+                self._current_descriptor = p
                 return self._protocol
             except (TemporaryFailure), e:
                 msg = _("TemporaryFailure in getting protocol {0}: {1}").format(p, e)
@@ -84,13 +86,13 @@ class ProtocolChain(object):
                 msg = _("PermanentFailure in getting protocol {0}: {1}").format(p, e)
                 _LOG.error(msg)
                 errorlog.append(msg)
-                self._protos.remove(p)
+                self._protocol_descriptors.remove(p)
             except Exception, e:
                 msg = _("Unhandled exception in protocol {0} initialization: {1}").format(p, e)
                 _LOG.error(msg)
                 _LOG.debug(traceback.format_exc())
                 errorlog.append(msg)
-                self._protos.remove(p)
+                self._protocol_descriptors.remove(p)
         else:
             #We didn't manage to get any protocol
             raise ScriptError(_("Unable to get a working protocol"), u"\n".join(errorlog))
@@ -98,8 +100,9 @@ class ProtocolChain(object):
     @protocol.deleter
     def protocol(self):
         if self._protocol:
-            self._protos.remove(type(self._protocol))
+            self._protocol_descriptors.remove(self._current_descriptor)
             self._protocol = None
+            self._current_descriptor = None
 
 
 class Executer (object):
