@@ -8,6 +8,17 @@ from lib6ko import parameters as _P
 
 
 class ScopedDict(dict):
+    """
+    ScopedDict is a special instance of a normal python dict that allows
+    accessing its items' attributes via getattr(). If the attribute name given
+    to attr contains the scope separator "::", it will be used as a dictionary
+    key and the attribute lookup will continue into the found item.
+
+    If the scope given corresponds to another ScopedDict, the lookup is the
+    same in that other ScopedDict.  If it corresponds to a dict, a key lookup
+    is attempted.  Otherwise, a normal attribute lookup is performed.
+    """
+
     SCOPE_SEP = "::"
     def __getattribute__(self, name):
         scope, split, attrname = name.partition(ScopedDict.SCOPE_SEP)
