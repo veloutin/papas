@@ -150,7 +150,11 @@ class Executer (object):
         self._protocol_chains = {}
 
     def get_protocol_chain(self, mode):
-        return self._protocol_chains[mode]
+        if mode in self._protocol_chains:
+            return self._protocol_chains[mode]
+        else:
+            _LOG.warn("Mode {0} not found in protocol chains".format(mode))
+            return ProtocolChain([], {})
 
     def _get_node_id(self, node):
         return str(hash(node))
@@ -168,6 +172,8 @@ class Executer (object):
     def execute_template(self, template, ap, parameters={}, context_factory=lambda p:p):
         #Get protocols by mode
         self.parameters = params = ScopedDict(ap=ap, param=parameters)
+        if not "ap" in parameters:
+            parameters["ap"] = ap
 
         #TODO: Use protocol support
         for key, val in self._protocol_classes.items():
@@ -225,6 +231,7 @@ class Executer (object):
                     part = part.strip()
                     if part:
                         _LOG.debug(_("Following text will not be executed: {0}").format(part))
+                        res += part
         if node:
             return node.get_full_output()
         else:
