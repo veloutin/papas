@@ -11,6 +11,8 @@ class CommandNodeBase( object ):
 
     @property
     def protocol(self):
+        # FIXME This assumes that get_protocol_chain will always return the
+        # same chain. If this changes, bad things will happen
         return self.backend.get_protocol_chain(self.mode).protocol
             
     def render(self, context):

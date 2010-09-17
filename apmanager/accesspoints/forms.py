@@ -1,6 +1,6 @@
-import models
 
 from django.forms import ModelForm
+from apmanager.accesspoints import models
 
 class CommandForm(ModelForm):
     class Meta:

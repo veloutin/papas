@@ -45,10 +45,9 @@ class SSH(ConsoleProtocol):
                 )
             )
 
-        c.waitnoecho(30)
-        c.sendline(self._password)
+        self.arch.console.send_password(self._password)
 
-        if not self.arch.console.prompt(timeout=15):
+        if not self.arch.console.prompt(consume=False, timeout=15):
             _LOG.info("Login Failure")
             self.child = None
             raise TemporaryFailure("Login Failure")
