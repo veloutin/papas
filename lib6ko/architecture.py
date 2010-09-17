@@ -61,6 +61,10 @@ class Console(object):
     def child(self, child):
         self._child = child
         if self._child is not None:
+            #Make sure we do not allow buffering on this, as it screws up
+            # everthing, but mostly us.
+            # That's even worse #self._child.maxread = 1
+            self._child.searchwindowsize = 2000
             self._child.logfile = StringIO()
             self._child.logfile_read = StringIO()
             self._child.logfile_send = StringIO()
@@ -109,7 +113,15 @@ class Console(object):
             _LOG.debug("Sending password...")
             self.child.sendline(password)
             return True
-        return False
+        else:
+            _LOG.debug("Waiting for a password prompt...")
+            if self.child.waitnoecho(timeout=1):
+                _LOG.debug("Sending password...")
+                self.child.sendline(password)
+                return True
+
+            _LOG.debug("Did not get a password prompt.")
+            return False
 
     def execute_command(self, command, expect_noecho=False):
         _LOG.debug("="*40)
