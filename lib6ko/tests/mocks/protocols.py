@@ -1,6 +1,11 @@
+import os, sys
+import pexpect
 from lib6ko.protocol import (
     Protocol,
+    TemporaryFailure,
     )
+
+from lib6ko.protocols.console import ConsoleProtocol
 
 
 def createProtocolDescriptor(
@@ -45,6 +50,10 @@ def createProtocolDescriptor(
         def get_class(self):
             return MockProtocol
 
+        @property
+        def mode(self):
+            return MockProtocol.mode
+
     return type(
         #Class name
         name,
@@ -53,5 +62,35 @@ def createProtocolDescriptor(
         #Attributes
         {},
         )()
-                
 
+
+class FakeConsoleProtocol(ConsoleProtocol):
+    mode = "console"
+
+    def __init__(self, parameters):
+        super(FakeConsoleProtocol, self).__init__(parameters)
+
+    def connect(self):
+        #Get the fake console module
+        from lib6ko.tests.mocks import interactive_console
+        target = os.path.abspath(interactive_console.__file__)
+        self.child = c = pexpect.spawn("{0} {1}".format(
+            sys.executable,
+            target,
+            ))
+
+        #We use expect even though we know what happens, so that
+        # a change in the expect libs can break this test
+        index = c.expect([
+                interactive_console.USERNAME,
+                pexpect.TIMEOUT,
+            ], timeout = 5)
+        if index == 0:
+            c.sendline("fakeuser")
+
+        self.arch.console.send_password("fakeuser")
+
+        if not self.arch.console.prompt(consume=False, timeout=5):
+            raise TemporaryFailure("Login Failure")
+
+        return self
