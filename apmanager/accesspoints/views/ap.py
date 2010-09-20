@@ -116,7 +116,7 @@ def ap_init_overview(request):
         else:
             init_sections = arch_init_sections.setdefault(
                 ap.architecture.id,
-                ap.architecture.initsection_set.all(),
+                ap.architecture.initsection_set.order_by('section__name'),
                 )
 
         init_status = get_init_status(
@@ -145,7 +145,7 @@ def view_ap_init(request, ap_id):
     ap = get_object_or_404(AccessPoint, pk=ap_id)
 
     init_status = get_init_status(
-        ap.architecture.initsection_set.all(),
+        ap.architecture.initsection_set.order_by('section__name'),
         ap.archinitresult_set.all(),
         )
 
