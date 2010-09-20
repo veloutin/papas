@@ -84,13 +84,17 @@ class AccessPoint ( models.Model ):
         # Go through all init sections
         # Run sections ordered by section name
         for init_section in self.architecture.initsection_set.order_by('section__name'):
-            apinit, created = self.archinitresult_set.get_or_create(
-                section=init_section,
-                defaults = dict(
+            try:
+                apinit = self.archinitresult_set.get(section=init_section)
+                apinit.status = -1
+                apinit.output = _u(u"Initialization has not been run")
+                apinit.save()
+            except ArchInitResult.DoesNotExist:
+                apinit = self.archinitresult_set.create(
+                    section=init_section,
                     status=-1,
                     output=_u(u"Initialization has not been run"),
                     )
-                )
 
             # Execute the section
             try:
