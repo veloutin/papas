@@ -55,7 +55,7 @@ class DjParameterNode(CommandNodeBase, template.Node):
                         continue
                     else:
                         # Otherwise return it
-                        return paramp[0].value
+                        return param[0].value
 
                 arch = arch.parent
 
