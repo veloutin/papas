@@ -82,12 +82,14 @@ class AccessPoint ( models.Model ):
         executer = Executer(Protocol.objects.all())
 
         # Go through all init sections
-        #XXX Should there be an order?
-        for init_section in self.architecture.initsection_set.all():
+        # Run sections ordered by section name
+        for init_section in self.architecture.initsection_set.order_by('section__name'):
             apinit, created = self.archinitresult_set.get_or_create(
                 section=init_section,
-                status=-1,
-                output=_u(u"Initialization has not been run"),
+                defaults = dict(
+                    status=-1,
+                    output=_u(u"Initialization has not been run"),
+                    )
                 )
 
             # Execute the section
