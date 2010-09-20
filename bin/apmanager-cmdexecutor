@@ -42,7 +42,7 @@ def handle_ap_init(ap_id):
         a.run_init()
         LOG.debug('Success')
     except Exception, e:
-        LOG.error("AP Refresh failed with error: %s", str(e))
+        LOG.error("AP init failed with error: %s", str(e))
 
 def Monitor(path):
     class PCreate(ProcessEvent):
