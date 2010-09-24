@@ -82,6 +82,15 @@ class Console(object):
         self._child.logfile_send.seek(0)
         self._child.logfile_send.truncate()
 
+    def wait_for_prompt(self, consume_output=True, timeout=1):
+        if self.child.expect([self.PROMPT_RE, pexpect.TIMEOUT], timeout=timeout) == 0:
+            if consume_output:
+                self.consume_output()
+            return True
+        else:
+            return False
+        
+
     def prompt(self, consume=True, timeout=1):
         """ Get the next prompt. If consume is false, we will remember that it
         was matched, until it is consumed. """
@@ -155,9 +164,10 @@ class Console(object):
                 self.child.waitnoecho(timeout=1)
                 return self.consume_output()
             else:
-                _LOG.debug("Unread output: " + self.unread_output)
+                if self.unread_output:
+                    _LOG.debug("Unread output: " + self.unread_output)
                 # We should get another prompt, but not output
-                self.child.expect([self.PROMPT_RE, pexpect.TIMEOUT], timeout=0)
+                self.wait_for_prompt(consume_output = False)
                 match = self.PROMPT_RE.match(self.unread_output)
                 if match:
                     #We found a match!
@@ -174,13 +184,10 @@ class Console(object):
                     prompt = match.group("prompt")
                     if prompt:
                         self.restore_output(prompt)
-                    print match.groupdict()
                 else:
                     #No match for the prompt...??
                     _LOG.warn("Unable to find prompt!")
                     self.prompt()
-
-                print self.unread_output
 
         return readlog.getvalue()[oStart:]
 
