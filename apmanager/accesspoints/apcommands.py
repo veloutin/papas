@@ -117,6 +117,9 @@ class CommandExec ( models.Model ):
         verbose_name = _(u"Command Execution")
         verbose_name_plural = _(u"Command Executions")
         
+    def __unicode__(self):
+        return _(u"{0.command} on {0.target}").format(self)
+
 
     def get_absolute_url(self):
         return reverse("apmanager.accesspoints.views.apcommands.view_command",
@@ -166,7 +169,6 @@ class CommandExec ( models.Model ):
             cer.schedule()
         self.last_run = datetime.now()
         self.save()
-
 
 class CommandExecResult ( models.Model ):
     commandexec = models.ForeignKey(CommandExec)
