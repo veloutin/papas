@@ -115,7 +115,7 @@ class DjOutputNode(AllowOutputNode, template.Node):
         return self.nodelist.render(ctx)
 
 @register.tag(OUTPUT_TAG)
-def do_root(parser, token):
+def do_output(parser, token):
     nodelist = parser.parse(('end' + OUTPUT_TAG, ))
     parser.delete_first_token()
     for t in parser.tokens:
