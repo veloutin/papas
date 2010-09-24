@@ -53,7 +53,7 @@ def create_protocol(proto, parent=None):
 
 
 SECTIONS = {
-    "SNMP" : [
+    "P-SNMP" : [
         dict(
             name =          _P.SNMP_COMMUNITY,
 #            field_type =    "text",
@@ -66,7 +66,7 @@ SECTIONS = {
             default_value = None,
         ),
     ],
-    "Console" : [
+    "P-Console" : [
         dict(
             name =          _P.CONSOLE_PRIV_MODE,
         ),
@@ -100,15 +100,6 @@ SECTIONS = {
 ##            builtin =       True,
         ),
     ],
-    "Network" : [
-    ],
-    "Wireless" : [
-    ],
-    "Ethernet" : [
-    ],
-    "Logging" : [
-    ],
-
 }
 
 def create_protocols(sender, **kwargs):
