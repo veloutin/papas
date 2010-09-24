@@ -14,37 +14,41 @@
 <tr><th>{% trans "Architecture" %}</th><td>{{ ap.architecture }}</td></tr>
 </table>
 {% if init_status %}
-<h3>{% trans "Initialization Status" %}</h3>
-<form method="POST"><button name="init" value="1">{% trans "Run initialization" %}</button></form>
-<form method="GET"><button>{% trans "Refresh" %}</button></form>
-{# Missing #}
-{% if init_status.missing %}
-    <h4>{%blocktrans with init_status.missing|length as count %}{{ count }} section(s) missing{% endblocktrans %}</h4>
-    {% for inisection in init_status.missing %}
-    <p class="sectionname">{{ inisection.section }}</p>
-    {% endfor %}
-{% endif %}
+    <h3>{% trans "Initialization Status" %}</h3>
+    <form class="linkform" method="POST"><button name="init" value="1">{% trans "Run initialization" %}</button></form>
+    <form class="linkform" method="GET"><button>{% trans "Refresh" %}</button></form>
+    {# Missing #}
+    {% if init_status.missing %}
+        <h4 class="missing">{%blocktrans with init_status.missing|length as count %}{{ count }} section(s) missing{% endblocktrans %}</h4>
+        {% for inisection in init_status.missing %}
+        <p class="sectionname">{{ inisection.section }}</p>
+        {% endfor %}
+    {% endif %}
 
-{# Errors #}
-{% if init_status.error %}
-    <h4>{% blocktrans with init_status.error|length as errorcount %}{{ errorcount }} sections failed{% endblocktrans %}</h4>
-    {% for iniresult in init_status.error %}
-        <p class="sectionname">{{ iniresult.section.section }}</p>
-        <pre class="output">{{ iniresult.output }}</pre>
-    {% endfor %}
-{% endif %}
+    {# Errors #}
+    {% if init_status.error %}
+        <h4 class="error">{% blocktrans with init_status.error|length as errorcount %}{{ errorcount }} sections failed{% endblocktrans %}</h4>
+        {% for iniresult in init_status.error %}
+            <p class="sectionname">{{ iniresult.section.section }}</p>
+            <pre class="output">{{ iniresult.output }}</pre>
+            <p class="sectiontime">{% trans "Last Updated: " %}{{ iniresult.ts }}</p>
+        {% endfor %}
+    {% endif %}
 
-{# Success #}
-{% if init_status.success %}
-    <h4>{% blocktrans with init_status.success|length as count %}{{ count }} sections succeeded{% endblocktrans %}</h4>
-    {% for iniresult in init_status.success %}
-        <p class="sectionname">{{ iniresult.section.section }}</p>
-        <pre class="output">{{ iniresult.output }}</pre>
-    {% endfor %}
-{% endif %}
+    {# Success #}
+    {% if init_status.success %}
+        <h4 class="success">{% blocktrans with init_status.success|length as count %}{{ count }} sections succeeded{% endblocktrans %}</h4>
+        {% for iniresult in init_status.success %}
+            <p class="sectionname">{{ iniresult.section.section }}</p>
+            <pre class="output">{{ iniresult.output }}</pre>
+            <p class="sectiontime">{% trans "Last Updated: " %}{{ iniresult.ts }}</p>
+        {% endfor %}
+    {% endif %}
+{% else %}{# if init_status #}
+    <a href='{% url apmanager.accesspoints.views.ap.view_ap_init ap.id %}'>{% trans "Initialization Status" %}</a></br>
 {% endif %}{# if init_status #}
 <br /><hr /><br />
-<a href='{% url apmanager.accesspoints.views.ap.view_ap_nagios_config ap.id %}'>Configuration Nagios</a>
+<a href='{% url apmanager.accesspoints.views.ap.view_ap_nagios_config ap.id %}'>{% trans "Nagios Configuration" %}</a>
 {% comment %}
 <h3>{% trans "Clients" %}</h3>
 <table>

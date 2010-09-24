@@ -85,4 +85,14 @@ input[type=submit], input[type=button]{ background:white padding:3px; color:blac
 input[type=submit].default, .submit-row input.default { border:2px solid #5b80b2; background:#7CA0C7; font-weight:bold; color:white; }
 
 
+tr.error {
+    background-color: #ffdddd;
+}
 
+tr.missing {
+    background-color: #ffffbb;
+}
+
+tr.success {
+    background-color: #eeffee;
+}
