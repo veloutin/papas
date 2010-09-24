@@ -89,7 +89,6 @@ SUPPORT_TYPES = (
 
 class Section (models.Model):
     name = models.CharField(
-        primary_key = True,
         unique = True,
         max_length = 255,
         verbose_name = _(u"Name"), )
@@ -125,7 +124,6 @@ class Parameter (models.Model):
     @property
     def scoped_name(self):
         # XXX Should we add the section or not?
-        # return u"{0.section_id}::{0.name}".format(self)
         return self.name
 
 class Protocol (models.Model):
@@ -299,7 +297,7 @@ class InitSection (models.Model):
 
     def __unicode__(self):
         return _(u"%(section)s for %(arch)s") % dict(
-            section = self.section_id,
+            section = self.section.name,
             arch = self.architecture,
             )
 

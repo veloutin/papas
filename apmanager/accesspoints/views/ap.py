@@ -76,12 +76,12 @@ def get_init_status(arch_init_list, ap_init_list):
 
     #Find out what sections of the architecture init are missing, or in error
     for ins in arch_init_list:
-        if not ins.section_id in ap_init:
+        if not ins.section.name in ap_init:
             missing.append(ins)
-        elif ap_init[ins.section_id].status != 0:
-            error.append(ap_init[ins.section_id])
+        elif ap_init[ins.section.name].status != 0:
+            error.append(ap_init[ins.section.name])
         else:
-            success.append(ap_init[ins.section_id])
+            success.append(ap_init[ins.section.name])
         
     return dict(
         success = success,
