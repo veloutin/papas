@@ -72,8 +72,7 @@ class SNMPProtocol(Protocol):
         )
         ret, out = commands.getstatusoutput(cmd)
         if ret != 0:
-            print ret, out
-            raise ScriptError("Failed to get value", out)
+            raise ScriptError("Failed to get value [{0}]".format(ret), out)
 
         return dict(
                 ( filter(None, 
