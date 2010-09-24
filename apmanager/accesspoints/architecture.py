@@ -323,6 +323,9 @@ class ArchInitResult (models.Model):
         verbose_name = _(u"Initialization Result")
         verbose_name_plural = _(u"Initialization Results")
 
+    def __unicode__(self):
+        return _(u"'{0.section}' initialization for '{0.ap}'").format(self)
+
 class CommandDefinition (models.Model):
     name = models.CharField(
         max_length = 100,
