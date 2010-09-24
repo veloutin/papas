@@ -319,6 +319,7 @@ class ArchInitResult (models.Model):
     output = models.TextField(
         null=True, blank=True,
         )
+    ts = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = _(u"Initialization Result")

@@ -106,6 +106,11 @@ def view_command(request, command_id):
     """
     cmd = get_object_or_404(CommandExec,pk=command_id)
     if request.method == "POST":
+        if "delete_btn" in request.POST:
+            cmd.delete()
+            return HttpResponseRedirect(
+                reverse(view_home),
+                )
         cmd.schedule()
 
     return render_to_response('accesspoints/commands/view.html',{
