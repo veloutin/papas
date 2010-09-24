@@ -248,5 +248,8 @@ class CommandTarget (object) :
     def group_id(self):
         return self.group.id
 
+    def __unicode__(self):
+        return unicode(self.target)
+
 #Import other models
 from apmanager.accesspoints.apcommands import *
