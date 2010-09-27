@@ -102,6 +102,9 @@ SECTIONS = {
 #            field_type =    "pwd",
 ##            builtin =       True,
         ),
+        dict(
+            name =          _P.SSH_PORT,
+        ),
     ],
 }
 
