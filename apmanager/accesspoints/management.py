@@ -74,6 +74,9 @@ SECTIONS = {
             name =          _P.CONSOLE_PRIV_END,
         ),
         dict(
+            name =          _P.CONSOLE_PRIV_PASSWORD,
+        ),
+        dict(
             name =          _P.CONSOLE_EXIT,
             default_value = "exit",
         ),

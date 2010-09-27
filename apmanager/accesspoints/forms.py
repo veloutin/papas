@@ -1,24 +1,30 @@
 
-from django.forms import ModelForm
+from django import forms
+from django.utils.translation import ugettext_lazy as _
+
 from apmanager.accesspoints import models
 
-class CommandForm(ModelForm):
+class ParameterForm(forms.ModelForm):
     class Meta:
-        model = models.Command
+        model = models.Parameter
 
-    def clean(self):
-        cleaned_data = self.cleaned_data
+    no_default_value = forms.BooleanField(
+        required=False,
+        help_text=_(u"Check this box to remove the default value. Otherwise, a blank value will be used as the default."),
+        )
 
-        script = cleaned_data.get("script")
-        script_txt = cleaned_data.get("script_text")
+    def __init__(self, *args, **kwargs):
+        super(ParameterForm, self).__init__(*args, **kwargs)
+        if "instance" in kwargs:
+            self.fields["no_default_value"].initial = (
+                kwargs["instance"].default_value is None
+                )
 
-        if not (script is None) ^ (script_txt is None):
-            msg = u"You must provide either a script file or text"
-            self._errors["script"] - self.error_class([msg])
-            self._errors["script_text"] - self.error_class([msg])
-
-            del cleaned_data["script"]
-            del cleaned_data["script_text"]
-
-        return cleaned_data
+    def save(self, commit=True):
+        res = super(ParameterForm, self).save(commit=commit)
+        if self.cleaned_data["no_default_value"]:
+            res.default_value = None
+            if commit:
+                res.save()
+        return res
 

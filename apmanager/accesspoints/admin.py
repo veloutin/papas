@@ -56,6 +56,8 @@ class ParameterAdmin(admin.ModelAdmin):
     list_filter = (
         'section',
     )
+    form = myforms.ParameterForm
+
 mset = dict(
     filter(
         lambda s: isinstance(s[1], type) and issubclass(s[1], BaseModel), 
