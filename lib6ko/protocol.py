@@ -68,6 +68,6 @@ class PermanentFailure(Exception):
 
 class ScriptError(Exception):
     """ Script failed to execute properly """
-    def __init__(self, message, traceback):
+    def __init__(self, message, traceback=None):
         super(ScriptError, self).__init__(message)
         self.traceback = traceback

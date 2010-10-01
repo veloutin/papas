@@ -1,13 +1,12 @@
 import logging
 LOG = logging.getLogger('apmanger.accesspoints')
-import commands
 
 from django.db import models
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext as _u
-from django.template import Context
+from django.template import Context, TemplateSyntaxError
 
 from apmanager.accesspoints.architecture import *
 
@@ -66,6 +65,8 @@ class AccessPoint ( models.Model ):
         LOG.error("Not implemented yet!")
 
     def schedule_init(self):
+        #Delete old results, simpler that way
+        self.archinitresult_set.all().delete()
         # TODO Add a way to tell that it's still running
         if settings.USE_DAEMON:
             file(os.path.join(settings.AP_INIT_WATCH_DIR, str(self.id)), 'w').close()
@@ -105,10 +106,21 @@ class AccessPoint ( models.Model ):
                     context_factory=Context,
                     )
                 apinit.status = 0
-            except ScriptError, e:
+            except TemplateSyntaxError as e:
+                # TemplateSyntaxError wraps the inner exception as provided
+                # in the __exit__ of contextlib, see
+                #http://docs.python.org/reference/datamodel.html#object.__exit__
+                exc_type, exc_value, trace_obj = e.exc_info
+                if exc_type is ScriptError:
+                    apinit.output = exc_value.traceback
+                    apinit.status = -1
+                else:
+                    apinit.output = traceback.format_exc()
+                    apinit.status = -1
+            except ScriptError as e:
                 apinit.output = e.traceback
                 apinit.status = -1
-            except Exception, e:
+            except Exception as e:
                 apinit.output = traceback.format_exc()
                 apinit.status = -1
 
