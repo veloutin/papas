@@ -3,7 +3,7 @@
     You need to have the libraries in the python path, so from the top-level
     dir, you can run:
     
-    PYTHONPATH=lib:.:etc USE_DEV_PATHS=yes bin/apmanager=cmdexecutor
+    PYTHONPATH=lib:.:etc/papas USE_DEV_PATHS=yes bin/apmanager-cmdexecutor
 
 - Django-admin commands:
 

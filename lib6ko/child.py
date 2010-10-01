@@ -32,9 +32,22 @@ class Child(object):
     def send(self, data):
         self._child.stdin.write(data)
 
-    def sendline(self, line):
+    def send_line(self, line):
         self.send(line + "\n")
 
-    def read(self):
-        return self._child.stdout.read()
+    def read(self, max_bytes=-1):
+        try:
+            return self._child.stdout.read(max_bytes)
+        except IOError as e:
+            if e.errno == 11:
+                #Resouce temporarily unavailable -> no data to read
+                return ""
+            else:
+                raise
+
+    def get_echo(self):
+        try:
+            return bool(termios.tcgetattr(self._child.stdin.fileno())[3] & termios.ECHO)
+        except Exception:
+            return None
 

@@ -1,4 +1,5 @@
 from gettext import gettext as _
+from datetime import datetime
 import logging
 _LOG = logging.getLogger("lib6ko.architecture")
 
@@ -97,7 +98,15 @@ class Console(object):
         _LOG.debug(_("Expecting a prompt... with timeout {0}").format(timeout))
         # Wait for a prompt to happen to increase the chances that we have one
         # ready in the output
-        self.child.expect([self.PROMPT_RE, pexpect.TIMEOUT], timeout=timeout)
+        _LOG.debug(_("Already have output: {0}").format(repr(self.output)))
+        seconds = 0
+        now = datetime.now()
+        while (datetime.now() - now).seconds < timeout and not self.wait_for_prompt(
+                consume_output=False,
+                timeout=0.1,
+            ):
+            pass
+        _LOG.debug(_("Waited approximately {0}s").format((datetime.now() - now).seconds))
 
         #Check for more prompts if we missed some
         #while self.child.expect([self.PROMPT_RE, pexpect.TIMEOUT], timeout=0) == 0:
@@ -149,10 +158,10 @@ class Console(object):
         sentchars = self.child.sendline(command)
 
         # Look for the output we sent
-        idx = self.child.expect([command, pexpect.TIMEOUT], timeout=0)
+        idx = self.child.expect([command, pexpect.TIMEOUT], timeout=0.5)
         if idx == 0:
             # We found what we sent, get our output
-            idx = self.child.expect([self.PROMPT_RE, pexpect.TIMEOUT], timeout=0)
+            idx = self.child.expect([self.PROMPT_RE, pexpect.TIMEOUT], timeout=0.5)
         else:
             _LOG.error("Unable to read sent command...")
 
