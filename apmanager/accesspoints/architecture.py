@@ -395,8 +395,11 @@ class CommandDefinition (models.Model):
         return type("CommandDefinitionParameterForm",
             (forms.Form, ), # bases
             dict(
-                [ (p, forms.CharField()) for p in map(
-                    unicode.strip, self.parameters.split(",")
+                [ (p, forms.CharField()) for p in filter(
+                    lambda s: len(s) > 0,
+                    map(
+                        unicode.strip, self.parameters.split(",")
+                        ),
                     ) ],
                 save = form_save,
             ), # attrs
