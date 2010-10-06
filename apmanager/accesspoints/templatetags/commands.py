@@ -8,6 +8,7 @@ from lib6ko.templatetags.console import (
     ConsoleNode,
     RootConsoleNode,
     AllowOutputNode,
+    SingleCommandNode,
     )
 from lib6ko.protocol import ScriptError
 
@@ -23,6 +24,7 @@ register = template.Library()
 CONSOLE_TAG="console"
 OUTPUT_TAG="output"
 PRIVILEGED_TAG="root"
+SINGLE_CMD_TAG="single"
 MODE_TAG="mode"
 SNMP_TAG="snmp"
 PARAM_TAG="param"
@@ -154,6 +156,27 @@ def do_root(parser, token):
         raise template.TemplateSyntaxError("%s cannot exist outside of a %s tag" % (PRIVILEGED_TAG, CONSOLE_TAG))
     return DjPrilegedNode(nodelist)
 
+######################################################################
+# SingleCommand
+######################################################################
+class DjSingleCommandNode(SingleCommandNode, template.Node):
+    def __init__(self, nodelist):
+        SingleCommandNode.__init__(self)
+        self.nodelist = nodelist
+
+    def do_render(self, ctx):
+        return self.nodelist.render(ctx)
+
+@register.tag(SINGLE_CMD_TAG)
+def do_singlecmd(parser, token):
+    nodelist = parser.parse(('end' + SINGLE_CMD_TAG, ))
+    parser.delete_first_token()
+    for t in parser.tokens:
+        if t.token_type == template.TOKEN_BLOCK and t.contents == "end" + CONSOLE_TAG:
+            break
+    else:
+        raise template.TemplateSyntaxError("%s cannot exist outside of a %s tag" % (SINGLE_CMD_TAG, CONSOLE_TAG))
+    return DjSingleCommandNode(nodelist)
 
 ######################################################################
 # SNMP
