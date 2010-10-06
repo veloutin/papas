@@ -56,6 +56,11 @@ class ParameterAdmin(admin.ModelAdmin):
     list_filter = (
         'section',
     )
+    search_fields = (
+        'name',
+        'section__name',
+        'default_value',
+    )
     form = myforms.ParameterForm
 
 mset = dict(

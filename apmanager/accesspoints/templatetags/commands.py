@@ -1,5 +1,6 @@
 import os
 from django import template
+from django.conf import settings
 
 from lib6ko.templatetags import CommandNodeBase
 from lib6ko.templatetags import SNMPNodeBase
@@ -8,6 +9,7 @@ from lib6ko.templatetags.console import (
     RootConsoleNode,
     AllowOutputNode,
     )
+from lib6ko.protocol import ScriptError
 
 from apmanager.accesspoints.models import (
     SOURCE_TYPE_NOTSET,
@@ -65,7 +67,11 @@ class DjParameterNode(CommandNodeBase, template.Node):
             return param[0].default_value
         
         # Otherwise... not found!
-        return u""
+        raise ScriptError(
+            "Missing Parameter",
+            "Parameter {0} ({1}) not found!".format(
+                paramname, self.parameter),
+            )
 
 @register.tag(PARAM_TAG)
 def do_paramnode(parser, token):
