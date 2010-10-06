@@ -67,11 +67,12 @@ class ConsoleProtocol(Protocol):
     def prompt(self):
         self.arch.console.prompt(consume=True)
 
-    def execute_text(self, text, expect_noecho=False):
-        for line in text.splitlines():
-            self.arch.console.execute_command(line, expect_noecho)
-
+    def execute_command(self, text, expect_noecho=False):
+        self.arch.console.execute_command(text, expect_noecho)
         return self.arch.console.consume_output()
+
+    def execute_text(self, text, expect_noecho=False):
+        return "".join((self.execute_command(line) for line in text.splitlines()))
 
     def get_full_output(self):
         return self.arch.console.output
