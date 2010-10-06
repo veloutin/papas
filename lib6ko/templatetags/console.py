@@ -40,3 +40,7 @@ class AllowOutputNode(ConsoleNodeBase):
 
     def tearDown(self):
         self.protocol.allow_output = False
+
+class SingleCommandNode(ConsoleNodeBase):
+    def execute_text(self, text):
+        return self.protocol.execute_command(text)
