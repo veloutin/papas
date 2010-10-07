@@ -10,6 +10,9 @@ from lib6ko import parameters as _P
 from lib6ko.protocol import TemporaryFailure, PermanentFailure
 from lib6ko.protocols.console import ConsoleProtocol
 
+from lib6ko.architecture import Architecture
+from lib6ko.architectures.paramiko_ssh import ParamikoConsole
+
 
 class SSH(ConsoleProtocol):
     def __init__(self, parameters):
@@ -21,6 +24,9 @@ class SSH(ConsoleProtocol):
         self.priv_password = self._password = self.require_param(_P.SSH_PASSWORD)
         self._port = int(self.require_param(_P.SSH_PORT, default="22"))
 
+    def _init_architecture(self):
+        self.arch = Architecture(console_class=ParamikoConsole)
+
     def connect(self):
         _LOG.info(_("Attempting to connect to {0._username}@{0._host}").format(self))
         try:
@@ -29,30 +35,24 @@ class SSH(ConsoleProtocol):
             _LOG.error(str(e))
             raise PermanentFailure("Invalid host: " + e.strerror)
 
-        # In theory, we could use
-        # import pxssh
-        # self.child = c = pxssh.pxssh()
-        # pxssh.login(self._host, self._username, self._password)
-        # c.prompt()
-        #
-        # What I observed is that due to improper handling of exceptions in 
-        # pxssh, login() fails.
         _LOG.debug(_("Spawning child..."))
-        self.child = c = pexpect.spawn(
-            "ssh -l '{0._username}' -p {0._port} {options} {0._host}".format(
-                self,
-                options = "-o StrictHostKeyChecking=no",
-                )
+        self.child = ParamikoConsole.spawn_child(
+            hostname = target,
+            username = self._username,
+            password = self._password,
+            port = self._port,
             )
-
-        self.arch.console.send_password(self._password)
-
-        if not self.arch.console.prompt(consume=False, timeout=15):
-            _LOG.info("Login Failure")
-            self.child = None
-            raise TemporaryFailure("Login Failure")
 
         _LOG.info("Login Successful")
         return self
+
+    def disconnect(self):
+        if not self.connected:
+            _LOG.warn("Already Disconnected")
+            return
+
+        _LOG.info("Disconnecting")
+        self.child.close()
+        self.child = None
 
 
