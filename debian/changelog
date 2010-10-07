@@ -1,3 +1,10 @@
+papas (0.9ubuntu5) lucid; urgency=low
+
+  * Add paramiko dependencies
+  * Fix packaging
+
+ -- Vincent Vinet <vvinet@revolutionlinux.com>  Thu, 07 Oct 2010 11:55:38 -0400
+
 papas (0.9ubuntu4) lucid; urgency=low
 
   * Add paramiko support for SSH
