@@ -1,4 +1,5 @@
 import os
+import re
 from django import template
 from django.conf import settings
 
@@ -159,13 +160,16 @@ def do_root(parser, token):
 ######################################################################
 # SingleCommand
 ######################################################################
+TR_CRLF = re.compile("^(\r?\n)*|\r?\n$")
 class DjSingleCommandNode(SingleCommandNode, template.Node):
     def __init__(self, nodelist):
         SingleCommandNode.__init__(self)
         self.nodelist = nodelist
 
     def do_render(self, ctx):
-        return self.nodelist.render(ctx)
+        out = self.nodelist.render(ctx)
+        #Remove line returns from beginning and last line return
+        return TR_CRLF.sub("", out)
 
 @register.tag(SINGLE_CMD_TAG)
 def do_singlecmd(parser, token):

@@ -29,13 +29,41 @@ class Console(object):
     def child(self):
         return self._child
 
+    @child.setter
+    def child(self, child):
+        self._child = child
+        if self._child is not None:
+            self._configure_child()
+
+    def _configure_child(self):
+        #Make sure we do not allow buffering on this, as it screws up
+        # everthing, but mostly us.
+        # That's even worse #self._child.maxread = 1
+        self._child.searchwindowsize = 2000
+        self._child.logfile = StringIO()
+        self._child.logfile_read = StringIO()
+        self._child.logfile_send = StringIO()
+
+    @child.deleter
+    def child(self):
+        self._child = None
+
+    def clear_child_logs(self):
+        """ Clear child log files """
+        self._child.logfile.seek(0)
+        self._child.logfile.truncate()
+        self._child.logfile_read.seek(0)
+        self._child.logfile_read.truncate()
+        self._child.logfile_send.seek(0)
+        self._child.logfile_send.truncate()
+
     @property
     def output(self):
         return self.child.logfile_read.getvalue()
 
     @property
     def unread_output(self):
-        return self.child.logfile_read.getvalue()[self._sent_output:]
+        return self.output[self._sent_output:]
 
     def consume_output(self):
         out = self.unread_output
@@ -58,30 +86,6 @@ class Console(object):
         start = self._sent_output
         self._sent_output -= len(output)
 
-    @child.setter
-    def child(self, child):
-        self._child = child
-        if self._child is not None:
-            #Make sure we do not allow buffering on this, as it screws up
-            # everthing, but mostly us.
-            # That's even worse #self._child.maxread = 1
-            self._child.searchwindowsize = 2000
-            self._child.logfile = StringIO()
-            self._child.logfile_read = StringIO()
-            self._child.logfile_send = StringIO()
-
-    @child.deleter
-    def child(self):
-        self._child = None
-
-    def clear_child_logs(self):
-        """ Clear child log files """
-        self._child.logfile.seek(0)
-        self._child.logfile.truncate()
-        self._child.logfile_read.seek(0)
-        self._child.logfile_read.truncate()
-        self._child.logfile_send.seek(0)
-        self._child.logfile_send.truncate()
 
     def wait_for_prompt(self, consume_output=True, timeout=1):
         if self.child.expect([self.PROMPT_RE, pexpect.TIMEOUT], timeout=timeout) == 0:

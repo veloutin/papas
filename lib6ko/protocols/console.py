@@ -14,14 +14,16 @@ class ConsoleProtocol(Protocol):
     """ Console Protocol """
     def __init__(self, parameters):
         super(ConsoleProtocol, self).__init__(parameters)
-        self.arch = Architecture()
-        self.child = None
         self.EXIT_CMD = self.require_param(
             _P.CONSOLE_EXIT,
             default="exit",
             )
         self.priv_password = None
+        self._init_architecture()
     
+    def _init_architecture(self):
+        self.arch = Architecture()
+
     @property
     def allow_output(self):
         return self.arch.console.allow_output
