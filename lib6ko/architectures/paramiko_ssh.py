@@ -15,6 +15,10 @@ class ParamikoConsole(Console):
     def _configure_child(self):
         pass
 
+    def clear_child_logs(self):
+        self.log.seek(0)
+        self.log.truncate()
+
     @property
     def output(self):
         return self.log.getvalue()
