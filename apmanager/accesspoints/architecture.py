@@ -97,6 +97,7 @@ class Section (models.Model):
         return self.name
 
     class Meta:
+        ordering = ('name', )
         verbose_name = _(u"Section")
 
 class Parameter (models.Model):
@@ -116,6 +117,7 @@ class Parameter (models.Model):
         null = True, blank=True, )
 
     class Meta:
+        ordering = ('name', )
         verbose_name = _(u"Parameter")
 
     def __unicode__(self):
@@ -144,6 +146,7 @@ class Protocol (models.Model):
         choices = CONTROL_MODES, )
 
     class Meta:
+        ordering = ('modname', )
         verbose_name = _(u"Protocol")
 
     def __unicode__(self):
@@ -209,6 +212,7 @@ class Architecture (models.Model):
         return self.name
 
     class Meta:
+        ordering = ('name', )
         verbose_name = _(u"Architecture")
 
 
@@ -228,6 +232,7 @@ class ProtocolParameter (models.Model):
             )
 
     class Meta:
+        ordering = ('parameter', )
         unique_together = (
             ('parameter', 'protocol'),
         )
@@ -250,6 +255,7 @@ class ArchParameter (models.Model):
         return u"{0.parameter.name} [{0.value_type}: {0.value}]".format(self)
 
     class Meta:
+        ordering = ('parameter', )
         unique_together = (
             ('parameter', 'arch'),
         )
@@ -275,6 +281,7 @@ class APParameter (models.Model):
         return u"{0.parameter.name} [{0.value}]".format(self)
 
     class Meta:
+        ordering = ('parameter', )
         unique_together = (
             ('parameter', 'ap'),
         )
@@ -302,6 +309,9 @@ class InitSection (models.Model):
             )
 
     class Meta:
+        ordering = (
+            'section__name',
+            )
         unique_together = (
             ('section', 'architecture',),
         )
@@ -339,6 +349,7 @@ class CommandDefinition (models.Model):
         )
 
     class Meta:
+        ordering = ('name', )
         verbose_name = _(u"Command Definition")
         verbose_name_plural = _(u"Command Definitions")
 
@@ -418,6 +429,7 @@ class CommandImplementation (models.Model):
     def compile_template(self):
         return compile_template(self.template)
     class Meta:
+        ordering = ('command', 'architecture', )
         unique_together = (
             ('command', 'architecture'),
             )
