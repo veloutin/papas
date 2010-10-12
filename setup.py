@@ -88,6 +88,7 @@ setup(
         "lib6ko",
         "lib6ko.protocols",
         "lib6ko.templatetags",
+        "lib6ko.architectures",
     ],
     #package_data=
     data_files = data_files_list,
