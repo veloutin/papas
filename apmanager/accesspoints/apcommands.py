@@ -20,9 +20,7 @@ from apmanager.accesspoints.architecture import (
     )
 
 from datetime import datetime
-from tempfile import mkstemp
-import commands
-import os,sys
+import os
 
 
 class Command ( models.Model ):
