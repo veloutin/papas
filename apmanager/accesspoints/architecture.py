@@ -455,6 +455,9 @@ class CommandImplementation (models.Model):
 
 
 def compile_template(raw_text):
+    # Django adds \r\n when you edit text in the web interface, but we
+    # only want to have \n, so replace them
+    raw_text = raw_text.replace("\r\n", "\n")
     # Make sure we have the {% load commands %} in there
     load_tag = "{{% load {0} %}}".format(TAG_LIBRARY)
     if not load_tag in raw_text:

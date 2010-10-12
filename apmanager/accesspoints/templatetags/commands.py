@@ -176,7 +176,9 @@ def do_root(parser, token):
 ######################################################################
 # SingleCommand
 ######################################################################
-TR_CRLF = re.compile("^(\r?\n)*|\r?\n$")
+
+# RegExp to remove starting and trailing line returns
+# TR_CRLF = re.compile("^(\r?\n)*|\r?\n$")
 class DjSingleCommandNode(SingleCommandNode, template.Node):
     def __init__(self, nodelist):
         SingleCommandNode.__init__(self)
@@ -184,8 +186,8 @@ class DjSingleCommandNode(SingleCommandNode, template.Node):
 
     def do_render(self, ctx):
         out = self.nodelist.render(ctx)
-        #Remove line returns from beginning and last line return
-        return TR_CRLF.sub("", out)
+        #Remove leading whitespace as it should be useless
+        return out.lstrip()
 
 @register.tag(SINGLE_CMD_TAG)
 def do_singlecmd(parser, token):
