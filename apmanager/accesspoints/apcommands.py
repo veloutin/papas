@@ -51,6 +51,7 @@ class Command ( models.Model ):
     script_text = models.TextField( blank=True)
 
     class Meta:
+        ordering = ('name', )
         verbose_name = _(u"Command")
 
     def save(self):
@@ -130,6 +131,7 @@ class CommandExec ( models.Model ):
     last_run = models.DateTimeField(null=True)
 
     class Meta:
+        ordering = ('-last_run', )
         verbose_name = _(u"Command Execution")
         verbose_name_plural = _(u"Command Executions")
         
