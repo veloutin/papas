@@ -18,6 +18,7 @@
 import os, sys
 import logging
 import logging.handlers
+import optparse
 
 LOG = logging.getLogger("apmanager.bin.cmdexecutor")
 
@@ -117,7 +118,13 @@ def Monitor(path):
 
 
 if __name__ == '__main__':
-    if "--daemon" in sys.argv[1:]:
+    o = optparse.OptionParser()
+    o.add_option("-v", "--verbose", action="store_true", dest="verbose")
+    o.add_option("-d", "--daemon", action="store_true", dest="daemon")
+    o.add_option("--pidfile", dest="pidfile")
+    opts, args = o.parse_args()
+
+    if opts.daemon:
         utils.daemonize()
         handler = logging.handlers.TimedRotatingFileHandler("/var/log/papas.log", when="D", backupCount=6)
     else:
@@ -126,16 +133,34 @@ if __name__ == '__main__':
     handler.setFormatter(logging.Formatter("%(asctime)s %(name)s %(levelname)s %(message)s"))
     if settings.DEBUG:
         logging.root.setLevel(logging.DEBUG)
-    elif "-v" in sys.argv[1:] or "--verbose" in sys.argv[1:]:
+    elif opts.verbose:
         logging.root.setLevel(logging.INFO)
     else:
         logging.root.setLevel(logging.ERROR)
 
     logging.root.addHandler(handler)
             
+    if opts.pidfile:
+        if os.path.isfile(opts.pidfile):
+            LOG.critical("Pidfile already exists")
+            sys.exit(1)
+        try:
+            with open(opts.pidfile, 'w') as f:
+                f.write(str(os.getpid()))
+        except IOError as e:
+            LOG.critical("Unable to write pidfile: {0}".format(str(e)))
+            sys.exit(1)
+
     LOG.info("using default path: %s", settings.WATCH_DIR)
     LOG.debug("command watch dir: %s", settings.COMMAND_WATCH_DIR)
     LOG.debug("ap watch dir: %s", settings.AP_REFRESH_WATCH_DIR)
     LOG.debug("ap init watch dir: %s", settings.AP_INIT_WATCH_DIR)
 
-    Monitor(settings.WATCH_DIR)
+    try:
+        Monitor(settings.WATCH_DIR)
+    finally:
+        if opts.pidfile:
+            try:
+                os.unlink(opts.pidfile)
+            except IOError as e:
+                LOG.error("Unable to remove pidfile: {0}".format(str(e)))
