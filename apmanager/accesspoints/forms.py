@@ -28,3 +28,12 @@ class ParameterForm(forms.ModelForm):
                 res.save()
         return res
 
+
+
+class APForm(forms.ModelForm):
+    class Meta:
+        model = models.AccessPoint
+
+    def clear_unique_initials(self):
+        self.fields["ipv4Address"].initial = ""
+        self.fields["name"].initial = ""
