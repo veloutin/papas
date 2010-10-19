@@ -54,7 +54,7 @@ class ParamikoConsole(Console):
     def execute_command(self, command, expect_noecho=False):
         sin, sout, serr = self.child.exec_command(command)
         self.log.write("$ {0}\n".format(command))
-        out = sout.read()
+        out = sout.read() + serr.read()
         self.log.write(out)
         
         if not self.allow_output and len(out.strip()) > 0:
