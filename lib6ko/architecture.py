@@ -65,11 +65,14 @@ class Console(object):
     def unread_output(self):
         return self.output[self._sent_output:]
 
-    def consume_output(self):
-        out = self.unread_output
+    def consume_output(self, length=None):
+        if length is not None:
+            out = self.unread_output[:length]
+        else:
+            out = self.unread_output
         self._sent_output += len(out)
         if len(out):
-            _LOG.debug("Consuming output: {0}".format(out))
+            _LOG.debug("Consuming output: {0}".format(repr(out)))
         return out
 
     def consume_output_re(self, expr):

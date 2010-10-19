@@ -7,7 +7,7 @@ from lib6ko import parameters as _P
 from lib6ko.protocol import Protocol
 from lib6ko.architecture import Architecture
 
-_LOG = logging.getLogger("protocols.console")
+_LOG = logging.getLogger("lib6ko.protocols.console")
 
 class ConsoleProtocol(Protocol):
 
@@ -74,7 +74,7 @@ class ConsoleProtocol(Protocol):
         return self.arch.console.consume_output()
 
     def execute_text(self, text, expect_noecho=False):
-        return "".join((self.execute_command(line) for line in text.splitlines()))
+        return "".join((self.execute_command(line, expect_noecho) for line in text.splitlines()))
 
     def get_full_output(self):
         return self.arch.console.output

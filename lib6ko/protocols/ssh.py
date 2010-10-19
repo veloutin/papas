@@ -1,17 +1,18 @@
-import pexpect, re
-import pxssh
 import socket
 import logging
 from gettext import gettext as _
 
-_LOG = logging.getLogger("protocols.ssh")
+_LOG = logging.getLogger("lib6ko.protocols.ssh")
 
 from lib6ko import parameters as _P
 from lib6ko.protocol import TemporaryFailure, PermanentFailure
 from lib6ko.protocols.console import ConsoleProtocol
 
 from lib6ko.architecture import Architecture
-from lib6ko.architectures.paramiko_ssh import ParamikoConsole
+from lib6ko.architectures.paramiko_ssh import (
+    ParamikoConsole,
+    InteractiveParamikoConsole,
+    )
 
 
 class SSH(ConsoleProtocol):
@@ -25,7 +26,10 @@ class SSH(ConsoleProtocol):
         self._port = int(self.require_param(_P.SSH_PORT, default="22"))
 
     def _init_architecture(self):
-        self.arch = Architecture(console_class=ParamikoConsole)
+        if self.require_param(_P.CONSOLE_FORCE_INTERACTIVE, default=""):
+            self.arch = Architecture(console_class=InteractiveParamikoConsole)
+        else:
+            self.arch = Architecture(console_class=ParamikoConsole)
 
     def connect(self):
         _LOG.info(_("Attempting to connect to {0._username}@{0._host}").format(self))

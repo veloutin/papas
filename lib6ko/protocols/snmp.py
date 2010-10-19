@@ -1,6 +1,6 @@
 import logging
 from gettext import gettext as _
-_LOG = logging.getLogger("protocols.snmp")
+_LOG = logging.getLogger("lib6ko.protocols.snmp")
 
 import re
 import commands
