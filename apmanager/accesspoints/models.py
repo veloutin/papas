@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-LOG = logging.getLogger('apmanger.accesspoints')
+LOG = logging.getLogger('apmanager.accesspoints')
 
 from django.db import models
 from django.shortcuts import get_object_or_404
@@ -94,7 +94,11 @@ class AccessPoint ( models.Model ):
 
     def run_init(self):
         from lib6ko.run import Executer
-        from lib6ko.protocol import ScriptError
+        from lib6ko.protocol import (
+            ScriptError,
+            TemporaryFailure,
+            PermanentFailure,
+            )
 
         #Make params dict
         params = self.get_param_dict()
@@ -122,13 +126,13 @@ class AccessPoint ( models.Model ):
             try:
                 apinit = self.archinitresult_set.get(section=init_section)
                 apinit.status = -1
-                apinit.output = _u(u"Initialization has not been run")
+                apinit.output = _u(u"Initialization has not finished")
                 apinit.save()
             except ArchInitResult.DoesNotExist:
                 apinit = self.archinitresult_set.create(
                     section=init_section,
                     status=-1,
-                    output=_u(u"Initialization has not been run"),
+                    output=_u(u"Initialization has not finished"),
                     )
 
             # Execute the section
@@ -152,7 +156,10 @@ class AccessPoint ( models.Model ):
                     apinit.output = traceback.format_exc()
                     apinit.status = -1
             except ScriptError as e:
-                apinit.output = e.traceback
+                apinit.output = "{0}\n{0.traceback}".format(e)
+                apinit.status = -1
+            except (TemporaryFailure, PermanentFailure) as e:
+                apinit.output = str(e)
                 apinit.status = -1
             except Exception as e:
                 apinit.output = traceback.format_exc()

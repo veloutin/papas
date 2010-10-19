@@ -16,7 +16,7 @@
 
 import logging
 from gettext import gettext as _
-_LOG = logging.getLogger("protocol")
+_LOG = logging.getLogger("lib6ko.protocol")
 
 from operator import attrgetter
 

@@ -19,10 +19,10 @@ import socket
 import logging
 from gettext import gettext as _
 
-_LOG = logging.getLogger("protocols.telnet")
+_LOG = logging.getLogger("lib6ko.protocols.telnet")
 
 from lib6ko import parameters as _P
-from lib6ko.protocol import TemporaryFailure
+from lib6ko.protocol import TemporaryFailure, PermanentFailure
 from lib6ko.protocols.console import ConsoleProtocol
 
 

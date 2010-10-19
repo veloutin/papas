@@ -16,7 +16,7 @@
 
 import logging
 from gettext import gettext as _
-_LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger("lib6ko.run")
 
 import re
 import traceback
@@ -233,6 +233,9 @@ class Executer (object):
         # of all nodes that will be executed. When there is a node, the return
         # value will be that node's output.
         res = u""
+        #_LOG.debug("{0:=^70}".format(" Template text for {0:x}".format(id(node))))
+        #_LOG.debug(text)
+        #_LOG.debug("{0:=^70}".format(" end "))
         #Split the template in text and nodes
         for part in self._partition_template_text(text):
             if isinstance(part, CommandNodeBase):
@@ -259,7 +262,7 @@ class Executer (object):
 
         #Attach self as a backend on all command nodes
         for node in nodes:
-            _LOG.debug(_("Attaching backend to node %s"), str(node))
+            #_LOG.debug(_("Attaching backend to node %s"), str(node))
             node.backend = self
 
         #Render the template, causing all concerned nodes
