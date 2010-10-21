@@ -41,7 +41,7 @@
         {% for iniresult in init_status.success %}
             <p class="sectionname">{{ iniresult.section.section }}</p>
             <pre class="output">{{ iniresult.output }}</pre>
-            <p class="sectiontime">{% trans "Last Updated: " %}{{ iniresult.ts }}</p>
+            <p class="sectiontime">{% trans "Time since last update: " %}{{ iniresult.ts|timesince }}</p>
         {% endfor %}
     {% endif %}
 {% else %}{# if init_status #}
