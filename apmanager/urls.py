@@ -31,7 +31,7 @@ urlpatterns = patterns('',
 )
 # This is used to server static content (images and CSS) during development.
 # For production, Apache must be configured.
-if DEBUG:
+if settings.DEV_PATHS:
     urlpatterns += patterns('',
         (r'^site-media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     )

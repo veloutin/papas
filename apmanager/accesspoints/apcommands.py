@@ -143,7 +143,7 @@ class CommandExec ( models.Model ):
     @staticmethod
     def table_view_header():
         return "".join(["<th>%s</th>" % i for i in (
-            'Commande','Cible','Dernier lancement',#'R&eacute;ussi','Cr&eacute;&eacute;',
+            _('Command'),_('Target'),_('Last Run'),#'R&eacute;ussi','Cr&eacute;&eacute;',
            # 'D&eacute;but&eacute;', 'Termin&eacute;',
         )])
 
@@ -194,9 +194,9 @@ class CommandExecResult ( models.Model ):
             _('AccessPoint'),
             _('Status'),
             '',
-            'Cr&eacute;&eacute;',
-            'D&eacute;but&eacute;',
-            'Termin&eacute;',
+            _('Created'),
+            _('Started'),
+            _('Ended'),
         )])
 
     @staticmethod

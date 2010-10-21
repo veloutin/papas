@@ -163,7 +163,7 @@ class APGroup ( models.Model ):
         verbose_name_plural = _("AP Groups")
     
     def __unicode__(self):
-        return _(u"Group: %s") % (self.name)
+        return _u(u"Group: %s") % (self.name)
     __repr__ = __unicode__
 
     def get_absolute_url(self):
@@ -171,7 +171,7 @@ class APGroup ( models.Model ):
 
     @staticmethod
     def table_view_header():
-        return "".join(["<th>%s</th>" % i for i in ('Nom' + "&nbsp;".join(['' for i in range(10)]), ) 
+        return "".join(["<th>%s</th>" % i for i in (_u(u'Name') + "&nbsp;".join(['' for i in range(10)]), ) 
             ])
 
     @staticmethod

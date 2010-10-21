@@ -3,6 +3,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
+from django.utils.translation import ugettext as _
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
@@ -14,7 +15,7 @@ def view_ap_list(request):
     ap_list=AccessPoint.objects.all().order_by('name')
     return render_to_response('accesspoints/list.html',
         {'object_list':ap_list,
-         'caption':"Liste des points d'acc&egrave;s",
+         'caption':_("Access Point list"),
          'table_header':AccessPoint.table_view_header(),
          'table_footer':AccessPoint.table_view_footer(),},
         context_instance=RequestContext(request))
@@ -177,7 +178,7 @@ def view_client_list(request):
             context_instance=RequestContext(request))
     return render_to_response('accesspoints/list.html',
         {'object_list':client_list,
-         'caption':'List of Clients',
+         'caption':_('List of Clients'),
          'table_header':APClient.table_view_header(),
          'table_footer':APClient.table_view_footer(),
          'add_refresh_button':True,},

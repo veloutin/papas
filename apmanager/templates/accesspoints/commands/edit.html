@@ -15,7 +15,7 @@
 {{ param_form.as_table }}
 </table>
 {% if target_list %}
-<input type="submit" />
+<input type="submit" value="{% trans "Submit" %}"/>
 <h3>{% trans "Target list: " %}</h3>
 <ul>
 {% for t in target_list %}
