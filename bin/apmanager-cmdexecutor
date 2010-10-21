@@ -103,7 +103,7 @@ def Monitor(path):
 
     wm = WatchManager()
     notifier = Notifier(wm, PCreate())
-    wm.add_watch(path, pyinotify.IN_CREATE | pyinotify.IN_CLOSE_WRITE , None, True)
+    wm.add_watch(path, pyinotify.IN_CLOSE_WRITE , None, True)
 
     LOG.info("Starting Main Loop")
     try:
