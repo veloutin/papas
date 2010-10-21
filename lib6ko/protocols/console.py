@@ -82,8 +82,8 @@ class ConsoleProtocol(Protocol):
         self.child.close()
         self.child = None
     
-    def prompt(self):
-        self.arch.console.prompt(consume=True)
+    def prompt(self, timeout=1):
+        self.arch.console.prompt(consume=True, timeout=timeout)
 
     def execute_command(self, text, expect_noecho=False):
         self.arch.console.execute_command(text, expect_noecho)
