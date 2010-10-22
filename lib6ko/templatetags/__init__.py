@@ -1,4 +1,6 @@
 import contextlib
+import logging
+_LOG = logging.getLogger("lib6ko.templatetags")
 
 
 class CommandNodeBase( object ):
@@ -27,11 +29,15 @@ class CommandNodeBase( object ):
 
     @contextlib.contextmanager
     def get_context(self, executer):
+        _LOG.debug("Entering execution context for {0}".format(self))
         self.setUp()
+        _LOG.debug("setUp done")
         try:
             yield self
         finally:
+            _LOG.debug("Leaving execution context for {0}".format(self))
             self.tearDown()
+            _LOG.debug("tearDown done")
 
     def setUp(self):
         pass

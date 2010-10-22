@@ -52,7 +52,7 @@
       <td colspan="3">
         <ul>
                 {% for trace in param.trace %}
-          <li>{{ trace.value}} <em>{{ trace.action }}</em> from 
+          <li>{{ trace.value}} <em>{{ trace.action }}</em> {% trans "from" %} 
                     {% if trace.source.get_admin_url %}
                         <a href="{{ trace.source.get_admin_url }}">{{ trace.source }}</a>
                     {% else %}

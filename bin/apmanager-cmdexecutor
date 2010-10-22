@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os, sys
+import operator
 import logging
 import logging.handlers
 import optparse
@@ -100,6 +101,17 @@ def Monitor(path):
         notifier.stop()
         return
 
+class OrFilter(object):
+    def __init__(self, *filters):
+        self.filters = filters
+
+    def filter(self, record):
+        if not len(self.filters):
+            return 1
+        return reduce(
+            operator.or_,
+            map(lambda f:f.filter(record), self.filters),
+            )
 
 if __name__ == '__main__':
     o = optparse.OptionParser()
@@ -114,7 +126,14 @@ if __name__ == '__main__':
     else:
         handler = logging.StreamHandler()
 
-    handler.setFormatter(logging.Formatter("%(asctime)s %(name)s %(levelname)s %(message)s"))
+    handler.addFilter(
+        OrFilter(
+            logging.Filter("apmanager"),
+            logging.Filter("lib6ko"),
+            ),
+        )
+
+    handler.setFormatter(logging.Formatter("[%(process)d] %(asctime)s : %(name)s - %(levelname)s - %(message)s"))
     if settings.DEBUG:
         logging.root.setLevel(logging.DEBUG)
     elif opts.verbose:
