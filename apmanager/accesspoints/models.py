@@ -83,7 +83,22 @@ class AccessPoint ( models.Model ):
         #Make params dict
         params = self.get_param_dict()
 
-        executer = Executer(Protocol.objects.all())
+        # Use the supported protocols
+        protocols = self.protocol_support.all()
+
+        # If there are no defined protocols, create them
+        if len(protocols) == 0:
+            for protocol in Protocol.objects.filter(mode__isnull=False):
+                ap_pro_sup = APProtocolSupport.objects.create(
+                    ap = self,
+                    protocol = protocol,
+                )
+
+            protocols = self.protocol_support.all()
+
+        executer = Executer(
+            protocol_classes=[ p.protocol for p in protocols if p.is_usable ],
+            )
 
         # Go through all init sections
         # Run sections ordered by section name
