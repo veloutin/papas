@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-14 15:05-0400\n"
+"POT-Creation-Date: 2010-10-22 14:58-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,592 +16,416 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: apmanager/accesspoints/admin.py:90 apmanager/accesspoints/admin.py:223
+#, python-format
+msgid "%(name)s object with primary key %(key)r does not exist."
+msgstr "L'objet %(name)s avec la clef primaire %(key)r n'existe pas."
+
+#: apmanager/accesspoints/admin.py:116
+#, python-format
+msgid "The %(name)s \"%(obj)s\" was cloned successfully."
+msgstr "L'object %(name)s \"%(obj)s\" a été cloné avec succès."
+
+#: apmanager/accesspoints/admin.py:119
+msgid "You may clone it again below."
+msgstr "Vous pouvez le cloner à nouveau ci-dessous."
+
+#: apmanager/accesspoints/admin.py:122
+msgid "You may edit it below."
+msgstr "Vous pouvez continuer l'édition ci-dessous."
+
+#: apmanager/accesspoints/admin.py:146
+#, python-format
+msgid "Clone %s"
+msgstr "Cloner %s"
+
+#: apmanager/accesspoints/admin.py:245
+#: apmanager/templates/admin/accesspoints/accesspoint/change_form.html:7
+#: apmanager/templates/admin/accesspoints/accesspoint/init_parameters.html:10
+msgid "Parameters Overview"
+msgstr "Vue d'ensemble des paramètres"
+
 #: apmanager/accesspoints/apcommands.py:38
+#: apmanager/accesspoints/apcommands.py:147
 #: apmanager/templates/accesspoints/commands/create.html:38
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/apcommands.py:38
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/create.html:38
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/apcommands.py:39
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/create.html:38
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/apcommands.py:38
 msgid "Command"
 msgstr "Commande"
 
-#: apmanager/accesspoints/apcommands.py:117
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/apcommands.py:117
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/apcommands.py:118
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/apcommands.py:117
+#: apmanager/accesspoints/apcommands.py:118
 msgid "Command Execution"
 msgstr "Exécution de commande"
 
-#: apmanager/accesspoints/apcommands.py:118
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/apcommands.py:118
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/apcommands.py:119
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/apcommands.py:118
+#: apmanager/accesspoints/apcommands.py:119
 msgid "Command Executions"
 msgstr "Exécutions de commandes"
 
-#: apmanager/accesspoints/apcommands.py:181
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/apcommands.py:181
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/apcommands.py:182
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/apcommands.py:181
+#: apmanager/accesspoints/apcommands.py:122
+msgid "{0.command} on {0.target}"
+msgstr "{0.command} sur {0.target}"
+
+#: apmanager/accesspoints/apcommands.py:147
+msgid "Target"
+msgstr "Cible"
+
+#: apmanager/accesspoints/apcommands.py:147
+msgid "Last Run"
+msgstr "Dernière exécution"
+
+#: apmanager/accesspoints/apcommands.py:184
 msgid "Command Execution Result"
 msgstr "Résultat d'exécution de commande"
 
-#: apmanager/accesspoints/apcommands.py:182
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/apcommands.py:182
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/apcommands.py:183
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/apcommands.py:182
+#: apmanager/accesspoints/apcommands.py:185
 msgid "Command Execution Results"
 msgstr "Résultats d'exécution de commandes"
 
-#: apmanager/accesspoints/apcommands.py:192
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/apcommands.py:192
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/apcommands.py:193
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/apcommands.py:192
+#: apmanager/accesspoints/apcommands.py:195
 msgid "AccessPoint"
 msgstr "Borne sans-fil"
 
-#: apmanager/accesspoints/apcommands.py:193
-#: apmanager/accesspoints/architecture.py:185
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/apcommands.py:193
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:185
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/apcommands.py:194
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:185
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/apcommands.py:193
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:185
+#: apmanager/accesspoints/apcommands.py:196
+#: apmanager/accesspoints/architecture.py:230
 msgid "Status"
 msgstr "Statut"
 
-#: apmanager/accesspoints/apcommands.py:205
-#: apmanager/accesspoints/architecture.py:82
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/apcommands.py:205
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:82
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/apcommands.py:206
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:82
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/apcommands.py:205
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:82
+#: apmanager/accesspoints/apcommands.py:198
+msgid "Created"
+msgstr "Créé"
+
+#: apmanager/accesspoints/apcommands.py:199
+msgid "Started"
+msgstr "Débuté"
+
+#: apmanager/accesspoints/apcommands.py:200
+msgid "Ended"
+msgstr "Terminé"
+
+#: apmanager/accesspoints/apcommands.py:208
+#: apmanager/accesspoints/architecture.py:87
+#: apmanager/accesspoints/models.py:232
 msgid "Unknown"
 msgstr "Inconnu"
 
-#: apmanager/accesspoints/apcommands.py:207
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/apcommands.py:207
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/apcommands.py:208
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/apcommands.py:207
+#: apmanager/accesspoints/apcommands.py:210
 msgid "Not started"
 msgstr "Non débuté"
 
-#: apmanager/accesspoints/apcommands.py:209
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/apcommands.py:209
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/apcommands.py:210
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/apcommands.py:209
+#: apmanager/accesspoints/apcommands.py:212
 msgid "Not ended"
 msgstr "En attente"
 
-#: apmanager/accesspoints/apcommands.py:211
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/apcommands.py:211
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/apcommands.py:212
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/apcommands.py:211
+#: apmanager/accesspoints/apcommands.py:214
 msgid "OK"
 msgstr "Ok"
 
-#: apmanager/accesspoints/apcommands.py:213
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/apcommands.py:213
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/apcommands.py:214
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/apcommands.py:213
+#: apmanager/accesspoints/apcommands.py:216
 msgid "Failed"
 msgstr "Échoué"
 
-#: apmanager/accesspoints/apcommands.py:223
+#: apmanager/accesspoints/apcommands.py:226
 #: apmanager/templates/accesspoints/init_overview.html:26
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/apcommands.py:223
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/init_overview.html:26
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/apcommands.py:224
-#: debian/papas/usr/share/papas/templates/accesspoints/init_overview.html:26
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/apcommands.py:223
 msgid "Details"
 msgstr "Détails"
 
-#: apmanager/accesspoints/architecture.py:39
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:39
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:39
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:39
+#: apmanager/accesspoints/architecture.py:41
 msgid "Console"
 msgstr "Ligne de commande"
 
-#: apmanager/accesspoints/architecture.py:40
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:40
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:40
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:40
+#: apmanager/accesspoints/architecture.py:42
 msgid "SNMP"
 msgstr "SNMP"
 
-#: apmanager/accesspoints/architecture.py:44
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:44
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:44
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:44
+#: apmanager/accesspoints/architecture.py:46
 msgid "String"
 msgstr "Chaîne de caractères"
 
-#: apmanager/accesspoints/architecture.py:45
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:45
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:45
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:45
+#: apmanager/accesspoints/architecture.py:47
 msgid "Integer"
 msgstr "Entier"
 
-#: apmanager/accesspoints/architecture.py:46
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:46
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:46
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:46
+#: apmanager/accesspoints/architecture.py:48
 msgid "Boolean"
 msgstr "Booléen"
 
-#: apmanager/accesspoints/architecture.py:47
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:47
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:47
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:47
+#: apmanager/accesspoints/architecture.py:49
 msgid "Text"
 msgstr "Texte"
 
-#: apmanager/accesspoints/architecture.py:48
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:48
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:48
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:48
+#: apmanager/accesspoints/architecture.py:50
 msgid "Password"
 msgstr "Mot de passe"
 
-#: apmanager/accesspoints/architecture.py:51
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:51
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:51
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:51
+#: apmanager/accesspoints/architecture.py:53
 msgid "IP Address"
 msgstr "Adresse IP"
 
-#: apmanager/accesspoints/architecture.py:55
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:55
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:55
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:55
+#: apmanager/accesspoints/architecture.py:57
 msgid "Not Set"
 msgstr "Non défini"
 
-#: apmanager/accesspoints/architecture.py:56
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:56
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:56
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:56
+#: apmanager/accesspoints/architecture.py:58
 msgid "Inherited"
 msgstr "Hérité"
 
-#: apmanager/accesspoints/architecture.py:57
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:57
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:57
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:57
+#: apmanager/accesspoints/architecture.py:59
+#: apmanager/accesspoints/models.py:247
 msgid "Set"
 msgstr "Défini"
 
-#: apmanager/accesspoints/architecture.py:83
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:83
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:83
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:83
-msgid "Not Verified"
-msgstr "Non vérifié"
-
-#: apmanager/accesspoints/architecture.py:84
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:84
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:84
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:84
+#: apmanager/accesspoints/architecture.py:89
 msgid "Not Supported"
 msgstr "Non supporté"
 
-#: apmanager/accesspoints/architecture.py:85
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:85
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:85
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:85
+#: apmanager/accesspoints/architecture.py:90
 msgid "Supported"
 msgstr "Supporté"
 
-#: apmanager/accesspoints/architecture.py:86
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:86
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:86
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:86
-msgid "Error occured"
-msgstr "Une erreur est survenue"
-
-#: apmanager/accesspoints/architecture.py:95
-#: apmanager/accesspoints/architecture.py:107
-#: apmanager/accesspoints/architecture.py:135
-#: apmanager/accesspoints/architecture.py:208
-#: apmanager/accesspoints/architecture.py:330
-#: apmanager/accesspoints/models.py:19
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:95
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:107
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:135
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:208
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:330
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:95
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:107
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:135
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:208
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:330
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:95
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:107
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:135
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:208
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:330
+#: apmanager/accesspoints/architecture.py:118
+#: apmanager/accesspoints/architecture.py:131
+#: apmanager/accesspoints/architecture.py:176
+#: apmanager/accesspoints/architecture.py:259
+#: apmanager/accesspoints/architecture.py:395
+#: apmanager/accesspoints/models.py:18
 msgid "Name"
 msgstr "Nom"
 
-#: apmanager/accesspoints/architecture.py:101
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:101
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:101
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:101
+#: apmanager/accesspoints/architecture.py:125
 msgid "Section"
 msgstr "Section"
 
-#: apmanager/accesspoints/architecture.py:116
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:116
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:116
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:116
+#: apmanager/accesspoints/architecture.py:140
 msgid "Default Value"
 msgstr "Valeur par défaut"
 
-#: apmanager/accesspoints/architecture.py:120
+#: apmanager/accesspoints/architecture.py:145
 #: apmanager/templates/accesspoints/commands/view.html:12
 #: apmanager/templates/accesspoints/commands/viewexec.html:11
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:120
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/view.html:12
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/viewexec.html:11
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:120
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/view.html:12
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/viewexec.html:11
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:120
+#: apmanager/templates/admin/accesspoints/accesspoint/init_parameters.html:33
 msgid "Parameter"
 msgstr "Paramètre"
 
-#: apmanager/accesspoints/architecture.py:143
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:143
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:143
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:143
+#: apmanager/accesspoints/architecture.py:148
+msgid "Parameter: {0.scoped_name}"
+msgstr "Paramètre: {0.scoped_name}"
+
+#: apmanager/accesspoints/architecture.py:184
 msgid "Mode"
 msgstr "Mode"
 
-#: apmanager/accesspoints/architecture.py:149
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:149
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:149
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:149
+#: apmanager/accesspoints/architecture.py:191
 msgid "Protocol"
 msgstr "Protocole"
 
-#: apmanager/accesspoints/architecture.py:181
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:181
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:181
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:181
-msgid "The highest priority protocol is tried first for each mode"
+#: apmanager/accesspoints/architecture.py:226
+msgid ""
+"The highest priority protocol is tried first for each mode. 0 = Highest "
+"priority."
 msgstr ""
 "Le protocole ayant la plus grande priorité est essayé en premier pour chaque "
-"mode"
+"mode. La priorité 0 est la plus élevée."
 
-#: apmanager/accesspoints/architecture.py:205
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:205
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:205
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:205
+#: apmanager/accesspoints/architecture.py:246
+msgid "Protocol Support"
+msgstr "Support de protocole"
+
+#: apmanager/accesspoints/architecture.py:247
+msgid "Protocols Support"
+msgstr "Support des protocoles"
+
+#: apmanager/accesspoints/architecture.py:256
 msgid "Parent"
 msgstr "Parent"
 
-#: apmanager/accesspoints/architecture.py:214
+#: apmanager/accesspoints/architecture.py:269
 #: apmanager/templates/accesspoints/ap.html:14
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:214
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/ap.html:14
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:214
-#: debian/papas/usr/share/papas/templates/accesspoints/ap.html:14
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:214
 msgid "Architecture"
 msgstr "Architecture"
 
-#: apmanager/accesspoints/architecture.py:221
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:221
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:221
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:221
+#: apmanager/accesspoints/architecture.py:276
 msgid "Optional"
 msgstr "Optionel"
 
-#: apmanager/accesspoints/architecture.py:236
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:236
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:236
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:236
+#: apmanager/accesspoints/architecture.py:292
 msgid "Protocol Parameter"
 msgstr "Paramètre de protocole"
 
-#: apmanager/accesspoints/architecture.py:237
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:237
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:237
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:237
+#: apmanager/accesspoints/architecture.py:293
 msgid "Protocol Parameters"
 msgstr "Paramètres de protocole"
 
-#: apmanager/accesspoints/architecture.py:242
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:242
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:242
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:242
+#: apmanager/accesspoints/architecture.py:298
+#: apmanager/templates/admin/accesspoints/accesspoint/init_parameters.html:35
 msgid "Source"
 msgstr "Source"
 
-#: apmanager/accesspoints/architecture.py:247
-#: apmanager/accesspoints/architecture.py:272
+#: apmanager/accesspoints/architecture.py:303
+#: apmanager/accesspoints/architecture.py:329
 #: apmanager/templates/accesspoints/commands/view.html:12
 #: apmanager/templates/accesspoints/commands/viewexec.html:11
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:247
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:272
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/view.html:12
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/viewexec.html:11
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:247
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:272
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/view.html:12
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/viewexec.html:11
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:247
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:272
+#: apmanager/templates/admin/accesspoints/accesspoint/init_parameters.html:34
 msgid "Value"
 msgstr "Valeur"
 
-#: apmanager/accesspoints/architecture.py:258
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:258
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:258
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:258
+#: apmanager/accesspoints/architecture.py:315
 msgid "Architecture Parameter"
 msgstr "Paramètre d'architecture"
 
-#: apmanager/accesspoints/architecture.py:259
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:259
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:259
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:259
+#: apmanager/accesspoints/architecture.py:316
 msgid "Architecture Parameters"
 msgstr "Paramètres d'architecture"
 
-#: apmanager/accesspoints/architecture.py:283
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:283
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:283
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:283
+#: apmanager/accesspoints/architecture.py:341
 msgid "AP Parameter"
 msgstr "Paramètre de borne"
 
-#: apmanager/accesspoints/architecture.py:284
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:284
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:284
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:284
+#: apmanager/accesspoints/architecture.py:342
 msgid "AP Parameters"
 msgstr "Paramètres de bornes"
 
-#: apmanager/accesspoints/architecture.py:294
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:294
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:294
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:294
+#: apmanager/accesspoints/architecture.py:352
 msgid "Script Template"
 msgstr "Gabarit de script"
 
-#: apmanager/accesspoints/architecture.py:301
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:301
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:301
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:301
+#: apmanager/accesspoints/architecture.py:359
 #, python-format
 msgid "%(section)s for %(arch)s"
 msgstr "%(section)s pour %(arch)s"
 
-#: apmanager/accesspoints/architecture.py:310
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:310
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:310
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:310
+#: apmanager/accesspoints/architecture.py:371
 msgid "Initialization Section"
 msgstr "Section d'initialisation"
 
-#: apmanager/accesspoints/architecture.py:311
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:311
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:311
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:311
+#: apmanager/accesspoints/architecture.py:372
 msgid "Initialization Sections"
 msgstr "Sections d'initialisation"
 
-#: apmanager/accesspoints/architecture.py:324
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:324
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:324
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:324
+#: apmanager/accesspoints/architecture.py:386
 msgid "Initialization Result"
 msgstr "Résultat d'initialisation"
 
-#: apmanager/accesspoints/architecture.py:325
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:325
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:325
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:325
+#: apmanager/accesspoints/architecture.py:387
 msgid "Initialization Results"
 msgstr "Résultats d'initialisation"
 
-#: apmanager/accesspoints/architecture.py:334
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:334
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:334
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:334
+#: apmanager/accesspoints/architecture.py:390
+msgid "'{0.section}' initialization for '{0.ap}'"
+msgstr "Initialization '{0.section}' pour '{0.ap}'"
+
+#: apmanager/accesspoints/architecture.py:399
 msgid "Parameters"
 msgstr "Paramètres"
 
-#: apmanager/accesspoints/architecture.py:336
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:336
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:336
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:336
+#: apmanager/accesspoints/architecture.py:401
 msgid "A comma separated list of parameters that the command takes"
 msgstr "Liste séparée par des virgules de paramètres acceptés par la commande"
 
-#: apmanager/accesspoints/architecture.py:340
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:340
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:340
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:340
+#: apmanager/accesspoints/architecture.py:406
 msgid "Command Definition"
 msgstr "Définition de commande"
 
-#: apmanager/accesspoints/architecture.py:341
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:341
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:341
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:341
+#: apmanager/accesspoints/architecture.py:407
 msgid "Command Definitions"
 msgstr "Définitions de commandes"
 
-#: apmanager/accesspoints/architecture.py:407
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:407
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:407
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:407
+#: apmanager/accesspoints/architecture.py:476
 msgid "Template"
 msgstr "Gabarit"
 
-#: apmanager/accesspoints/architecture.py:419
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:419
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:419
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:419
+#: apmanager/accesspoints/architecture.py:489
 msgid "Command Implementation"
 msgstr "Implémentation de commande"
 
-#: apmanager/accesspoints/architecture.py:420
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/architecture.py:420
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/architecture.py:420
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/architecture.py:420
+#: apmanager/accesspoints/architecture.py:490
 msgid "Command Implementations"
 msgstr "Implémentations de commandes"
 
-#: apmanager/accesspoints/models.py:20
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/models.py:19
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/models.py:19
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/models.py:19
+#: apmanager/accesspoints/forms.py:13
+msgid ""
+"Check this box to remove the default value. Otherwise, a blank value will be "
+"used as the default."
+msgstr ""
+"Cocher cette case pour enlever la valeur par défaut. Sinon, une valeur vide "
+"sera utilisée."
+
+#: apmanager/accesspoints/models.py:19
 msgid "Host Name"
 msgstr "Nom d'hôte"
 
-#: apmanager/accesspoints/models.py:22
+#: apmanager/accesspoints/models.py:21
 msgid "IPv4 Address"
 msgstr "Adresse IPv4"
 
-#: apmanager/accesspoints/models.py:23
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/models.py:21
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/models.py:21
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/models.py:21
+#: apmanager/accesspoints/models.py:22
 msgid "IP address of the access point"
 msgstr "Adresse IP de la borne sans-fil"
 
-#: apmanager/accesspoints/models.py:25
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/models.py:23
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/models.py:23
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/models.py:23
+#: apmanager/accesspoints/models.py:24
 msgid "MAC address"
 msgstr "Adresse MAC"
 
-#: apmanager/accesspoints/models.py:27
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/models.py:25
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/models.py:25
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/models.py:25
+#: apmanager/accesspoints/models.py:26
 msgid "Short description / Location"
 msgstr "Description courte / Emplacement"
 
-#: apmanager/accesspoints/models.py:32
+#: apmanager/accesspoints/models.py:31
 #: apmanager/templates/accesspoints/init_overview.html:12
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/models.py:30
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/init_overview.html:12
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/models.py:30
-#: debian/papas/usr/share/papas/templates/accesspoints/init_overview.html:12
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/models.py:30
 msgid "Access Point"
 msgstr "Borne sans-fil"
 
-#: apmanager/accesspoints/models.py:33
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/models.py:31
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/models.py:31
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/models.py:31
+#: apmanager/accesspoints/models.py:32
 msgid "Access Points"
 msgstr "Bornes sans-fil"
 
-#: apmanager/accesspoints/models.py:138
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/models.py:136
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/models.py:136
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/models.py:136
+#: apmanager/accesspoints/models.py:201
+msgid "No default value"
+msgstr "Aucune valeur par défaut"
+
+#: apmanager/accesspoints/models.py:203
+msgid "Default value"
+msgstr "Valeur par défaut"
+
+#: apmanager/accesspoints/models.py:260
 msgid "Name of the Group"
 msgstr "Nom du groupe"
 
-#: apmanager/accesspoints/models.py:140
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/models.py:138
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/models.py:138
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/models.py:138
+#: apmanager/accesspoints/models.py:262
 msgid "Access Points in this AP group"
 msgstr "Bornes sans-fil dans ce groupe"
 
-#: apmanager/accesspoints/models.py:144
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/models.py:142
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/models.py:142
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/models.py:142
+#: apmanager/accesspoints/models.py:266
 msgid "AP Group"
 msgstr "Groupe de bornes"
 
-#: apmanager/accesspoints/models.py:145
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/models.py:143
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/models.py:143
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/models.py:143
+#: apmanager/accesspoints/models.py:267
 msgid "AP Groups"
 msgstr "Groupes de bornes"
 
-#: apmanager/accesspoints/models.py:148
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/models.py:146
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/models.py:146
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/models.py:146
-#, python-format
-msgid "Group: %s"
-msgstr "Groupe: %s"
-
-#: apmanager/accesspoints/models.py:171
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/models.py:169
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/models.py:169
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/models.py:169
+#: apmanager/accesspoints/models.py:293
 msgid "IP address of the client"
 msgstr "Adresse IP du client"
 
-#: apmanager/accesspoints/models.py:173
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/models.py:171
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/models.py:171
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/models.py:171
+#: apmanager/accesspoints/models.py:295
 msgid "Client MAC address"
 msgstr "Adresse MAC du client"
 
+#: apmanager/accesspoints/views/ap.py:18
+msgid "Access Point list"
+msgstr "Liste de bornes sans-fil"
+
+#: apmanager/accesspoints/views/ap.py:183
+msgid "List of Clients"
+msgstr "Liste de clients"
+
 #: apmanager/accesspoints/views/apcommands.py:26
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/views/apcommands.py:26
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/views/apcommands.py:26
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/views/apcommands.py:26
 msgid "List of all command executions"
 msgstr "Liste de toutes les exécutions de commandes"
 
 #: apmanager/accesspoints/views/apcommands.py:29
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/views/apcommands.py:29
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/views/apcommands.py:29
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/views/apcommands.py:29
 msgid "List of recent command executions"
 msgstr "Liste d'exécutions récentes de commandes"
 
 #: apmanager/accesspoints/views/apgroup.py:16
 #: apmanager/templates/accesspoints/groups/links.html:2
-#: build/lib.linux-x86_64-2.6/apmanager/accesspoints/views/apgroup.py:16
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/groups/links.html:2
-#: debian/apmanager/usr/share/pyshared/apmanager/accesspoints/views/apgroup.py:16
-#: debian/papas/usr/share/papas/templates/accesspoints/groups/links.html:2
-#: debian/papas/usr/share/pyshared/apmanager/accesspoints/views/apgroup.py:16
 msgid "Groups List"
 msgstr "Liste des groupes"
 
@@ -611,425 +435,329 @@ msgstr "Fonction agrégée à exécuter"
 
 #: apmanager/templates/base.html:8 apmanager/templates/base.html.py:21
 #: apmanager/templates/admin/base.html:23
-#: debian/apmanager/usr/share/apmanager/templates/base.html:8
-#: debian/apmanager/usr/share/apmanager/templates/base.html:21
-#: debian/apmanager/usr/share/apmanager/templates/admin/base.html:23
-#: debian/papas/usr/share/papas/templates/base.html:8
-#: debian/papas/usr/share/papas/templates/base.html:21
-#: debian/papas/usr/share/papas/templates/admin/base.html:23
 msgid "6ko Access Point Manager"
 msgstr "Gestionnaire de bornes sans-fil"
 
 #: apmanager/templates/base.html:30 apmanager/templates/admin/base.html:54
-#: debian/apmanager/usr/share/apmanager/templates/base.html:30
-#: debian/apmanager/usr/share/apmanager/templates/admin/base.html:54
-#: debian/papas/usr/share/papas/templates/base.html:30
-#: debian/papas/usr/share/papas/templates/admin/base.html:54
+#: apmanager/templates/admin/accesspoints/accesspoint/clone_form.html:6
+#: apmanager/templates/admin/accesspoints/accesspoint/init_parameters.html:6
 msgid "Home"
 msgstr "Accueil"
 
 #: apmanager/templates/base.html:35
-#: debian/apmanager/usr/share/apmanager/templates/base.html:35
-#: debian/papas/usr/share/papas/templates/base.html:35
 msgid "Admin Interface"
 msgstr "Interface administrateur"
 
 #: apmanager/templates/redirect.html:12
-#: debian/apmanager/usr/share/apmanager/templates/redirect.html:12
-#: debian/papas/usr/share/papas/templates/redirect.html:12
 #, python-format
 msgid "You will be redirected <a href=\"%(url)s\">here</a> in %(time)s seconds"
 msgstr ""
 "Vous serez redirigés <a href=\"%(url)s\">ici</a> dans %(time)s secondes"
 
 #: apmanager/templates/accesspoints/ap.html:11
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/ap.html:11
-#: debian/papas/usr/share/papas/templates/accesspoints/ap.html:11
 msgid "IP"
 msgstr "IP"
 
 #: apmanager/templates/accesspoints/ap.html:12
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/ap.html:12
-#: debian/papas/usr/share/papas/templates/accesspoints/ap.html:12
 msgid "MAC"
 msgstr "MAC"
 
 #: apmanager/templates/accesspoints/ap.html:13
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/ap.html:13
-#: debian/papas/usr/share/papas/templates/accesspoints/ap.html:13
 msgid "Description"
 msgstr "Description"
 
 #: apmanager/templates/accesspoints/ap.html:17
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/ap.html:17
-#: debian/papas/usr/share/papas/templates/accesspoints/ap.html:17
+#: apmanager/templates/accesspoints/ap.html:48
 msgid "Initialization Status"
 msgstr "Statut d'initialisation"
 
 #: apmanager/templates/accesspoints/ap.html:18
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/ap.html:18
-#: debian/papas/usr/share/papas/templates/accesspoints/ap.html:18
 msgid "Run initialization"
 msgstr "Initialiser"
 
 #: apmanager/templates/accesspoints/ap.html:19
-#: apmanager/templates/accesspoints/ap.html:60
+#: apmanager/templates/accesspoints/ap.html:64
 #: apmanager/templates/accesspoints/init_overview.html:32
 #: apmanager/templates/accesspoints/list.html:20
 #: apmanager/templates/accesspoints/commands/view.html:28
 #: apmanager/templates/accesspoints/commands/viewexec.html:33
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/ap.html:19
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/ap.html:60
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/init_overview.html:32
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/list.html:20
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/view.html:28
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/viewexec.html:33
-#: debian/papas/usr/share/papas/templates/accesspoints/ap.html:19
-#: debian/papas/usr/share/papas/templates/accesspoints/ap.html:60
-#: debian/papas/usr/share/papas/templates/accesspoints/init_overview.html:32
-#: debian/papas/usr/share/papas/templates/accesspoints/list.html:20
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/view.html:28
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/viewexec.html:33
 msgid "Refresh"
 msgstr "Rafraîchir"
 
 #: apmanager/templates/accesspoints/ap.html:22
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/ap.html:22
-#: debian/papas/usr/share/papas/templates/accesspoints/ap.html:22
 #, python-format
 msgid "%(count)s section(s) missing"
 msgstr "%(count)s section(s) manquante(s)"
 
 #: apmanager/templates/accesspoints/ap.html:30
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/ap.html:30
-#: debian/papas/usr/share/papas/templates/accesspoints/ap.html:30
 #, python-format
 msgid "%(errorcount)s sections failed"
 msgstr "%(errorcount)s section(s) échouée(s)"
 
-#: apmanager/templates/accesspoints/ap.html:39
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/ap.html:39
-#: debian/papas/usr/share/papas/templates/accesspoints/ap.html:39
+#: apmanager/templates/accesspoints/ap.html:34
+msgid "Last Updated: "
+msgstr "Dernière mise à jour :"
+
+#: apmanager/templates/accesspoints/ap.html:40
 #, python-format
 msgid "%(count)s sections succeeded"
 msgstr "%(count)s section(s) réussie(s)"
 
-#: apmanager/templates/accesspoints/ap.html:49
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/ap.html:49
-#: debian/papas/usr/share/papas/templates/accesspoints/ap.html:49
+#: apmanager/templates/accesspoints/ap.html:44
+msgid "Time since last update: "
+msgstr "Temps écoulé depuis la dernière mise à jour :"
+
+#: apmanager/templates/accesspoints/ap.html:51
+#: apmanager/templates/accesspoints/ap/links.html:6
+msgid "Nagios Configuration"
+msgstr "Configuration Nagios"
+
+#: apmanager/templates/accesspoints/ap.html:53
 msgid "Clients"
 msgstr "Clients"
 
 #: apmanager/templates/accesspoints/init_overview.html:5
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/init_overview.html:5
-#: debian/papas/usr/share/papas/templates/accesspoints/init_overview.html:5
 msgid "Access Point Initialization Overview"
 msgstr "Vue d'ensemble de l'initialisation"
 
 #: apmanager/templates/accesspoints/init_overview.html:11
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/init_overview.html:11
-#: debian/papas/usr/share/papas/templates/accesspoints/init_overview.html:11
 msgid "Select all"
 msgstr "Tout sélectionner"
 
 #: apmanager/templates/accesspoints/init_overview.html:13
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/init_overview.html:13
-#: debian/papas/usr/share/papas/templates/accesspoints/init_overview.html:13
 msgid "Success"
 msgstr "Succès"
 
 #: apmanager/templates/accesspoints/init_overview.html:14
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/init_overview.html:14
-#: debian/papas/usr/share/papas/templates/accesspoints/init_overview.html:14
 msgid "Missing"
 msgstr "Manquant"
 
 #: apmanager/templates/accesspoints/init_overview.html:15
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/init_overview.html:15
-#: debian/papas/usr/share/papas/templates/accesspoints/init_overview.html:15
 msgid "Error"
 msgstr "Échec"
 
 #: apmanager/templates/accesspoints/init_overview.html:30
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/init_overview.html:30
-#: debian/papas/usr/share/papas/templates/accesspoints/init_overview.html:30
 msgid "Initialize selected access points"
 msgstr "Initialiser les bornes sélectionnées"
 
 #: apmanager/templates/accesspoints/ap/links.html:3
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/ap/links.html:3
-#: debian/papas/usr/share/papas/templates/accesspoints/ap/links.html:3
 msgid "Access Point List"
 msgstr "Liste de bornes sans-fil"
 
 #: apmanager/templates/accesspoints/ap/links.html:5
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/ap/links.html:5
-#: debian/papas/usr/share/papas/templates/accesspoints/ap/links.html:5
 msgid "Initialization Overview"
 msgstr "Vue d'ensemble de l'initialisation"
 
-#: apmanager/templates/accesspoints/ap/links.html:6
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/ap/links.html:6
-#: debian/papas/usr/share/papas/templates/accesspoints/ap/links.html:6
-msgid "Nagios Configuration"
-msgstr "Configuration Nagios"
-
 #: apmanager/templates/accesspoints/commands/create.html:11
 #: apmanager/templates/accesspoints/commands/links.html:3
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/create.html:11
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/links.html:3
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/create.html:11
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/links.html:3
 msgid "Run a Command"
 msgstr "Exécuter une commande"
 
 #: apmanager/templates/accesspoints/commands/create.html:16
 #: apmanager/templates/accesspoints/commands/view.html:13
 #: apmanager/templates/accesspoints/commands/viewexec.html:12
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/create.html:16
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/view.html:13
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/viewexec.html:12
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/create.html:16
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/view.html:13
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/viewexec.html:12
 msgid "Target:"
 msgstr "Cible :"
 
 #: apmanager/templates/accesspoints/commands/create.html:19
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/create.html:19
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/create.html:19
 msgid "Select a Group"
 msgstr "Choisir un groupe"
 
 #: apmanager/templates/accesspoints/commands/create.html:26
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/create.html:26
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/create.html:26
 msgid "or"
 msgstr "ou"
 
 #: apmanager/templates/accesspoints/commands/create.html:31
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/create.html:31
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/create.html:31
 msgid "Select an AP"
 msgstr "Choisir une borne"
 
+#: apmanager/templates/accesspoints/commands/create.html:44
+#: apmanager/templates/accesspoints/commands/edit.html:18
+msgid "Submit"
+msgstr "Soumettre"
+
 #: apmanager/templates/accesspoints/commands/edit.html:11
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/edit.html:11
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/edit.html:11
 #, python-format
 msgid "Executing %(command)s on %(target)s"
 msgstr "Exécution de %(command)s sur %(target)s"
 
 #: apmanager/templates/accesspoints/commands/edit.html:12
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/edit.html:12
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/edit.html:12
 msgid "Choose the command parameters"
 msgstr "Entrez les paramètres de la commande"
 
 #: apmanager/templates/accesspoints/commands/edit.html:19
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/edit.html:19
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/edit.html:19
 msgid "Target list: "
 msgstr "Liste de cibles :"
 
 #: apmanager/templates/accesspoints/commands/edit.html:26
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/edit.html:26
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/edit.html:26
 msgid "Target list is empty"
 msgstr "Aucune cible"
 
 #: apmanager/templates/accesspoints/commands/home.html:9
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/home.html:9
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/home.html:9
 msgid "Commands"
 msgstr "Commandes"
 
 #: apmanager/templates/accesspoints/commands/links.html:4
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/links.html:4
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/links.html:4
 msgid "Executed Commands"
 msgstr "Commandes exécutées"
 
 #: apmanager/templates/accesspoints/commands/links.html:5
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/links.html:5
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/links.html:5
 msgid "All"
 msgstr "Toutes"
 
 #: apmanager/templates/accesspoints/commands/view.html:19
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/view.html:19
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/view.html:19
 msgid "Results"
 msgstr "Résultats"
 
 #: apmanager/templates/accesspoints/commands/view.html:31
 #: apmanager/templates/accesspoints/commands/viewexec.html:39
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/view.html:31
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/viewexec.html:39
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/view.html:31
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/viewexec.html:39
 msgid "Run"
 msgstr "Exécuter"
 
+#: apmanager/templates/accesspoints/commands/view.html:34
+msgid "Delete"
+msgstr "Supprimer"
+
 #: apmanager/templates/accesspoints/commands/viewexec.html:17
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/viewexec.html:17
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/viewexec.html:17
 #, python-format
 msgid "Created on: %(created)s"
 msgstr "Crée le : %(created)s"
 
 #: apmanager/templates/accesspoints/commands/viewexec.html:19
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/viewexec.html:19
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/viewexec.html:19
 #, python-format
 msgid "Started on: %(started)s"
 msgstr "Débuté le : %(started)s"
 
 #: apmanager/templates/accesspoints/commands/viewexec.html:22
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/viewexec.html:22
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/viewexec.html:22
 msgid "Result:"
 msgstr "Résultat :"
 
 #: apmanager/templates/accesspoints/commands/viewexec.html:23
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/viewexec.html:23
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/viewexec.html:23
 msgid "Finished: "
 msgstr "Terminé :"
 
 #: apmanager/templates/accesspoints/commands/viewexec.html:25
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/viewexec.html:25
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/viewexec.html:25
 msgid "Output:"
 msgstr "Sortie :"
 
 #: apmanager/templates/accesspoints/commands/viewexec.html:28
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/viewexec.html:28
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/viewexec.html:28
 msgid "Run Again"
 msgstr "Exécuter à nouveau"
 
 #: apmanager/templates/accesspoints/commands/viewexec.html:31
-#: debian/apmanager/usr/share/apmanager/templates/accesspoints/commands/viewexec.html:31
-#: debian/papas/usr/share/papas/templates/accesspoints/commands/viewexec.html:31
 msgid "Command has not finished running"
-msgstr ""
+msgstr "L'exécution de la commande n'est pas terminée"
 
 #: apmanager/templates/admin/base.html:26
-#: debian/apmanager/usr/share/apmanager/templates/admin/base.html:26
-#: debian/papas/usr/share/papas/templates/admin/base.html:26
 msgid "Welcome,"
 msgstr "Bienvenue, "
 
 #: apmanager/templates/admin/base.html:31
-#: debian/apmanager/usr/share/apmanager/templates/admin/base.html:31
-#: debian/papas/usr/share/papas/templates/admin/base.html:31
 msgid "Documentation"
 msgstr "Documentation"
 
 #: apmanager/templates/admin/base.html:39
-#: debian/apmanager/usr/share/apmanager/templates/admin/base.html:39
-#: debian/papas/usr/share/papas/templates/admin/base.html:39
 msgid "Change password"
 msgstr "Changer de mot de passe"
 
 #: apmanager/templates/admin/base.html:46
-#: debian/apmanager/usr/share/apmanager/templates/admin/base.html:46
-#: debian/papas/usr/share/papas/templates/admin/base.html:46
 msgid "Log out"
 msgstr "Déconnexion"
 
+#: apmanager/templates/admin/accesspoints/accesspoint/change_form.html:6
+#: apmanager/templates/admin/accesspoints/accesspoint/clone_form.html:10
+msgid "Clone"
+msgstr "Cloner"
+
+#: apmanager/templates/admin/accesspoints/accesspoint/change_form.html:8
+msgid "History"
+msgstr "Historique"
+
+#: apmanager/templates/admin/accesspoints/accesspoint/change_form.html:11
+msgid "View on site"
+msgstr "Voir sur le site"
+
+#: apmanager/templates/admin/accesspoints/accesspoint/clone_form.html:15
+msgid ""
+"\n"
+"This page allows you to duplicate an Access Point into a new one.\n"
+"All parameters will be duplicated too.\n"
+"\n"
+"Please note that the IP Address must be unique for each Access Point.\n"
+msgstr ""
+"\n"
+"Cette page permet de cloner une borne sans-fil.\n"
+"Tous les paramètres seront copiés.\n"
+"\n"
+"Veuillez prendre note que l'adresse IP doit être unique pour chaque borne "
+"sans-fil.\n"
+"\n"
+
+#: apmanager/templates/admin/accesspoints/accesspoint/init_parameters.html:18
+msgid "Simple"
+msgstr "Simple"
+
+#: apmanager/templates/admin/accesspoints/accesspoint/init_parameters.html:20
+msgid "Full"
+msgstr "Complet"
+
+#: apmanager/templates/admin/accesspoints/accesspoint/init_parameters.html:55
+msgid "from"
+msgstr "provenant de"
+
 #: apmanager/templates/genericsql/access_denied.html:7
-#: debian/apmanager/usr/share/apmanager/templates/genericsql/access_denied.html:7
-#: debian/papas/usr/share/papas/templates/genericsql/access_denied.html:7
 msgid "Access Denied"
 msgstr "Accès refusé"
 
 #: apmanager/templates/genericsql/access_denied.html:7
-#: debian/apmanager/usr/share/apmanager/templates/genericsql/access_denied.html:7
-#: debian/papas/usr/share/papas/templates/genericsql/access_denied.html:7
 msgid "You are not allowed to access this page"
 msgstr "Vous n'avez pas les droits requis pour accéder à cette page"
 
 #: apmanager/templates/genericsql/links.html:2
-#: debian/apmanager/usr/share/apmanager/templates/genericsql/links.html:2
-#: debian/papas/usr/share/papas/templates/genericsql/links.html:2
 msgid "Reports"
 msgstr "Rapports"
 
 #: apmanager/templates/genericsql/report.html:47
 #: apmanager/templates/multireport/report_list.html:27
-#: debian/apmanager/usr/share/apmanager/templates/genericsql/report.html:47
-#: debian/apmanager/usr/share/apmanager/templates/multireport/report_list.html:27
-#: debian/papas/usr/share/papas/templates/genericsql/report.html:47
-#: debian/papas/usr/share/papas/templates/multireport/report_list.html:27
 msgid "Printed on :"
 msgstr "Imprimé le :"
 
 #: apmanager/templates/genericsql/report.html:51
 #: apmanager/templates/genericsql/report.html:53
 #: apmanager/templates/multireport/report_list.html:29
-#: debian/apmanager/usr/share/apmanager/templates/genericsql/report.html:51
-#: debian/apmanager/usr/share/apmanager/templates/genericsql/report.html:53
-#: debian/apmanager/usr/share/apmanager/templates/multireport/report_list.html:29
-#: debian/papas/usr/share/papas/templates/genericsql/report.html:51
-#: debian/papas/usr/share/papas/templates/genericsql/report.html:53
-#: debian/papas/usr/share/papas/templates/multireport/report_list.html:29
 msgid "Print"
 msgstr "Imprimer"
 
 #: apmanager/templates/genericsql/report.html:51
 #: apmanager/templates/genericsql/report.html:53
-#: debian/apmanager/usr/share/apmanager/templates/genericsql/report.html:51
-#: debian/apmanager/usr/share/apmanager/templates/genericsql/report.html:53
-#: debian/papas/usr/share/papas/templates/genericsql/report.html:51
-#: debian/papas/usr/share/papas/templates/genericsql/report.html:53
 msgid "CSV Export"
 msgstr "Export CSV"
 
 #: apmanager/templates/genericsql/report.html:55
 #: apmanager/templates/genericsql/report_iframe.html:40
-#: debian/apmanager/usr/share/apmanager/templates/genericsql/report.html:55
-#: debian/apmanager/usr/share/apmanager/templates/genericsql/report_iframe.html:40
-#: debian/papas/usr/share/papas/templates/genericsql/report.html:55
-#: debian/papas/usr/share/papas/templates/genericsql/report_iframe.html:40
 msgid "Toggle Panel"
 msgstr "Basculer le panneau"
 
 #: apmanager/templates/genericsql/report.html:64
 #: apmanager/templates/multireport/report_list.html:39
-#: debian/apmanager/usr/share/apmanager/templates/genericsql/report.html:64
-#: debian/apmanager/usr/share/apmanager/templates/multireport/report_list.html:39
-#: debian/papas/usr/share/papas/templates/genericsql/report.html:64
-#: debian/papas/usr/share/papas/templates/multireport/report_list.html:39
 #, python-format
 msgid "For any questions concerning this report, see %(report.owner)s."
 msgstr "Pour toutes questions concernant ce rapport, voir %(report.owner)s"
 
 #: apmanager/templates/genericsql/report.html:66
 #: apmanager/templates/multireport/report_list.html:41
-#: debian/apmanager/usr/share/apmanager/templates/genericsql/report.html:66
-#: debian/apmanager/usr/share/apmanager/templates/multireport/report_list.html:41
-#: debian/papas/usr/share/papas/templates/genericsql/report.html:66
-#: debian/papas/usr/share/papas/templates/multireport/report_list.html:41
 msgid "Modify Report"
 msgstr "Modifier le rapport"
 
 #: apmanager/templates/genericsql/report_data.table.inner.html:24
-#: debian/apmanager/usr/share/apmanager/templates/genericsql/report_data.table.inner.html:24
-#: debian/papas/usr/share/papas/templates/genericsql/report_data.table.inner.html:24
 msgid "No results to display"
 msgstr "Aucun résultat à afficher"
 
 #: apmanager/templates/genericsql/report_error.html:7
-#: debian/apmanager/usr/share/apmanager/templates/genericsql/report_error.html:7
-#: debian/papas/usr/share/papas/templates/genericsql/report_error.html:7
 msgid "Programming Error"
 msgstr "Erreur de programmation"
 
 #: apmanager/templates/genericsql/report_error.html:7
-#: debian/apmanager/usr/share/apmanager/templates/genericsql/report_error.html:7
-#: debian/papas/usr/share/papas/templates/genericsql/report_error.html:7
 msgid ""
 "This error might have been caused by a malformed SQL query or bad parameters"
 msgstr ""
@@ -1037,244 +765,173 @@ msgstr ""
 "mauvais paramètres"
 
 #: apmanager/templates/genericsql/report_list.html:6
-#: debian/apmanager/usr/share/apmanager/templates/genericsql/report_list.html:6
-#: debian/papas/usr/share/papas/templates/genericsql/report_list.html:6
 msgid "Available Reports:"
 msgstr "Rapports disponibles :"
 
 #: apmanager/templates/genericsql/report_list.html:21
-#: debian/apmanager/usr/share/apmanager/templates/genericsql/report_list.html:21
-#: debian/papas/usr/share/papas/templates/genericsql/report_list.html:21
 msgid "No reports available"
 msgstr "Aucune rapport disponible"
 
 #: apmanager/templates/genericsql/report_list.html:22
-#: debian/apmanager/usr/share/apmanager/templates/genericsql/report_list.html:22
-#: debian/papas/usr/share/papas/templates/genericsql/report_list.html:22
 msgid "Create a new report"
 msgstr "Créer un nouveau rapport"
 
 #: apmanager/templates/genericsql/report_list.html:26
 #: apmanager/templates/multireport/multireport_list.html:15
-#: debian/apmanager/usr/share/apmanager/templates/genericsql/report_list.html:26
-#: debian/apmanager/usr/share/apmanager/templates/multireport/multireport_list.html:15
-#: debian/papas/usr/share/papas/templates/genericsql/report_list.html:26
-#: debian/papas/usr/share/papas/templates/multireport/multireport_list.html:15
 msgid "Report Management"
 msgstr "Gestion des rapports"
 
 #: apmanager/templates/multireport/multireport_list.html:6
-#: debian/apmanager/usr/share/apmanager/templates/multireport/multireport_list.html:6
-#: debian/papas/usr/share/papas/templates/multireport/multireport_list.html:6
 msgid "Available Multi-Reports:"
 msgstr "Multi-rapports disponibles :"
 
 #: apmanager/templates/registration/logged_out.html:5
-#: debian/apmanager/usr/share/apmanager/templates/registration/logged_out.html:5
-#: debian/papas/usr/share/papas/templates/registration/logged_out.html:5
 msgid "Logged out"
 msgstr "Déconnecté"
 
 #: apmanager/templates/registration/logged_out.html:7
-#: debian/apmanager/usr/share/apmanager/templates/registration/logged_out.html:7
-#: debian/papas/usr/share/papas/templates/registration/logged_out.html:7
 msgid "Back"
 msgstr "Retour"
 
 #: apmanager/templates/registration/login.html:11
 #: apmanager/templates/registration/login.html:21
-#: debian/apmanager/usr/share/apmanager/templates/registration/login.html:11
-#: debian/apmanager/usr/share/apmanager/templates/registration/login.html:21
-#: debian/papas/usr/share/papas/templates/registration/login.html:11
-#: debian/papas/usr/share/papas/templates/registration/login.html:21
 msgid "Login"
 msgstr "Connexion"
 
 #: apmanager/templates/registration/login.html:14
-#: debian/apmanager/usr/share/apmanager/templates/registration/login.html:14
-#: debian/papas/usr/share/papas/templates/registration/login.html:14
 msgid "Your username and/or password didn't match. Please try again."
 msgstr ""
 "Votre nom d'utilisateur et/ou votre mot de passe sont invalides. Essayer à "
 "nouveau."
 
 #: apmanager/templates/registration/login.html:19
-#: debian/apmanager/usr/share/apmanager/templates/registration/login.html:19
-#: debian/papas/usr/share/papas/templates/registration/login.html:19
 msgid "Username:"
 msgstr "Nom d'utilisateur :"
 
 #: apmanager/templates/registration/login.html:20
-#: debian/apmanager/usr/share/apmanager/templates/registration/login.html:20
-#: debian/papas/usr/share/papas/templates/registration/login.html:20
 msgid "Password:"
 msgstr "Mot de passe :"
 
-#: build/lib.linux-x86_64-2.6/lib6ko/architecture.py:84
-#: debian/apmanager/usr/share/pyshared/lib6ko/architecture.py:84
-#: debian/papas/usr/share/pyshared/lib6ko/architecture.py:84
-#: lib6ko/architecture.py:84
+#: etc/papas/settings.py:37
+msgid "French"
+msgstr "Français"
+
+#: etc/papas/settings.py:38
+msgid "English"
+msgstr "Anglais"
+
+#: lib6ko/architecture.py:105
 msgid "Expecting a prompt... with timeout {0}"
 msgstr "Attente d'un invite de commandes, délai d'expiration {0}"
 
-#: build/lib.linux-x86_64-2.6/lib6ko/architecture.py:116
-#: debian/apmanager/usr/share/pyshared/lib6ko/architecture.py:116
-#: debian/papas/usr/share/pyshared/lib6ko/architecture.py:116
+#: lib6ko/architecture.py:108
+msgid "Already have output: {0}"
+msgstr ""
+
 #: lib6ko/architecture.py:116
+msgid "Waited approximately {0}s"
+msgstr ""
+
+#: lib6ko/architecture.py:153
 msgid "Executing {0}"
 msgstr "Exécution de {0}"
 
-#: build/lib.linux-x86_64-2.6/lib6ko/architecture.py:125
-#: debian/apmanager/usr/share/pyshared/lib6ko/architecture.py:125
-#: debian/papas/usr/share/pyshared/lib6ko/architecture.py:125
-#: lib6ko/architecture.py:125
+#: lib6ko/architecture.py:162
 msgid "There is still unread output: {0}"
 msgstr "Il reste de la sortie non lue: {0}"
 
-#: build/lib.linux-x86_64-2.6/lib6ko/architecture.py:127
-#: debian/apmanager/usr/share/pyshared/lib6ko/architecture.py:127
-#: debian/papas/usr/share/pyshared/lib6ko/architecture.py:127
-#: lib6ko/architecture.py:127
+#: lib6ko/architecture.py:164
 msgid "Sending command..."
 msgstr "Envoi de la commande..."
 
-#: build/lib.linux-x86_64-2.6/lib6ko/architecture.py:156
-#: debian/apmanager/usr/share/pyshared/lib6ko/architecture.py:156
-#: debian/papas/usr/share/pyshared/lib6ko/architecture.py:156
-#: lib6ko/architecture.py:156
+#: lib6ko/architecture.py:194
 msgid "Unexpected script output. {0}"
 msgstr "Sortie inattendue. {0}"
 
-#: build/lib.linux-x86_64-2.6/lib6ko/architecture.py:160
-#: debian/apmanager/usr/share/pyshared/lib6ko/architecture.py:160
-#: debian/papas/usr/share/pyshared/lib6ko/architecture.py:160
-#: lib6ko/architecture.py:160
+#: lib6ko/architecture.py:198
 msgid "Unexpected script output."
 msgstr "Sortie inattendue durant l'exécution du script."
 
-#: build/lib.linux-x86_64-2.6/lib6ko/protocol.py:40
-#: debian/apmanager/usr/share/pyshared/lib6ko/protocol.py:40
-#: debian/papas/usr/share/pyshared/lib6ko/protocol.py:40 lib6ko/protocol.py:40
+#: lib6ko/protocol.py:51
 #, python-format
 msgid "%s is a required parameter"
 msgstr "%s est un paramètre requis"
 
-#: build/lib.linux-x86_64-2.6/lib6ko/run.py:79
-#: debian/apmanager/usr/share/pyshared/lib6ko/run.py:79
-#: debian/papas/usr/share/pyshared/lib6ko/run.py:79 lib6ko/run.py:79
+#: lib6ko/run.py:81
 msgid "TemporaryFailure in getting protocol {0}: {1}"
 msgstr "Échec temporaire du protocole {0}: {1}"
 
-#: build/lib.linux-x86_64-2.6/lib6ko/run.py:84
-#: debian/apmanager/usr/share/pyshared/lib6ko/run.py:84
-#: debian/papas/usr/share/pyshared/lib6ko/run.py:84 lib6ko/run.py:84
+#: lib6ko/run.py:86
 msgid "PermanentFailure in getting protocol {0}: {1}"
 msgstr "Échec permanent du protocole {0}: {1}"
 
-#: build/lib.linux-x86_64-2.6/lib6ko/run.py:89
-#: debian/apmanager/usr/share/pyshared/lib6ko/run.py:89
-#: debian/papas/usr/share/pyshared/lib6ko/run.py:89 lib6ko/run.py:89
+#: lib6ko/run.py:91
 msgid "Unhandled exception in protocol {0} initialization: {1}"
 msgstr "Exception non gérée dans l'initialisation du protocole {0}: {1}"
 
-#: build/lib.linux-x86_64-2.6/lib6ko/run.py:96
-#: debian/apmanager/usr/share/pyshared/lib6ko/run.py:96
-#: debian/papas/usr/share/pyshared/lib6ko/run.py:96 lib6ko/run.py:96
+#: lib6ko/run.py:98
 msgid "Unable to get a working protocol"
 msgstr "Impossible d'obtenir un protocole fonctionnel"
 
-#: build/lib.linux-x86_64-2.6/lib6ko/run.py:197
-#: debian/apmanager/usr/share/pyshared/lib6ko/run.py:197
-#: debian/papas/usr/share/pyshared/lib6ko/run.py:197 lib6ko/run.py:197
+#: lib6ko/run.py:205
 msgid "Unknown node id {0}"
 msgstr "Identifiant de noeud inconnu {0}"
 
-#: build/lib.linux-x86_64-2.6/lib6ko/run.py:224
-#: debian/apmanager/usr/share/pyshared/lib6ko/run.py:224
-#: debian/papas/usr/share/pyshared/lib6ko/run.py:224 lib6ko/run.py:224
+#: lib6ko/run.py:235
 msgid "Following text will not be executed: {0}"
 msgstr "Le texte suivant ne sera pas exécuté: {0}"
 
-#: build/lib.linux-x86_64-2.6/lib6ko/run.py:237
-#: debian/apmanager/usr/share/pyshared/lib6ko/run.py:237
-#: debian/papas/usr/share/pyshared/lib6ko/run.py:237 lib6ko/run.py:237
-#, python-format
-msgid "Attaching backend to node %s"
-msgstr "Connexion du noeud %s au moteur d'exécution"
+#: lib6ko/architectures/paramiko_ssh.py:14
+msgid ""
+"Connection closed unexpectedly.\n"
+"Non-interactive mode might not be supported by access point."
+msgstr ""
 
-#: build/lib.linux-x86_64-2.6/lib6ko/protocols/snmp.py:40
-#: debian/apmanager/usr/share/pyshared/lib6ko/protocols/snmp.py:40
-#: debian/papas/usr/share/pyshared/lib6ko/protocols/snmp.py:40
 #: lib6ko/protocols/snmp.py:40
 #, python-format
 msgid "set_value takes at least 3 argument (%d given)"
 msgstr "set_value demande au moins 3 paramètres (%d reçus)"
 
-#: build/lib.linux-x86_64-2.6/lib6ko/protocols/snmp.py:42
-#: debian/apmanager/usr/share/pyshared/lib6ko/protocols/snmp.py:42
-#: debian/papas/usr/share/pyshared/lib6ko/protocols/snmp.py:42
 #: lib6ko/protocols/snmp.py:42
 msgid "Invalid number of arguments, not a multiple of 3"
 msgstr "Nombre de paramètres invalide : multiple de 3 attendu"
 
-#: build/lib.linux-x86_64-2.6/lib6ko/protocols/snmp.py:51
-#: debian/apmanager/usr/share/pyshared/lib6ko/protocols/snmp.py:51
-#: debian/papas/usr/share/pyshared/lib6ko/protocols/snmp.py:51
 #: lib6ko/protocols/snmp.py:51
 msgid "Executing: {0}"
 msgstr "Exécution de: {0}"
 
-#: build/lib.linux-x86_64-2.6/lib6ko/protocols/snmp.py:54
-#: debian/apmanager/usr/share/pyshared/lib6ko/protocols/snmp.py:54
-#: debian/papas/usr/share/pyshared/lib6ko/protocols/snmp.py:54
 #: lib6ko/protocols/snmp.py:54
 msgid "Failed to set value"
 msgstr "Échec du réglage de la valeur"
 
-#: build/lib.linux-x86_64-2.6/lib6ko/protocols/snmp.py:62
-#: debian/apmanager/usr/share/pyshared/lib6ko/protocols/snmp.py:62
-#: debian/papas/usr/share/pyshared/lib6ko/protocols/snmp.py:62
 #: lib6ko/protocols/snmp.py:62
 msgid "Unable to match extract value from line: {0}"
 msgstr "Échec de l'extraction d'une valeur de la ligne: {0}"
 
-#: build/lib.linux-x86_64-2.6/lib6ko/protocols/snmp.py:91
-#: debian/apmanager/usr/share/pyshared/lib6ko/protocols/snmp.py:91
-#: debian/papas/usr/share/pyshared/lib6ko/protocols/snmp.py:91
-#: lib6ko/protocols/snmp.py:91
+#: lib6ko/protocols/snmp.py:90
 msgid "Executing line: {0}"
 msgstr "Exécution de : {0}"
 
-#: build/lib.linux-x86_64-2.6/lib6ko/protocols/snmp.py:105
-#: debian/apmanager/usr/share/pyshared/lib6ko/protocols/snmp.py:105
-#: debian/papas/usr/share/pyshared/lib6ko/protocols/snmp.py:105
-#: lib6ko/protocols/snmp.py:105
+#: lib6ko/protocols/snmp.py:104
 msgid "Script did not execute properly"
 msgstr "Le script ne s'est pas exécuté correctement"
 
-#: build/lib.linux-x86_64-2.6/lib6ko/protocols/ssh.py:25
-#: build/lib.linux-x86_64-2.6/lib6ko/protocols/telnet.py:22
-#: debian/apmanager/usr/share/pyshared/lib6ko/protocols/ssh.py:25
-#: debian/apmanager/usr/share/pyshared/lib6ko/protocols/telnet.py:22
-#: debian/papas/usr/share/pyshared/lib6ko/protocols/ssh.py:25
-#: debian/papas/usr/share/pyshared/lib6ko/protocols/telnet.py:22
-#: lib6ko/protocols/ssh.py:25 lib6ko/protocols/telnet.py:22
+#: lib6ko/protocols/ssh.py:35 lib6ko/protocols/telnet.py:22
 msgid "Attempting to connect to {0._username}@{0._host}"
 msgstr "Tentative de se connecter à {0._username}@{0._host}"
 
-#: build/lib.linux-x86_64-2.6/lib6ko/protocols/ssh.py:40
-#: debian/apmanager/usr/share/pyshared/lib6ko/protocols/ssh.py:40
-#: debian/papas/usr/share/pyshared/lib6ko/protocols/ssh.py:40
-#: lib6ko/protocols/ssh.py:40
+#: lib6ko/protocols/ssh.py:42
 msgid "Spawning child..."
 msgstr "Création du processus enfant..."
 
-#: debian/apmanager/etc/apmanager/settings.py:37
-#: debian/papas/etc/papas/settings.py:37 etc/papas/settings.py:37
-msgid "French"
-msgstr "Français"
+#~ msgid "Not Verified"
+#~ msgstr "Non vérifié"
 
-#: debian/apmanager/etc/apmanager/settings.py:38
-#: debian/papas/etc/papas/settings.py:38 etc/papas/settings.py:38
-msgid "English"
-msgstr "Anglais"
+#~ msgid "Error occured"
+#~ msgstr "Une erreur est survenue"
+
+#~ msgid "Group: %s"
+#~ msgstr "Groupe: %s"
+
+#~ msgid "Attaching backend to node %s"
+#~ msgstr "Connexion du noeud %s au moteur d'exécution"
