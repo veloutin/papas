@@ -47,6 +47,14 @@ class ArchValueInline(admin.TabularInline):
 class APParamInline(admin.TabularInline):
     model = models.APParameter
 
+class ProSupportInline(admin.TabularInline):
+    model = models.APProtocolSupport
+    fields = (
+        'protocol',
+        'priority',
+        'status',
+        )
+
 class CommandImplementationInline(admin.TabularInline):
     model = models.CommandImplementation
 
@@ -61,6 +69,7 @@ class AccessPointAdmin(admin.ModelAdmin):
     list_display = ('name', 'ipv4Address', 'macAddress')
     inlines = [
         APParamInline,
+        ProSupportInline,
     ]
 
     def get_urls(self):
@@ -105,12 +114,19 @@ class AccessPointAdmin(admin.ModelAdmin):
                 newobj.id = None
                 newobj.save(force_insert=True)
 
-                # Copy related objects
+                # Copy related parameters
                 for apparam in obj.apparameter_set.all():
                     # Remove the id, we want a new one
                     apparam.id = None
                     apparam.ap = newobj
                     apparam.save(force_insert=True)
+
+                # Copy related protocol support
+                for psup in obj.protocol_support.all():
+                    #Remove the id, we want a enw one
+                    psup.id = None
+                    psup.ap = newobj
+                    psup.save(force_insert=True)
 
                 msg = _('The %(name)s "%(obj)s" was cloned successfully.') % {'name': force_unicode(opts.verbose_name), 'obj': force_unicode(obj)}
                 # Add new, go back or edit

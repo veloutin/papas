@@ -191,7 +191,6 @@ class Executer (object):
         if not "ap" in parameters:
             parameters["ap"] = ap
 
-        #TODO: Use protocol support
         for key, val in self._protocol_classes.items():
             self._protocol_chains[key] = ProtocolChain(val, params)
 

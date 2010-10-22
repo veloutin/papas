@@ -118,11 +118,13 @@ def ap_init_overview(request):
 
         for ap in aps:
             ap.schedule_init()
-            return render_to_response('redirect.html',
-                {'url':reverse(ap_init_overview),
-                 'time':60
-                },
-                context_instance=RequestContext(request))
+
+        return render_to_response('redirect.html',
+            {'url':reverse(ap_init_overview),
+             'time':60
+            },
+            context_instance=RequestContext(request))
+
     aps = AccessPoint.objects.all()
     arch_init_sections = {}
     res = []

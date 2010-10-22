@@ -35,6 +35,8 @@ import logging
 LOG = logging.getLogger('apmanger.accesspoints')
 import commands
 
+from collections import defaultdict
+
 from django.db import models
 from django import forms
 from django.forms import widgets
@@ -82,12 +84,14 @@ def _source_notset_action(dict_, key, value=None):
 SOURCE_TYPE_NOTSET = "notset"
 SOURCE_TYPE_SET = "set"
 SOURCE_TYPE_INHERIT = "inherit"
-SOURCE_TYPE_ACTIONS = {
-    SOURCE_TYPE_NOTSET : _source_notset_action,
-    SOURCE_TYPE_SET : _source_set_action,
-    SOURCE_TYPE_INHERIT : _source_inherit_action,
-    None : _source_set_action,
-}
+SOURCE_TYPE_ACTIONS = defaultdict(
+    lambda : _source_set_action,
+    {
+        SOURCE_TYPE_NOTSET : _source_notset_action,
+        SOURCE_TYPE_SET : _source_set_action,
+        SOURCE_TYPE_INHERIT : _source_inherit_action,
+    }
+)
 
 SUPPORT_TYPE_UNKNOWN = "unknown"
 SUPPORT_TYPE_ERROR = "error"
@@ -95,13 +99,33 @@ SUPPORT_TYPE_UNVERIFIED = "unverified"
 SUPPORT_TYPE_NO = "no"
 SUPPORT_TYPE_OK = "ok"
 SUPPORT_TYPES = (
-    (SUPPORT_TYPE_UNKNOWN, _(u"Unknown")),
-    (SUPPORT_TYPE_UNVERIFIED, _(u"Not Verified")),
-    (SUPPORT_TYPE_NO, _(u"Not Supported")),
-    (SUPPORT_TYPE_OK, _(u"Supported")),
-    (SUPPORT_TYPE_ERROR, _(u"Error occured")),
+    # Key                    # Verbose name
+    (SUPPORT_TYPE_UNKNOWN,    _(u"Unknown")),
+#    (SUPPORT_TYPE_UNVERIFIED, _(u"Not Verified")),
+    (SUPPORT_TYPE_NO,         _(u"Not Supported")),
+    (SUPPORT_TYPE_OK,         _(u"Supported")),
+#    (SUPPORT_TYPE_ERROR,      _(u"Error occured")),
 )
 
+SUPPORT_TYPES_INFO = defaultdict(
+    lambda: dict(
+        usable = False,
+    ),
+    {
+        SUPPORT_TYPE_UNKNOWN : dict(
+            usable = True,
+        ),
+        SUPPORT_TYPE_UNVERIFIED : dict(
+            usable = True,
+        ),
+        SUPPORT_TYPE_NO : dict(
+            usable = False,
+        ),
+        SUPPORT_TYPE_OK : dict(
+            usable = True,
+        ),
+    }
+)
 
 class Section (models.Model):
     name = models.CharField(
@@ -206,13 +230,16 @@ class Protocol (models.Model):
 class APProtocolSupport (models.Model):
     protocol = models.ForeignKey(Protocol,
         related_name="protocol_support",
+        limit_choices_to=dict(
+            mode__isnull=False,
+            ),
         )
     ap = models.ForeignKey('AccessPoint',
         related_name="protocol_support",
         )
-    priority = models.IntegerField(
-        default = 0,
-        help_text = _(u"The highest priority protocol is tried first for each mode"),
+    priority = models.PositiveIntegerField(
+        default = 10,
+        help_text = _(u"The highest priority protocol is tried first for each mode. 0 = Highest priority."),
         )
     status = models.CharField(
         max_length=32,
@@ -223,11 +250,17 @@ class APProtocolSupport (models.Model):
     message = models.TextField(
         null = True, blank = True,
         )
+    
+    @property
+    def is_usable(self):
+        return SUPPORT_TYPES_INFO[self.status]["usable"]
 
     class Meta:
         ordering = [
             'priority',
             ]
+        verbose_name = _(u"Protocol Support")
+        verbose_name_plural = _(u"Protocols Support")
 
 class Architecture (models.Model):
     """
@@ -299,11 +332,11 @@ class ArchParameter (models.Model):
         verbose_name_plural = _(u"Architecture Parameters")
 
     def update_dict(self, d):
-        if self.value_type in SOURCE_TYPE_ACTIONS:
-            func = SOURCE_TYPE_ACTIONS[self.value_type]
-        else:
-            func = SOURCE_TYPE_ACTIONS[None]
-        func(d, self.parameter.scoped_name, self.value)
+        return SOURCE_TYPE_ACTIONS[self.value_type](
+            d,
+            self.parameter.scoped_name,
+            self.value,
+            )
 
 class APParameter (models.Model):
     parameter = models.ForeignKey(Parameter)

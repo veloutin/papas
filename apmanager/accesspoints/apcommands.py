@@ -33,6 +33,7 @@ from apmanager.accesspoints.models import (
 from apmanager.accesspoints.architecture import (
     CommandDefinition,
     Protocol,
+    APProtocolSupport,
     )
 
 from datetime import datetime
@@ -274,6 +275,21 @@ class CommandExecResult ( models.Model ):
         for up in self.commandexec.usedparameter_set.all():
             params[up.name] = up.value
 
+        protocols = self.accesspoint.protocol_support.all()
+
+        # If there are no defined protocols, create them
+        if len(protocols) == 0:
+            for protocol in Protocol.objects.filter(mode__isnull=False):
+                ap_pro_sup = APProtocolSupport.objects.create(
+                    ap = self.accesspoint,
+                    protocol = protocol,
+                )
+
+            protocols = self.accesspoint.protocol_support.all()
+                    
+        executer = Executer(
+            protocol_classes=[ p.protocol for p in protocols if p.is_usable ],
+            )
         executer = Executer(Protocol.objects.all())
 
         # Get the good command implementation
