@@ -10,6 +10,7 @@ from lib6ko.templatetags.console import (
     RootConsoleNode,
     AllowOutputNode,
     SingleCommandNode,
+    ConnectionDropNode,
     )
 from lib6ko.protocol import ScriptError
 
@@ -31,6 +32,7 @@ SINGLE_CMD_TAG="single"
 MODE_TAG="mode"
 SNMP_TAG="snmp"
 PARAM_TAG="param"
+ALLOW_DROP_TAG="allow_connection_lost"
 
 ######################################################################
 # Parameter
@@ -207,6 +209,23 @@ def do_singlecmd(parser, token):
         raise template.TemplateSyntaxError("%s cannot exist outside of a %s tag" % (SINGLE_CMD_TAG, CONSOLE_TAG))
     return DjSingleCommandNode(nodelist)
 
+######################################################################
+# Allow Connection Lost
+######################################################################
+
+class DjDropConnectionNode(ConnectionDropNode, template.Node):
+    def __init__(self, nodelist):
+        ConnectionDropNode.__init__(self)
+        self.nodelist = nodelist
+
+    def do_render(self, ctx):
+        return self.nodelist.render(ctx)
+
+@register.tag(ALLOW_DROP_TAG)
+def do_dropconnecttag(parser, token):
+    nodelist = parser.parse(('end' + ALLOW_DROP_TAG, ))
+    parser.delete_first_token()
+    return DjDropConnectionNode(nodelist)
 ######################################################################
 # SNMP
 ######################################################################

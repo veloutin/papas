@@ -1,3 +1,13 @@
+papas (1.0.0-ubuntu2~rc7) lucid; urgency=low
+
+  * Add parameter overview page
+  * Add AP clone page
+  * Add Protocol Support and priority management
+  * Fix SSH support for Cisco with Interactive mode
+  * Add 'allow_connection_lost' template tag
+
+ -- Vincent Vinet <vvinet@revolutionlinux.com>  Fri, 22 Oct 2010 14:52:38 -0400
+
 papas (0.9ubuntu5) lucid; urgency=low
 
   * Add paramiko dependencies

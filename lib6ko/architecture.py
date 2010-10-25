@@ -6,7 +6,7 @@ _LOG = logging.getLogger("lib6ko.architecture")
 import re
 import pexpect
 from cStringIO import StringIO
-from lib6ko.protocol import ScriptError
+from lib6ko.protocol import ScriptError, ConnectionLost
 
 class Console(object):
     LOGIN_PROMPT = re.compile(r"(username|login) ?:", re.I)
@@ -59,6 +59,8 @@ class Console(object):
 
     @property
     def output(self):
+        if self.child is None:
+            raise ConnectionLost("Child is None")
         return self.child.logfile_read.getvalue()
 
     @property
@@ -91,13 +93,19 @@ class Console(object):
 
 
     def wait_for_prompt(self, consume_output=True, timeout=1):
-        if self.child.expect([self.PROMPT_RE, pexpect.TIMEOUT], timeout=timeout) == 0:
+        if self.expect([self.PROMPT_RE, pexpect.TIMEOUT], timeout=timeout) == 0:
             if consume_output:
                 self.consume_output()
             return True
         else:
             return False
         
+
+    def expect(self, *args, **kwargs):
+        try:
+            return self.child.expect(*args, **kwargs)
+        except EOFError as e:
+            raise ConnectionLost(*(e.args))
 
     def prompt(self, consume=True, timeout=1):
         """ Get the next prompt. If consume is false, we will remember that it
@@ -116,7 +124,7 @@ class Console(object):
         _LOG.debug(_("Waited approximately {0}s").format((datetime.now() - now).seconds))
 
         #Check for more prompts if we missed some
-        #while self.child.expect([self.PROMPT_RE, pexpect.TIMEOUT], timeout=0) == 0:
+        #while self.expect([self.PROMPT_RE, pexpect.TIMEOUT], timeout=0) == 0:
         #    pass
 
         #Now we get the output we still have not read
@@ -152,6 +160,8 @@ class Console(object):
         _LOG.debug("="*40)
         _LOG.info(_("Executing {0}").format(repr(command[:80])))
 
+        if self.child is None:
+            raise ConnectionLost("Child is None")
         #Allow us to find new input/output only
         readlog = self.child.logfile_read
         oStart = len(readlog.getvalue())
@@ -165,10 +175,10 @@ class Console(object):
         sentchars = self.child.sendline(command)
 
         # Look for the output we sent
-        idx = self.child.expect([command, pexpect.TIMEOUT], timeout=0.5)
+        idx = self.expect([command, pexpect.TIMEOUT], timeout=0.5)
         if idx == 0:
             # We found what we sent, get our output
-            idx = self.child.expect([self.PROMPT_RE, pexpect.TIMEOUT], timeout=0.5)
+            idx = self.expect([self.PROMPT_RE, pexpect.TIMEOUT], timeout=0.5)
         else:
             _LOG.error("Unable to read sent command...")
 
