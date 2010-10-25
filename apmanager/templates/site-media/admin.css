@@ -28,3 +28,18 @@ div#footer {
     font-size:1.1em;
     font-weight: bold;
 }
+
+tr.trace {
+    background-color: #ffffcc;
+}
+
+tr.trace ul li:first-child {
+    list-style-type: inherit;
+}
+
+tr.trace ul li + li .action {
+    text-decoration: line-through;
+}
+tr.trace ul li {
+    list-style-type: none;
+}
