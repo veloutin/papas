@@ -20,6 +20,7 @@ import operator
 import logging
 import logging.handlers
 import optparse
+import signal
 
 LOG = logging.getLogger("apmanager.bin.cmdexecutor")
 
@@ -63,6 +64,7 @@ def handle_ap_init(ap_id):
         LOG.error("AP init failed with error: %s", str(e))
 
 def Monitor(path):
+    PIDS = set()
     class PCreate(ProcessEvent):
         ACTIONS = (
             (settings.COMMAND_WATCH_DIR, handle_command_exec),
@@ -79,13 +81,33 @@ def Monitor(path):
                     #TODO Pool processes
                     pid = os.fork()
                     if not pid:
+                        def cleanup():
+                            """ Cleanup handler """
+                            try:
+                                os.unlink(event.pathname)
+                            except OSError:
+                                LOG.warn("Unable to delete {0}".format(event.pathname))
+
+                        def term(signo, frame):
+                            cleanup()
+                            sys.exit(0)
+
+                        signal.signal(signal.SIGTERM, term)
+
                         action[1](event.name)
+                        cleanup()
+                        # Force an exit without normal handling, otherwise we
+                        # could end up in the parent's cleaning handlers
+                        os._exit(0)
+                    
+                    def wait_pid(pid):
+                        PIDS.add(pid)
                         try:
-                            os.unlink(event.pathname)
-                        except OSError:
-                            LOG.warn("Unable to delete {0}".format(event.pathname))
-                        sys.exit(0)
-                    t = Thread(target=os.waitpid,args=(pid,0))
+                            os.waitpid(pid, 0)
+                        finally:
+                            PIDS.remove(pid)
+
+                    t = Thread(target=wait_pid,args=(pid,))
                     t.start()
                     return
 
@@ -105,6 +127,20 @@ def Monitor(path):
     wm = WatchManager()
     notifier = Notifier(wm, PCreate())
     wm.add_watch(path, pyinotify.IN_CLOSE_WRITE , None, True)
+    
+    def cleanup():
+        LOG.info("Cleaning up")
+        notifier.stop()
+        for pid in PIDS:
+            LOG.info("Killing {0}".format(pid))
+            os.kill(pid, signal.SIGKILL)
+
+    def term(signo, frame):
+        LOG.critical("Caught Signal, Exiting")
+        cleanup()
+        sys.exit()
+
+    signal.signal(signal.SIGTERM, term)
 
     LOG.info("Starting Main Loop")
     try:
@@ -114,7 +150,7 @@ def Monitor(path):
                 notifier.read_events()
     except KeyboardInterrupt:
         LOG.info("Interrupted, stopping")
-        notifier.stop()
+        cleanup()
         return
 
 class OrFilter(object):
@@ -178,8 +214,8 @@ if __name__ == '__main__':
     try:
         Monitor(settings.WATCH_DIR)
     finally:
-        if opts.pidfile:
+        if opts.pidfile and os.path.isfile(opts.pidfile):
             try:
                 os.unlink(opts.pidfile)
-            except IOError as e:
+            except OSError as e:
                 LOG.error("Unable to remove pidfile: {0}".format(str(e)))
