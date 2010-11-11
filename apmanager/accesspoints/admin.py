@@ -14,10 +14,14 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from itertools import groupby, chain
+
 from django.contrib import admin
 from contextlib import contextmanager, nested
 from django.conf.urls.defaults import patterns
 from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import render_to_response
+from django.template import RequestContext, Context
 from django.contrib.admin.options import (
     _,
     transaction,
@@ -33,9 +37,6 @@ from django.db.models import Model as BaseModel
 from apmanager.accesspoints import models
 
 import apmanager.accesspoints.forms as myforms
-
-class CommandParameterInline(admin.TabularInline):
-    model = models.CommandParameter
 
 class InitSectionInline(admin.StackedInline):
     model = models.InitSection
@@ -65,7 +66,8 @@ class AccessPointAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super(AccessPointAdmin, self).get_urls()
         my_urls = patterns('',
-            (r'^(.+)/clone/$', self.admin_site.admin_view(self.clone_view))
+            (r'^(.+)/clone/$', self.admin_site.admin_view(self.clone_view)),
+            (r'^(.+)/parameters/$', self.admin_site.admin_view(self.init_parameters_view)),
         )
         return my_urls + urls
 
@@ -75,7 +77,6 @@ class AccessPointAdmin(admin.ModelAdmin):
         # a custom form instead of the admin form. It allows editing the base
         # properties of the AccessPoint, and creates a copy upon saving
 
-        
         ## Access control performed as ModelAdmin.change_view
         model = self.model
         opts = model._meta
@@ -163,6 +164,87 @@ class AccessPointAdmin(admin.ModelAdmin):
             ):
             return self.render_change_form(request, context, change=True, obj=obj)
 
+    def param_iterator(self, param_info_dict, parameters=None):
+        """
+        Get an iterator that will return 
+        (section name, param_iterator) for each parameter section
+
+        Parameters:
+        - param_info_dict: result of AccessPoint.get_full_param_information()
+        - parameters: list of parameters to allow, or None for all
+        """
+        if parameters is None:
+            filter_func = lambda a: True
+        else:
+            filter_func = lambda (key, val): key in parameters
+
+        # groupby(iterable, keyfunc) returns an iterator that returns
+        # (key, sub-iterator) grouped by keyfunc(value)
+        for key, group in groupby(
+            sorted(
+                filter(
+                    # Remove entries that are not used in initialization
+                    filter_func,
+                    param_info_dict.iteritems(),
+                ),
+                key=lambda (key, val) : (
+                    val["parameter"].section.name,
+                    val["parameter"].name,
+                ),
+            ),
+            # Group by section name
+            lambda (key, val): val["parameter"].section,
+            ):
+            # Only return non-empty groups
+            group= tuple(group)
+            if group:
+                yield key, group
+
+
+
+    def init_parameters_view(self, request, object_id, extra_context=None):
+        ## Access control performed as ModelAdmin.change_view
+        model = self.model
+        opts = model._meta
+
+        try:
+            obj = self.queryset(request).get(pk=unquote(object_id))
+        except model.DoesNotExist:
+            # Don't raise Http404 just yet, because we haven't checked
+            # permissions yet. We don't want an unauthenticated user to be able
+            # to determine whether a given object exists.
+            obj = None
+
+        if not self.has_change_permission(request, obj):
+            raise PermissionDenied
+
+        if obj is None:
+            raise Http404(_('%(name)s object with primary key %(key)r does not exist.') % {'name': force_unicode(opts.verbose_name), 'key': escape(object_id)})
+
+        show_trace = request.GET.get("show_trace", "no") == "yes"
+        limit = request.GET.get("limit", None) is not None
+
+        limit_params = None
+        if limit:
+            tracer = models.ParamTracer()
+            ctx = Context({"ap":obj, tracer.tracer_key:tracer})
+            for init_section in obj.architecture.initsection_set.order_by('section__name'):
+                init_section.compile_template().render(ctx)
+            limit_params = tracer.params.keys()
+
+        full_param_info = obj.get_full_param_information()
+
+        return render_to_response("admin/accesspoints/accesspoint/init_parameters.html",
+            {
+                "app_label":opts.app_label,
+                "original":obj,
+                "opts":opts,
+                "parameters":self.param_iterator(full_param_info, limit_params),
+                "full":show_trace,
+                "title":_(u"Parameters Overview"),
+            },
+            context_instance=RequestContext(request),
+            )
 
 class APGroupAdmin(admin.ModelAdmin):
     list_display = ('name', )
@@ -223,7 +305,6 @@ del mset["APClient"]
 del mset["UsedParameter"]
 del mset["Command"]
 del mset["CommandExecResult"]
-del mset["CommandParameter"]
 del mset["CommandImplementation"]
 
 #Show every other model in admin

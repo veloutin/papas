@@ -137,12 +137,29 @@ class Parameter (models.Model):
         verbose_name = _(u"Parameter")
 
     def __unicode__(self):
-        return self.scoped_name
+        return _(u"Parameter: {0.scoped_name}").format(self)
+
+    def get_admin_url(self):
+        return reverse('admin:accesspoints_parameter_change', args=(self.name,))
 
     @property
     def scoped_name(self):
         # XXX Should we add the section or not?
         return self.name
+
+class ParamTracer(object):
+    tracer_key = "parameter_tracer"
+    def __init__(self):
+        self.params = {}
+
+    def add_step(self, param, source, value, operation=None):
+        self.params.setdefault(param, []).append(
+            dict(
+                source=source,
+                value=value,
+                operation=operation,
+                )
+            )
 
 class Protocol (models.Model):
     modname = models.CharField(
@@ -226,6 +243,9 @@ class Architecture (models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def get_admin_url(self):
+        return reverse('admin:accesspoints_architecture_change', args=(self.id,))
 
     class Meta:
         ordering = ('name', )

@@ -1,0 +1,75 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block breadcrumbs %}{% if not is_popup %}
+<div class="breadcrumbs">
+    <a href="../../../../">{% trans 'Home' %}</a> &rsaquo; 
+    <a href="../../../">{{ app_label|capfirst }}</a> &rsaquo; 
+    <a href="../../">{{ opts.verbose_name_plural|capfirst }}</a> &rsaquo; 
+    <a href="../">{{ original|truncatewords:"18" }}</a> &rsaquo; 
+    {% trans 'Parameters Overview' %}
+</div>
+{% endif %}{% endblock %}
+
+{% block content %}
+{% block object-tools %}
+<ul class="object-tools">
+    {% if full %}
+    <li><a href="?show_trace=no">{% trans "Simple" %}</a></li>
+    {% else %}
+    <li><a href="?show_trace=yes">{% trans "Full" %}</a></li>
+    {% endif %}
+</ul>
+{% endblock %}
+
+<div id="content-main">
+
+{% for section, params in parameters %}
+<div class="module">
+<h2>{{ section }}</h2>
+<table>
+  <thead>
+  <tr>
+    <th>{% trans "Parameter" %}</th>
+    <th>{% trans "Value" %}</th>
+    <th>{% trans "Source" %}</th>
+  </tr>
+  </thead>
+  <tbody>
+        {% for key, param in params %}
+  <tr>
+    <td>{{ param.parameter.name }}</td>
+    <td>{{ param.value }}</td>
+    <td>{% if param.trace.0.source.get_admin_url %}
+            <a href="{{ param.trace.0.source.get_admin_url }}">{{ param.trace.0.source }}</a>
+        {% else %}
+            {{ param.trace.0.source }}
+        {% endif %}
+        </td>
+  </tr>
+            {% if full %}
+    <tr class="trace">
+      <td colspan="3">
+        <ul>
+                {% for trace in param.trace %}
+          <li>{{ trace.value}} <em>{{ trace.action }}</em> from 
+                    {% if trace.source.get_admin_url %}
+                        <a href="{{ trace.source.get_admin_url }}">{{ trace.source }}</a>
+                    {% else %}
+                        <strong>{{ trace.source }}</strong>
+                    {% endif %}
+          </li>
+                {% endfor %}
+        </ul>
+      </td>
+    </tr>
+            {% endif %}
+        {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endfor %}
+
+
+</div>
+{% endblock %}

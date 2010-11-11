@@ -50,6 +50,9 @@ class AccessPoint ( models.Model ):
     def get_absolute_url(self):
         return reverse('apmanager.accesspoints.views.ap.view_ap', args=(self.id,))
 
+    def get_admin_url(self):
+        return reverse('admin:accesspoints_accesspoint_change', args=(self.id,))
+
     def __repr__(self):
         return u"AP: %s ( %s -- %s )" % (self.name, self.ipv4Address, self.macAddress)
 
@@ -161,6 +164,85 @@ class AccessPoint ( models.Model ):
         #Go through the AP's parameters
         for param in self.apparameter_set.all():
             param.update_dict(res)
+
+        return res
+
+    def get_full_param_information(self):
+        """ Construct a dictionary containing all parameters and their value
+        as obtained in get_param_dict().
+
+        Each entry has the following structure
+        {
+            "parameter" : <Parameter object>,
+            "trace" : [
+                {
+                    "source" : <Source Object>,
+                    "value"  : <Parameter value>,
+                    "action" : <Usage of value>,
+                },
+                ...
+            ]
+        }
+
+        where "trace" will contain all the objects that were queried for
+        the parameter value, according to the Parameter Resolution Order
+        """
+        res = {}
+
+        # Default parameters
+        for param in Parameter.objects.all():
+            if param.default_value is None:
+                action=_(u"No default value")
+            else:
+                action=_(u"Default value")
+
+            res[param.name] = dict(
+                parameter=param,
+                trace=[
+                    dict(
+                        value=param.default_value,
+                        action=action,
+                        source=param,
+                    )
+                    ],
+                value=param.default_value,
+                )
+
+        # Go through all parent architectures
+        arch = self.architecture
+        arch_list = []
+        while arch is not None:
+            arch_list.append(arch)
+            arch = arch.parent
+
+        #Update parameters by starting from the arch hierarchy's top
+        for arch in reversed(arch_list):
+            for opt in arch.options_set.select_related("parameter"):
+                param = opt.parameter
+
+                # Add the trace
+                res[param.name]["trace"].insert(0, dict(
+                    value=opt.value,
+                    action=SOURCE_TYPE.get(opt.value_type, _("Unknown")),
+                    source=arch,
+                    )
+                )
+
+                # Update the value
+                update_func = SOURCE_TYPE_ACTIONS.get(opt.value_type, lambda d, k, v: None)
+                update_func(res[param.name], "value", opt.value)
+
+        # Update the parameters with those on the AP
+        for ap_param in self.apparameter_set.select_related("parameter"):
+            param = ap_param.parameter
+
+            res[param.name]["trace"].insert(0, dict(
+                value=ap_param.value,
+                action=_("Set"),
+                source=self,
+                )
+            )
+            res[param.name]["value"] = ap_param.value
 
         return res
 

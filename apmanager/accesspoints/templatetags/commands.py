@@ -16,8 +16,10 @@
 
 import os
 import re
+from functools import partial
+
 from django import template
-from django.conf import settings
+
 
 from lib6ko.templatetags import CommandNodeBase
 from lib6ko.templatetags import SNMPNodeBase
@@ -32,6 +34,8 @@ from lib6ko.protocol import ScriptError
 from apmanager.accesspoints.models import (
     SOURCE_TYPE_NOTSET,
     SOURCE_TYPE_INHERIT,
+    SOURCE_TYPE,
+    ParamTracer,
     )
 
 from apmanager.accesspoints.models import Parameter
@@ -56,18 +60,32 @@ class DjParameterNode(CommandNodeBase, template.Node):
 
     def render(self, ctx):
         paramname = self.parameter.resolve(ctx)
+        tracer = ctx.get(ParamTracer.tracer_key)
+        if tracer:
+            add_trace = partial(tracer.add_step, paramname)
+        else:
+            add_trace = lambda *a, **k: None
+
         ap = ctx.get("ap", None)
         if ap:
             # First we lookup the AP if possible
             param = ap.apparameter_set.filter(parameter__name=paramname)
             if len(param):
+                add_trace(ap, param[0].value)
                 return param[0].value
+            else:
+                add_trace(ap, None)
 
             # Then we look up the ap's architecture, and then it's parent, etc
             arch = ap.architecture
             while arch is not None:
                 param = arch.options_set.filter(parameter__name=paramname)
                 if len(param):
+                    add_trace(
+                        arch,
+                        param[0].value,
+                        SOURCE_TYPE[param[0].value_type]
+                        )
                     if param[0].value_type == SOURCE_TYPE_NOTSET:
                         # Do not use the value if "NOTSET"
                         break
@@ -77,15 +95,22 @@ class DjParameterNode(CommandNodeBase, template.Node):
                     else:
                         # Otherwise return it
                         return param[0].value
-
+                else:
+                    add_trace(arch, None)
                 arch = arch.parent
 
         # Then we look up in parameters globally
         param = Parameter.objects.filter(name=paramname, default_value__isnull=False)
         if param:
+            add_trace(param, param[0].default_value)
             return param[0].default_value
         
         # Otherwise... not found!
+
+        # If we are tracing, do not raise an error
+        if tracer:
+            return ""
+
         raise ScriptError(
             "Missing Parameter",
             "Parameter {0} ({1}) not found!".format(
