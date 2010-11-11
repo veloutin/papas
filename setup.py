@@ -1,12 +1,21 @@
 #!/usr/bin/env python
+# PAPAS Access Point Administration System
+# Copyright (c) 2010 Revolution Linux inc. <info@revolutionlinux.com>
 #
-# Copyright 2008, Revolution Linux Inc.
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
 #
-# $Id$
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
 #
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 # Author : Vincent Vinet <vvinet@revolutionlinux.com>
-#
-# -------------------------------------------------------------------------
 
 import sys, os, shutil, getopt, re
 
@@ -76,7 +85,7 @@ setup(
     author="Revolution Linux",
     author_email="info@revolutionlinux.com",
     url="http://www.revolutionlinux.com",
-    license="Proprietary",
+    license="AGPLv3",
     platforms=["Linux"],
     long_description="""Django Application To manage a group of Wifi Hotspots""",
     scripts=['bin/apmanager-cmdexecutor'],
