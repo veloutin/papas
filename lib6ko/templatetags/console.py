@@ -66,3 +66,21 @@ class AllowOutputNode(ConsoleNodeBase):
 class SingleCommandNode(ConsoleNodeBase):
     def execute_text(self, text):
         return self.protocol.execute_command(text)
+
+class ConnectionDropNode(ConsoleNodeBase):
+    def __init__(self):
+        self.exception = None
+
+    def execute_text(self, text):
+        from lib6ko.protocol import ConnectionLost
+        try:
+            super(ConnectionDropNode, self).execute_text(text)
+        except ConnectionLost as e:
+            self.exception = e
+            return ""
+
+    def get_full_output(self):
+        if self.exception is not None:
+            return "Connection Lost, no output available\n" + str(self.exception)
+        else:
+            return super(ConnectionDropNode, self).get_full_output()

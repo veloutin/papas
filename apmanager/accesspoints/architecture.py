@@ -79,7 +79,8 @@ def _source_set_action(dict_, key, value):
 def _source_inherit_action(dict_, key, value=None):
     pass
 def _source_notset_action(dict_, key, value=None):
-    del dict_[key]
+    if key in dict_:
+        del dict_[key]
 
 SOURCE_TYPE_NOTSET = "notset"
 SOURCE_TYPE_SET = "set"
@@ -229,15 +230,18 @@ class Protocol (models.Model):
 
 class APProtocolSupport (models.Model):
     protocol = models.ForeignKey(Protocol,
+        verbose_name=_(u"Protocol"),
         related_name="protocol_support",
         limit_choices_to=dict(
             mode__isnull=False,
             ),
         )
     ap = models.ForeignKey('AccessPoint',
+        verbose_name=_(u"Access Point"),
         related_name="protocol_support",
         )
     priority = models.PositiveIntegerField(
+        verbose_name = _(u"Priority"),
         default = 10,
         help_text = _(u"The highest priority protocol is tried first for each mode. 0 = Highest priority."),
         )

@@ -82,6 +82,9 @@ class TemporaryFailure(Exception):
 class PermanentFailure(Exception):
     """ Permanent failure, do not try again with same parameters """
 
+class ConnectionLost(TemporaryFailure):
+    """ Connection was lost during the execution """
+
 class ScriptError(Exception):
     """ Script failed to execute properly """
     def __init__(self, message, traceback=None):
