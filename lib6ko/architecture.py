@@ -120,7 +120,7 @@ class Console(object):
     def expect(self, *args, **kwargs):
         try:
             return self.child.expect(*args, **kwargs)
-        except EOFError as e:
+        except (EOFError, pexpect.EOF) as e:
             raise ConnectionLost(*(e.args))
 
     def prompt(self, consume=True, timeout=1):
