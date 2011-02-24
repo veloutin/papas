@@ -56,12 +56,16 @@ class SSH(ConsoleProtocol):
             raise PermanentFailure("Invalid host: " + e.strerror)
 
         _LOG.debug(_("Spawning child..."))
-        self.child = ParamikoConsole.spawn_child(
-            hostname = target,
-            username = self._username,
-            password = self._password,
-            port = self._port,
-            )
+        try:
+            self.child = ParamikoConsole.spawn_child(
+                hostname = target,
+                username = self._username,
+                password = self._password,
+                port = self._port,
+                )
+        except socket.error as e:
+            _LOG.error(str(e))
+            raise TemporaryFailure("Unable to connect: " + e.strerror)
 
         _LOG.info("Login Successful")
         return self
