@@ -1,3 +1,9 @@
+papas (1.0.0-ubuntu3) lucid; urgency=low
+
+  * Last fix wasn't the last. Fix default parameter handling
+
+ -- Vincent Vinet <vvinet@revolutionlinux.com>  Thu, 24 Feb 2011 16:34:40 -0500
+
 papas (1.0.0-ubuntu2) lucid; urgency=low
 
   * Last Fix. Everything should be fine now
