@@ -171,6 +171,10 @@ class AccessPoint ( models.Model ):
     def get_param_dict(self):
         res = {}
 
+        #Get default values
+        for param in Parameter.objects.filter(default_value__isnull=False):
+            res[param.name] = param.default_value
+
         #Get params from architecture, and parent architecture
         arch = self.architecture
         arch_list = []
