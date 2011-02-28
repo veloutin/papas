@@ -224,9 +224,33 @@ class InteractiveWrapper(object):
         self.echo = echo
     
     def send(self, data):
-        if self.echo:
-            self.log.write(data)
-        self.channel.send(data)
+        target = len(data)
+        sent = 0
+        while sent < target:
+            for dlay in (0.1, 0.2, 0.5, 1.0, 5.0, 10.0):
+                if self.channel.send_ready():
+                    break
+                else:
+                    _LOG.debug(
+                        "Channel not ready to send data, waiting {0}s"
+                        .format(dlay),
+                        )
+                    time.sleep(dlay)
+            else:
+                if not self.channel.send_ready():
+                    raise Exception("Unable to send data")
+
+
+            bsent = self.channel.send(data[sent:])
+            if bsent == 0:
+                raise Exception("Channel closed")
+            if self.echo:
+                self.log.write(data[sent:bsent])
+            sent += bsent
+            _LOG.debug("Sent {0} bytes. Total: {1} of {2}".format(
+                bsent,
+                sent,
+                target))
 
     def send_line(self, line, lf="\n"):
         if self.echo:

@@ -106,6 +106,7 @@ class Console(object):
         #TODO actually see if it matches?
         start = self._sent_output
         self._sent_output -= len(output)
+        _LOG.debug("Restored output: '{0}'".format(self.output[self._sent_output:start]))
 
 
     def wait_for_prompt(self, consume_output=True, timeout=1):
