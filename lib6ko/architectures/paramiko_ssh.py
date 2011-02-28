@@ -153,7 +153,7 @@ class InteractiveParamikoConsole(ParamikoConsole):
                 return True
             time.sleep(0.1)
 
-        return True
+        return False
 
     def prompt(self, consume=True, timeout=1):
         return self.wait_for_prompt(consume, timeout)
@@ -166,7 +166,10 @@ class InteractiveParamikoConsole(ParamikoConsole):
 
     def execute_command(self, command, expect_noecho=False):
         if not self.prompt():
-            raise ScriptError("Unable to get prompt")
+            _LOG.error("Unable to get prompt: unread = '{0}'".format(
+                self.unread_output,
+                ))
+            raise ScriptError("Unable to get prompt", self.output)
 
         self._wrapper.send_line(command)
         # Attempt to read sent command

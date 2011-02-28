@@ -311,7 +311,7 @@ class CommandExecResult ( models.Model ):
                 )
             self.result = 0
         except ScriptError, e:
-            self.output = e.traceback
+            self.output = "{0}\n{1}".format(e, e.traceback)
             self.result = -1
         except Exception, e:
             self.output = traceback.format_exc()
