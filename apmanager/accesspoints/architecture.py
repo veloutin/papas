@@ -33,7 +33,6 @@ Architecture todo
 
 import logging
 LOG = logging.getLogger('apmanger.accesspoints')
-import commands
 
 from collections import defaultdict
 
@@ -44,7 +43,6 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.template import Template
 
-from lib6ko.protocol import Protocol as BaseProtocol
 from lib6ko import templatetags as cmdtags
 
 import re
@@ -217,8 +215,7 @@ class Protocol (models.Model):
             return getattr(mod, cls)
         except ImportError, e:
             LOG.error("Unable to import Protocol %s :\n%s" % (self.modname, str(e)))
-            LOG.debug("Downgrading to BaseProtocol")
-            return BaseProtocol
+            raise
 
     def load_default_parameter_values(self):
         res = {}
