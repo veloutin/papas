@@ -409,7 +409,7 @@ class TextEngine(object):
             else:
                 self._active_transport = transport
 
-        if self.params.get(_P.CONSOLE_FORCE_INTERACTIVE, default=""):
+        if self.params.get(_P.CONSOLE_FORCE_INTERACTIVE, "param", default=""):
             self.start_interactive()
 
     def disconnect(self):
@@ -451,7 +451,14 @@ class TextEngine(object):
             out = self._engine.send_command(command)
             out = out.replace(command, "")
             if len(out) and not self.allow_output:
-                raise ScriptError("Unexepected output", out)
+                raise ScriptError("Unexepected output",
+                    "Output :\n==============\n{0}"
+                    "Full Log:\n=============\n{1}"
+                    .format(
+                        out,
+                        self._engine.log,
+                        )
+                    )
                 
         else:
             out = self._active_transport.execute(command)
