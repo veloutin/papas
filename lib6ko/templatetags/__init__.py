@@ -26,18 +26,13 @@ class CommandNodeBase( object ):
 
     def __init__(self):
         self.backend = None
+        self.render_hook = None
 
-    @property
-    def protocol(self):
-        # FIXME This assumes that get_protocol_chain will always return the
-        # same chain. If this changes, bad things will happen
-        return self.backend.get_protocol_chain(self.mode).protocol
-            
     def render(self, context):
         if hasattr(self, "do_render"):
-            if self.backend:
+            if self.render_hook:
                 out = self.do_render(context)
-                return self.backend.register_output(self, out)
+                return self.render_hook(self, out)
             else:
                 return self.do_render(context)
         else:
@@ -62,10 +57,7 @@ class CommandNodeBase( object ):
         pass
 
     def execute_text(self, text):
-        return self.protocol.execute_text(text)
-
-    def get_full_output(self):
-        return self.protocol.get_full_output()
+        return self.backend.execute_text(text)
 
 class ConsoleNodeBase( CommandNodeBase ):
     mode = "console"

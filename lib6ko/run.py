@@ -26,13 +26,18 @@ from cStringIO import StringIO
 from copy import deepcopy
 
 from lib6ko.templatetags import CommandNodeBase, ConsoleNodeBase, SNMPNodeBase
+from .transport import (
+    ConfigurationException,
+    TransportException,
+    ConnectionLost,
+    )
+from .architecture import Architecture
 from .protocol import (
-    TemporaryFailure,
-    PermanentFailure,
-    MissingParametersException,
     ScriptError,
     ScopedDict,
     )
+from .utils import log_sleep
+from . import parameters as _P
 
 def extract_top_level_nodes_command_nodes(iterable):
     nodes = []
@@ -55,13 +60,14 @@ class ProtocolChain(object):
     """ Protocol chain allows having more than one protocol for each mode.
     Each protocol will be tried until there is no more left.
     """
-    def __init__(self, cls_list, parameters):
+    def __init__(self, cls_list, parameters, architecture=None):
         # Test iterability of cls_list
         iter(cls_list)
         # Make sure there is a param dict in parameters
         self._parameters = parameters
         self._parameters.setdefault("param", {})
 
+        self._arch = (architecture or Architecture)()
         self._protocol = None
         self._current_descriptor = None
         self._discared = []
@@ -90,21 +96,16 @@ class ProtocolChain(object):
                         params[key] = val
                 
                 #Initialize the protocol
-                self._protocol = p.get_class()(config)
+                self._protocol = p.get_class()(config, self._arch)
                 self._current_descriptor = p
                 return self._protocol
-            except (TemporaryFailure), e:
-                msg = _("TemporaryFailure in getting protocol {0}: {1}").format(p, e)
-                _LOG.error(msg)
-                errorlog.append(msg)
-                continue
-            except (PermanentFailure, MissingParametersException), e:
-                msg = _("PermanentFailure in getting protocol {0}: {1}").format(p, e)
+            except (ConfigurationException), e:
+                msg = _("Missing configuration for transport {0}: {1}").format(p, e)
                 _LOG.error(msg)
                 errorlog.append(msg)
                 self._protocol_descriptors.remove(p)
             except Exception, e:
-                msg = _("Unhandled exception in protocol {0} initialization: {1}").format(p, e)
+                msg = _("Unhandled exception in transport {0} initialization: {1}").format(p, e)
                 _LOG.error(msg)
                 _LOG.debug(traceback.format_exc())
                 errorlog.append(msg)
@@ -163,15 +164,6 @@ class Executer (object):
             modelist = self._protocol_classes.setdefault(protocol.mode, [])
             modelist.append(protocol)
 
-        self._protocol_chains = {}
-
-    def get_protocol_chain(self, mode):
-        if mode in self._protocol_chains:
-            return self._protocol_chains[mode]
-        else:
-            _LOG.warn("Mode {0} not found in protocol chains".format(mode))
-            return ProtocolChain([], {})
-
     def _get_node_id(self, node):
         return str(hash(node))
 
@@ -191,17 +183,17 @@ class Executer (object):
         if not "ap" in parameters:
             parameters["ap"] = ap
 
+        transports = {}
         for key, val in self._protocol_classes.items():
-            self._protocol_chains[key] = ProtocolChain(val, params)
+            transports[key] = ProtocolChain(val, params)
 
-        #for pro_sup in ap.protocol_support.all():
-        #    modelist = cmd_modes.setdefault(pro_sup.protocol.mode, [])
-        #    modelist.append(pro_sup.protocol)
-
+        arch = Architecture()
+        engine = TextEngine(params, arch, transports)
         #Prerender the template
-        text = self.prerender_template(template, context_factory(parameters))
+        text = self.prerender_template(template, context_factory(parameters), engine)
+        self._execute_text(text)
 
-        return self._execute_text(text)
+        return engine.output
 
     def _partition_template_text(self, text):
         """ Split compiled template text into text and command nodes """
@@ -240,30 +232,234 @@ class Executer (object):
         for part in self._partition_template_text(text):
             if isinstance(part, CommandNodeBase):
                 with part.get_context(self):
-                    res += self._execute_text(self.get_output(part), node=part)
+                    self._execute_text(self.get_output(part), node=part)
             else:
                 if node:
-                    #res += node.execute_text(part)
                     node.execute_text(part)
                 else:
                     part = part.strip()
                     if part:
                         _LOG.debug(_("Following text will not be executed: {0}").format(part))
-                        res += part
-        if node:
-            return node.get_full_output()
-        else:
-            return res
 
-    def prerender_template(self, template, context):
+    def prerender_template(self, template, context, engine=None):
         """ Pre-Render a Template and return the resulting text """
         #Get all CommandNodeBase instances in the template Tree
         nodes = chain(*(node.get_nodes_by_type(CommandNodeBase) for node in template) )
 
         #Attach self as a backend on all command nodes
         for node in nodes:
-            #_LOG.debug(_("Attaching backend to node %s"), str(node))
-            node.backend = self
+            node.render_hook = self.register_output
+            node.backend = engine
 
         #Render the template, causing all concerned nodes
         return template.render(context)
+
+class EState(object):
+    UNKNOWN = ""
+    PROMPT = "prompt"
+    ROOT_PROMPT = "root_prompt"
+    EMPTY = "empty"
+    PW_PROMPT = "pass_prompt"
+    OTHER = "other"
+
+
+class InteractiveEngine(object):
+    CMD_WAIT = "cmd_wait"
+    _CMD_WAIT = 0.5
+    _S = EState
+    """ Interactive prompt engine """
+    def __init__(self, interactive_transport, parameters, architecture):
+        self._console = interactive_transport
+        self.params = parameters or {}
+        self.arch = architecture
+        self.log = ""
+        self._currentline = None
+
+    @property
+    def currentline(self):
+        return self._currentline
+
+    @property
+    def state(self):
+        if self._currentline is None:
+            return EState.UNKNOWN
+        elif self._currentline == "":
+            return EState.EMPTY
+        elif re.match(self.arch.shell.ROOT_PROMPT, self._currentline):
+            return EState.ROOT_PROMPT
+        elif re.match(self.arch.shell.PROMPT, self._currentline):
+            return EState.PROMPT
+        elif re.match(self.arch.shell.PASSWORD_PROMPT, self._currentline):
+            return EState.PW_PROMPT
+        else:
+            return EState.OTHER
+
+
+    def read(self):
+        read = self._console.read()
+        _LOG.debug("Read console output: '{0}'".format(repr(read)))
+        out = ( self._currentline or "" ) + read
+        line = None
+        for fullline in out.splitlines(True):
+            line = fullline.splitlines()[0]
+            if line != fullline:
+                self.log += line + "\n"
+
+        self._currentline = line
+
+
+    def wait_for_output(self, timeout=0):
+        _LOG.debug("Waiting on any output for {0}s".format(timeout))
+        lout = len(self.log)
+        for none in log_sleep(timeout, _LOG):
+            if len(self.log) != lout:
+                return True
+        else:
+            return False
+
+    def wait_for_state(self, states, timeout=0):
+        if not isinstance(states, (list, tuple)):
+            states = (states, )
+
+        _LOG.debug("Waiting for states {0} with timeout {1}"
+            .format(
+                states,
+                timeout,
+            )   )
+
+        self.read()
+        if self.state in states:
+            return True
+
+        for none in log_sleep(timeout, _LOG):
+            self.read()
+            if self.state in states:
+                return True
+        else:
+            return False
+
+    def send_command(self, command, next_state=None):
+        """
+        Send a line to the transport, return everything until the next prompt.
+        """
+        if next_state is None:
+            next_state = self.state
+
+        out = self._currentline or ""
+        start = len(self.log) + len(out)
+
+        self._console.write(command)
+
+        wait = self.params.get(self.CMD_WAIT, "param", self._CMD_WAIT)
+        self.wait_for_output(wait)
+        self.wait_for_state(next_state)
+        
+        return self.log[start:]
+            
+
+class TextEngine(object):
+    def __init__(self, parameters, arch, transports=None):
+        self.params = parameters
+        self.arch = arch
+
+        #Init the transport chains
+        self.transports = transports or {}
+
+        # Execution output
+        self._active_transport = None
+        self._engine = None
+        self.output = ""
+        self.allow_output = False
+
+    @property
+    def connected(self):
+        return not self._active_transport is None
+
+    @property
+    def interactive(self):
+        return not self._engine is None
+
+    @property
+    def engine(self):
+        return self._engine
+
+    @property
+    def transport(self):
+        return self._active_transport
+
+    def connect(self, mode):
+        if self._active_transport:
+            return self._active_transport
+        # FIXME Handle conflicting modes?
+
+        if not mode in self.transports:
+            _LOG.error("Mode {0} has no available transport.".format(mode))
+            raise Exception("No available {0} transport.".format(mode))
+    
+        while self._active_transport is None:
+            transport = self.transports[mode].protocol
+            try:
+                transport.connect()
+            except TransportException, e:
+                self.output += "Unable to connect to {0}: {1}\n".format(
+                    transport,
+                    e,
+                    )
+                del self.transports[mode].protocol
+            else:
+                self._active_transport = transport
+
+        if self.params.get(_P.CONSOLE_FORCE_INTERACTIVE, default=""):
+            self.start_interactive()
+
+    def disconnect(self):
+        if self.interactive:
+            self.end_interactive()
+        self._active_transport.disconnect()
+
+    def start_interactive(self):
+        if not self.interactive:
+            self._engine = InteractiveEngine(
+                self._active_transport,
+                self.params,
+                self.arch,
+                )
+
+    def end_interactive(self):
+        if self.interactive:
+            try:
+                self._engine.wait_for_state(
+                    (EState.PROMPT, EState.ROOT_PROMPT),
+                    5,
+                    )
+                cmd = self.params.get(_P.CONSOLE_EXIT,
+                    prefix="param",
+                    default="exit",
+                    )
+                self._engine.send_command(cmd + "\n")
+            except ConnectionLost:
+                _LOG.debug("Connection lost on exit.")
+            self.output += self._engine.log
+            self._engine = None
+
+    def execute_command(self, command):
+        if self.interactive:
+            self._engine.wait_for_state(
+                (EState.PROMPT, EState.ROOT_PROMPT),
+                5,
+                )
+            out = self._engine.send_command(command)
+            out = out.replace(command, "")
+            if len(out) and not self.allow_output:
+                raise ScriptError("Unexepected output", out)
+                
+        else:
+            out = self._active_transport.execute(command)
+            self.output += "$ {0}{1}".format(command, out)
+            if len(out) and not self.allow_output:
+                raise ScriptError("Unexpected output", out)
+
+    def execute_text(self, text):
+        if self.interactive:
+            for line in text.splitlines():
+                self.execute_command(line + "\n")

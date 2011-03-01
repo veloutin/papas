@@ -26,61 +26,95 @@ class ConsoleNode(ConsoleNodeBase):
         self._owns_connection = False
 
     def setUp(self):
-        if not self.protocol.connected:
-            self.protocol.connect()
+        if not self.backend.connected:
+            self.backend.connect(self.mode)
             self._owns_connection = True
 
     def tearDown(self):
         if self._owns_connection:
-            self.protocol.disconnect()
+            self.backend.disconnect()
 
 class RootConsoleNode(ConsoleNodeBase):
+    def __init__(self):
+        super(RootConsoleNode, self).__init__()
+        self._started_interactive = False
+        self._noop = False
+
     def setUp(self):
-        priv_cmd = self.protocol.require_param(_P.CONSOLE_PRIV_MODE)
-        priv_password = self.protocol.require_param(
-            _P.CONSOLE_PRIV_PASSWORD,
-            default=self.protocol.priv_password,
-            )
-        if priv_cmd:
-            self.protocol.execute_command(priv_cmd, expect_noecho=True)
-            self.protocol.send_if_no_echo(priv_password)
-            self.protocol.prompt(timeout=5)
+        priv_cmd = self.backend.params.get(_P.CONSOLE_PRIV_MODE, prefix="param")
+        if not priv_cmd:
+            self._noop = True
+        else:
+            priv_password = self.backend.params.get(
+                _P.CONSOLE_PRIV_PASSWORD,
+                prefix="param",
+                default=getattr(self.backend.transport, "priv_password", None),
+                )
+            
+            if not self.backend.interactive:
+                self.backend.start_interactive()
+                self._started_interactive = True
+                engine = self.backend.engine
+                if engine.wait_for_state(engine._S.ROOT_PROMPT, 2):
+                    return
+
+                engine.send_command(
+                    priv_cmd + "\n",
+                    next_state=engine._S.PW_PROMPT,
+                    )
+                if not engine.wait_for_state(engine._S.PW_PROMPT, 5):
+                    # Check if we already got root, just in case
+                    if not engine.state == engine._S.ROOT_PROMPT:
+                        raise Exception("Unable to get root.")
+                engine.send_command(
+                    priv_password + "\n",
+                    next_state=engine._S.ROOT_PROMPT,
+                    )
+                if not engine.wait_for_state(engine._S.ROOT_PROMPT, 5):
+                    raise Exception("Unable to get root prompt.")
 
     def tearDown(self):
-        unpriv_cmd = self.protocol.require_param(_P.CONSOLE_PRIV_END)
+        if self._noop:
+            return
+
+        engine = self.backend.engine
+        unpriv_cmd = self.backend.params.get(
+            _P.CONSOLE_PRIV_END,
+            prefix="param",
+            default="")
         if unpriv_cmd:
-            self.protocol.execute_command(unpriv_cmd)
-            self.protocol.prompt()
+            engine.send_command(
+                unpriv_cmd + "\n",
+                engine._S.PROMPT,
+                )
+            engine.wait_for_state( engine._S.PROMPT, 5)
+
+        if self._started_interactive:
+            self.backend.end_interactive()
 
 class AllowOutputNode(ConsoleNodeBase):
     def __init__(self):
         self.oldval = False
 
     def setUp(self):
-        self.oldval = self.protocol.allow_output
-        self.protocol.allow_output = True
+        self.oldval = self.backend.allow_output
+        self.backend.allow_output = True
 
     def tearDown(self):
-        self.protocol.allow_output = self.oldval
+        self.backend.allow_output = self.oldval
 
 class SingleCommandNode(ConsoleNodeBase):
     def execute_text(self, text):
-        return self.protocol.execute_command(text)
+        return self.backend.execute_command(text)
 
 class ConnectionDropNode(ConsoleNodeBase):
     def __init__(self):
         self.exception = None
 
     def execute_text(self, text):
-        from lib6ko.protocol import ConnectionLost
+        from lib6ko.transport import ConnectionLost
         try:
             super(ConnectionDropNode, self).execute_text(text)
         except ConnectionLost as e:
             self.exception = e
             return ""
-
-    def get_full_output(self):
-        if self.exception is not None:
-            return "Connection Lost, no output available\n" + str(self.exception)
-        else:
-            return super(ConnectionDropNode, self).get_full_output()
