@@ -104,8 +104,6 @@ class SSH(BaseTransport,
             bsent = shell.send(data[sent:])
             if bsent == 0:
                 raise TransportException("Channel closed while sending data.")
-            if self.echo:
-                self.log.write(data[sent:bsent])
             sent += bsent
             _LOG.debug("Sent {0} bytes. Total: {1} of {2}".format(
                 bsent,
