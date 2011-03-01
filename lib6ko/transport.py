@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from operator import attrgetter
 
 import urllib2
 
@@ -6,9 +7,14 @@ import urllib2
 def parse_target(target_uri):
     return urllib2.urlparse.urlparse(target_uri)
 
+class ConfigurationException(Exception):
+    """ Thrown when not enough configuration is passed to a Transport """
 
 class TransportException(Exception):
     """ Base class for Transport Exceptions """
+
+class ConnectionLost(TransportException):
+    """ Exception for dropped connection """
 
 class ConnectedTransport(object):
     """
@@ -18,7 +24,7 @@ class ConnectedTransport(object):
     __metaclass__ = ABCMeta
     
     @abstractmethod
-    def connect(self, target, **creds):
+    def connect(self):
         """ connect to the remote host """
 
     @abstractmethod
@@ -64,4 +70,12 @@ class BaseTransport(object):
         self.params = parameters
         self.arch = architecture
 
+    def require(self, name, default=None):
+        try:
+            return self.params.get(name, default=default)
+        except (KeyError, AttributeError):
+            raise ConfigurationException("{0} is a required parameter".format(name))
+            
+    def require_param(self, name, default=None):
+        return self.require("param::" + name, default)
 

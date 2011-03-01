@@ -1,5 +1,4 @@
 import socket
-import time
 import paramiko
 
 import logging
@@ -11,7 +10,10 @@ from lib6ko.transport import (
     InteractiveTransport,
     CommandTransport,
     TransportException,
+    ConnectionLost,
     )
+from lib6ko.utils import log_sleep
+from lib6ko import parameters as _P
 
 
 class SSH(BaseTransport,
@@ -24,11 +26,18 @@ class SSH(BaseTransport,
         self._client = None
         self._shell = None
 
+        self._host = self.require("ap::ipv4Address")
+        self._username = self.require_param(_P.SSH_USERNAME)
+        if "'" in self._username:
+            raise ValueError("Username contains invalid characters")
+        self.priv_password = self._password = self.require_param(_P.SSH_PASSWORD)
+        self._port = int(self.require_param(_P.SSH_PORT, default="22"))
+
     @property
     def connected(self):
         return not self._client is None
 
-    def connect(self, target="", **creds):
+    def connect(self):
         if self.connected:
             _LOG.info("Already connected.")
             return
@@ -57,6 +66,9 @@ class SSH(BaseTransport,
         except socket.error as e:
             _LOG.error(str(e))
             raise TransportException("Unable to connect: " + e.strerror)
+        except paramiko.SSHException as e:
+            _LOG.error(str(e))
+            raise TransportException("Unable to connect: " + str(e))
 
         _LOG.info("Login Successful.")
         self._client = client
@@ -73,13 +85,23 @@ class SSH(BaseTransport,
 
     @property
     def shell(self):
+        if not self.connected:
+            raise TransportException("Not connected.")
+
+        closed = False
         if not self._shell is None:
             if self._shell.closed:
+                closed = True
                 _LOG.warn("Shell was closed, opening a new.")
             else:
                 return self._shell
 
-        self._shell = self._client.invoke_shell(width=512)
+        try:
+            self._shell = self._client.invoke_shell(width=512)
+        except (EOFError, AttributeError) as e:
+            if closed:
+                raise ConnectionLost("Connection was lost")
+            raise TransportException("Unable to invoke shell: {0}".format(e))
         return self._shell
 
     def write(self, data):
@@ -87,15 +109,11 @@ class SSH(BaseTransport,
         target = len(data)
         sent = 0
         while sent < target:
-            for dlay in (0.1, 0.2, 0.5, 1.0, 5.0, 10.0):
+            for dlay in log_sleep(15, _LOG):
                 if shell.send_ready():
                     break
                 else:
-                    _LOG.debug(
-                        "Channel not ready to send data, waiting {0}s."
-                        .format(dlay),
-                        )
-                    time.sleep(dlay)
+                    _LOG.debug("Channel not ready to send data")
             else:
                 if not shell.send_ready():
                     raise TransportException("Unable to send data.")
@@ -119,8 +137,10 @@ class SSH(BaseTransport,
         return out
 
     def execute(self, command):
+        if not self.connected:
+            raise TransportException("Not connected.")
         try:
-            sin, sout, serr = self.child.exec_command(command)
+            sin, sout, serr = self._client.exec_command(command)
         except (EOFError, AttributeError):
             # The channel can be closed unexpectedly, especially on Cisco
             # as it does not support non-interactive commands since it spawns

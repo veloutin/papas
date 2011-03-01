@@ -14,6 +14,7 @@ from lib6ko.transport import (
     TransportException,
     )
 from lib6ko.utils import log_sleep
+from lib6ko import parameters as _P
 
 
 class Telnet(BaseTransport,
@@ -26,11 +27,17 @@ class Telnet(BaseTransport,
         self._port = 23
         self._pending_out = ""
 
+        # CFG
+        self._host = self.require("ap::ipv4Address")
+        self._username = self.require_param(_P.TELNET_USERNAME)
+        self.priv_password = self._password = self.require_param(_P.TELNET_PASSWORD)
+        self._port = self.require_param(_P.TELNET_PORT, default=23)
+
     @property
     def connected(self):
         return not self._client is None
 
-    def connect(self, target="", **creds):
+    def connect(self):
         if self.connected:
             _LOG.info("Already connected.")
             return

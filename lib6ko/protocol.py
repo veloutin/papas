@@ -15,13 +15,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from gettext import gettext as _
 _LOG = logging.getLogger("lib6ko.protocol")
 
 from operator import attrgetter
-
-from lib6ko import parameters as _P
-
 
 class ScopedDict(dict):
     """
@@ -52,38 +48,18 @@ class ScopedDict(dict):
         else:
             return dict.__getattribute__(self, name)
             
-
-
-class Protocol(object):
-    """ Base Protocol Object """
-    def __init__(self, parameters):
-        self.parameters = parameters
-
-    def require(self, name, default=None):
+    
+    def get(self, name, prefix="", default=None):
+        if prefix:
+            name = self.SCOPE_SEP.join([prefix, name])
         try:
-            return attrgetter(name)(self.parameters)
+            return attrgetter(name)(self)
         except (KeyError, AttributeError):
             if default is None:
-                raise MissingParametersException(_("%s is a required parameter") % name)
+                raise
             else:
                 return default
-            
-    def require_param(self, name, default=None):
-        return self.require("param::" + name, default)
 
-
-
-class MissingParametersException(Exception):
-    """ Missing Parameters to use Protocol """
-
-class TemporaryFailure(Exception):
-    """ Temporary failure to use Protocol, possible to try again """
-
-class PermanentFailure(Exception):
-    """ Permanent failure, do not try again with same parameters """
-
-class ConnectionLost(TemporaryFailure):
-    """ Connection was lost during the execution """
 
 class ScriptError(Exception):
     """ Script failed to execute properly """
