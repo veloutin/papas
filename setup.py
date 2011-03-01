@@ -80,7 +80,7 @@ setup(
         'build_py': CompileI18nBuildWrapper,
         },
     name="papas",
-    version="0.9",
+    version="1.1.0",
     description="simple django app to manage wifi hotspots",
     author="Revolution Linux",
     author_email="info@revolutionlinux.com",
@@ -97,7 +97,7 @@ setup(
         "lib6ko",
         "lib6ko.protocols",
         "lib6ko.templatetags",
-        "lib6ko.architectures",
+        "lib6ko.transports",
     ],
     #package_data=
     data_files = data_files_list,

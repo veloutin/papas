@@ -1,3 +1,10 @@
+papas (1.1.0-ubuntu1) lucid; urgency=low
+
+  * New minor release
+   ** Refac lib6ko completely
+
+ -- Vincent Vinet <vvinet@revolutionlinux.com>  Tue, 01 Mar 2011 16:36:59 -0500
+
 papas (1.0.0-ubuntu3) lucid; urgency=low
 
   * Last fix wasn't the last. Fix default parameter handling
