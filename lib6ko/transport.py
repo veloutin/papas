@@ -61,6 +61,7 @@ class BaseTransport(object):
     """ Base transport class """
 
     def __init__(self, parameters, architecture):
+        self.params = parameters
         self.arch = architecture
 
 
