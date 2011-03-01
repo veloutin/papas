@@ -463,3 +463,5 @@ class TextEngine(object):
         if self.interactive:
             for line in text.splitlines():
                 self.execute_command(line + "\n")
+        else:
+            self.execute_command(text)
