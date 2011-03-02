@@ -272,8 +272,15 @@ class InteractiveEngine(object):
         self._console = interactive_transport
         self.params = parameters or {}
         self.arch = architecture
-        self.log = ""
+        self.line_log = []
         self._currentline = None
+
+    @property
+    def log(self):
+        # To handle backspaces automatically, use StringIO
+        out = StringIO()
+        out.writelines(self.line_log)
+        return out.getvalue()
 
     @property
     def currentline(self):
@@ -297,22 +304,22 @@ class InteractiveEngine(object):
 
     def read(self):
         read = self._console.read()
-        _LOG.debug("Read console output: '{0}'".format(repr(read)))
+        _LOG.debug("Read console output: {0}".format(repr(read)))
         out = ( self._currentline or "" ) + read
         line = None
         for fullline in out.splitlines(True):
             line = fullline.splitlines()[0]
             if line != fullline:
-                self.log += line + "\n"
+                self.line_log.append(line + "\n")
 
         self._currentline = line
 
 
     def wait_for_output(self, timeout=0):
         _LOG.debug("Waiting on any output for {0}s".format(timeout))
-        lout = len(self.log)
+        lout = len(self.line_log)
         for none in log_sleep(timeout, _LOG):
-            if len(self.log) != lout:
+            if len(self.line_log) != lout:
                 return True
         else:
             return False
@@ -340,21 +347,21 @@ class InteractiveEngine(object):
 
     def send_command(self, command, next_state=None):
         """
-        Send a line to the transport, return everything until the next prompt.
+        Send a line to the transport, return all the lines between the one 
+        that was just sent and the next prompt.
         """
         if next_state is None:
             next_state = self.state
 
         out = self._currentline or ""
-        start = len(self.log) + len(out)
+        lines = len(self.line_log)
 
         self._console.write(command)
 
         wait = self.params.get(self.CMD_WAIT, "param", self._CMD_WAIT)
         self.wait_for_output(wait)
         self.wait_for_state(next_state)
-        
-        return self.log[start:]
+        return "".join(self.line_log[lines+1:])
             
 
 class TextEngine(object):
@@ -449,7 +456,6 @@ class TextEngine(object):
                 5,
                 )
             out = self._engine.send_command(command)
-            out = out.replace(command, "")
             if len(out) and not self.allow_output:
                 raise ScriptError("Unexepected output",
                     "Output :\n==============\n{0}"
