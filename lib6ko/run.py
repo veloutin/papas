@@ -22,7 +22,6 @@ import re
 import traceback
 from operator import attrgetter
 from itertools import imap, chain, izip
-from cStringIO import StringIO
 from copy import deepcopy
 
 from lib6ko.templatetags import CommandNodeBase, ConsoleNodeBase, SNMPNodeBase
@@ -277,10 +276,7 @@ class InteractiveEngine(object):
 
     @property
     def log(self):
-        # To handle backspaces automatically, use StringIO
-        out = StringIO()
-        out.writelines(self.line_log)
-        return out.getvalue()
+        return "".join(self.line_log)
 
     @property
     def currentline(self):
@@ -450,6 +446,9 @@ class TextEngine(object):
             self._engine = None
 
     def execute_command(self, command):
+        if not self.connected:
+            raise ConnectionLost("No active transport.")
+
         if self.interactive:
             self._engine.wait_for_state(
                 (EState.PROMPT, EState.ROOT_PROMPT),
