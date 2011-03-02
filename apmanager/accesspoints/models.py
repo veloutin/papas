@@ -94,11 +94,8 @@ class AccessPoint ( models.Model ):
 
     def run_init(self):
         from lib6ko.run import Executer
-        from lib6ko.protocol import (
-            ScriptError,
-            TemporaryFailure,
-            PermanentFailure,
-            )
+        from lib6ko.protocol import ScriptError
+        from lib6ko.transport import TransportException
 
         #Make params dict
         params = self.get_param_dict()
@@ -158,7 +155,7 @@ class AccessPoint ( models.Model ):
             except ScriptError as e:
                 apinit.output = "{0}\n{0.traceback}".format(e)
                 apinit.status = -1
-            except (TemporaryFailure, PermanentFailure) as e:
+            except TransportException as e:
                 apinit.output = str(e)
                 apinit.status = -1
             except Exception as e:
