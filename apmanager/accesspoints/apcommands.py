@@ -290,7 +290,6 @@ class CommandExecResult ( models.Model ):
         executer = Executer(
             protocol_classes=[ p.protocol for p in protocols if p.is_usable ],
             )
-        executer = Executer(Protocol.objects.all())
 
         # Get the good command implementation
         impl = self.commandexec.command.get_implementation(self.accesspoint)

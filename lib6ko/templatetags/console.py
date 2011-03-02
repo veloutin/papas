@@ -43,6 +43,7 @@ class RootConsoleNode(ConsoleNodeBase):
     def setUp(self):
         priv_cmd = self.backend.params.get(_P.CONSOLE_PRIV_MODE, prefix="param")
         if not priv_cmd:
+            _LOG.debug("No priv command, NOOP")
             self._noop = True
         else:
             priv_password = self.backend.params.get(
@@ -54,24 +55,25 @@ class RootConsoleNode(ConsoleNodeBase):
             if not self.backend.interactive:
                 self.backend.start_interactive()
                 self._started_interactive = True
-                engine = self.backend.engine
-                if engine.wait_for_state(engine._S.ROOT_PROMPT, 2):
-                    return
 
-                engine.send_command(
-                    priv_cmd + "\n",
-                    next_state=engine._S.PW_PROMPT,
-                    )
-                if not engine.wait_for_state(engine._S.PW_PROMPT, 5):
-                    # Check if we already got root, just in case
-                    if not engine.state == engine._S.ROOT_PROMPT:
-                        raise Exception("Unable to get root.")
-                engine.send_command(
-                    priv_password + "\n",
-                    next_state=engine._S.ROOT_PROMPT,
-                    )
-                if not engine.wait_for_state(engine._S.ROOT_PROMPT, 5):
-                    raise Exception("Unable to get root prompt.")
+            engine = self.backend.engine
+            if engine.wait_for_state(engine._S.ROOT_PROMPT, 2):
+                return
+
+            engine.send_command(
+                priv_cmd + "\n",
+                next_state=engine._S.PW_PROMPT,
+                )
+            if not engine.wait_for_state(engine._S.PW_PROMPT, 5):
+                # Check if we already got root, just in case
+                if not engine.state == engine._S.ROOT_PROMPT:
+                    raise Exception("Unable to get root.")
+            engine.send_command(
+                priv_password + "\n",
+                next_state=engine._S.ROOT_PROMPT,
+                )
+            if not engine.wait_for_state(engine._S.ROOT_PROMPT, 5):
+                raise Exception("Unable to get root prompt.")
 
     def tearDown(self):
         if self._noop:
