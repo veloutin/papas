@@ -31,7 +31,7 @@ class ConsoleNode(ConsoleNodeBase):
             self._owns_connection = True
 
     def tearDown(self):
-        if self._owns_connection:
+        if self._owns_connection and self.backend.connected:
             self.backend.disconnect()
 
 class RootConsoleNode(ConsoleNodeBase):
@@ -76,7 +76,7 @@ class RootConsoleNode(ConsoleNodeBase):
                 raise Exception("Unable to get root prompt.")
 
     def tearDown(self):
-        if self._noop:
+        if self._noop or not self.backend.connected:
             return
 
         engine = self.backend.engine
@@ -110,13 +110,16 @@ class SingleCommandNode(ConsoleNodeBase):
         return self.backend.execute_command(text)
 
 class ConnectionDropNode(ConsoleNodeBase):
-    def __init__(self):
-        self.exception = None
+    def get_context(self, executer=None):
+        # executer useless in that context, keep to match interface
+        return self
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, extype, exvalue, traceback):
+        from lib6ko.transport import ConnectionLost
+        return isinstance(exvalue, ConnectionLost)
 
     def execute_text(self, text):
-        from lib6ko.transport import ConnectionLost
-        try:
-            super(ConnectionDropNode, self).execute_text(text)
-        except ConnectionLost as e:
-            self.exception = e
-            return ""
+        return

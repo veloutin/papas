@@ -12,6 +12,7 @@ from lib6ko.transport import (
     ConnectedTransport,
     InteractiveTransport,
     TransportException,
+    ConnectionLost,
     )
 from lib6ko.utils import log_sleep
 from lib6ko import parameters as _P
@@ -107,13 +108,24 @@ class Telnet(BaseTransport,
 
     def write(self, data):
         _LOG.debug("Sending data: {0}".format(data))
-        self._client.stdin.write(data)
+        try:
+            self._client.stdin.write(data)
+        except IOError, e:
+            if e.errno == os.errno.EPIPE:
+                #Broken pipe -> disconnected
+                raise ConnectionLost()
+            else:
+                raise
 
     def _read(self):
         try:
             return self._client.stdout.read()
         except IOError, e:
             _LOG.debug("IOError: {0}".format(e))
+            if e.errno == os.errno.EPIPE:
+                #Broken pipe -> disconnected
+                raise ConnectionLost()
+
             # Prevent the Temporarily Unavailable error
             if e.errno == os.errno.EWOULDBLOCK:
                 return ""
